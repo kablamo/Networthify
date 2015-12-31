@@ -1,0 +1,137 @@
+[% PROCESS header.tt %]
+
+<style>
+.groupList {list-style: none; float: left}
+.groupList>li {float: left; margin-right: 1em; width: 6em}
+
+.accountLabel      {width: 10em; font-size: 2em; border: solid 1px #333}
+.accountGroupLabel {width: 13em; margin-right: 0em}
+
+.accountGroup {
+ font: 10pt @family;
+ font-size: 1.0em;
+ font-weight: bold;
+ display: inline-block;
+ padding-top: .5em;
+ padding-left: 1.1em;
+ padding-right: 1.1em;
+ padding-bottom: .5em;
+ color: @black;
+ border: solid 1px #999;
+ -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+         border-radius: 4px;
+ text-shadow: 0 -0px 0px rgba(0,0,0,0.25);
+ position: relative;
+ background: #ccc;
+}
+.accountGroup a {float: right}
+.actionLabel {width: 15em}
+.paragraph {width: 40em; margin-bottom: 1em}
+
+select {margin-top: .1em}
+input {margin-left: 0em; margin-right: 1em}
+#delete {margin-left: 0; border: solid 3px orange}
+#delete:hover {margin-left: 0; border: solid 3px red}
+#realDelete {width: 25em}
+.disabled {color: #999}
+.disabled:hover {border: solid 1px #999}
+.disabled:active {
+ background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #ccc), color-stop(.95, #fff));
+ background: -moz-linear-gradient(bottom, #ccc, #fff);
+}
+#confirmation {display: block; width: 24em}
+</style>
+
+  <div class="title">Manage account</div>
+
+<!--
+    <h2>Tags</h2><br>
+    <div class="paragraph">
+      Tags give you a way to analyze a group of accounts as a single unit.  
+    </div>
+    <div class="paragraph">
+      For example, you may want a tag for your spouse's accounts and another
+      for your accounts.  That way Networthify can provide analytics for each
+      tag separately.
+    </div>
+    <div class="paragraph">
+      This account has the following tags
+    </div>
+    <ul class="groupList">
+      <li><label class="accountGroup">All <a href=#>x</a></label></li>
+      <li><label class="accountGroup">Eric <a href=#>x</a></label></li>
+      <li><label class="accountGroup">Wee <a href=#>x</a></label></li>
+    </ul>
+    <div class="clear"></div><br>
+    <input></input>
+    <button>Add tag</button>
+    <div class="clear"></div><br><br><br>
+-->
+
+    <h2>Rename this account</h2><br>
+    <form name="renameForm" method="post" action="/account/rename">
+      <input name="name">
+      <input type="hidden" name="accountId" value="[% account.accountId %]">
+      <button>Rename</button>
+    </form>
+    <div class="clear"></div><br><br><br>
+
+
+    <h2>Delete this account</h2><br>
+    <div class="paragraph">Permanently delete all data related to <b>[% account.name %]</b>.</div>
+    <button id="delete">Delete</button>
+    <div class="clear"></div>
+    <div id="lightbox" class="lightbox"> 
+      <a href="">close</a><br>
+      <div class="lightbox-title">
+        <div>ARE YOU SURE?</div>
+      </div>
+      <div class="lightbox-content">
+        This action CANNOT be undone.  This will permanently delete 
+        <b><nobr>[% account.name %]</nobr></b> and all its transactions
+        and transfer logs.
+        <br><br>
+        Type the account name to confirm you want to do this:
+        <form name="deleteForm" method="post" action="/account/delete">
+          <input id="confirmation" name="confirmation">
+          <input type="hidden" name="accountId" value="[% account.accountId %]">
+          <div class="clear"></div>
+          <button id="realDelete" class="disabled" disabled>I understand the consequences</button>
+        </form>
+      </div>
+    </div>
+    <div id="lightbox-black" class="lightbox-black"></div>
+
+  </div>
+</div>
+
+<script>
+  $(document).ready( function () {
+
+    $('#lightbox>a').bind('click', function () {
+      $("#lightbox, #lightbox-black").fadeOut(300);
+    });
+
+    $('#delete').bind('click', function () {
+      $("#lightbox, #lightbox-black").fadeIn(300);
+      return false;
+    });
+
+    $('#confirmation').bind('keyup', function () {
+      if ($(this).val() === '[% account.name %]') {
+        $('#realDelete').prop('disabled', false);
+        $('#realDelete').removeClass('disabled');
+      }
+      else {
+        $('#realDelete').prop('disabled', true);
+        if (!$(this).hasClass('disabled')) {
+          $('#realDelete').addClass('disabled');
+        }
+      }
+    });
+
+  });
+</script>
+
+[% PROCESS footer.tt %]

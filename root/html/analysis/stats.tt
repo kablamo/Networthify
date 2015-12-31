@@ -1,0 +1,217 @@
+[% INCLUDE header.tt %]
+
+<div class="chart-title">Account Balance</div>
+<div class="balance-chart"></div><br><br>
+<div class="chart-title">Income vs Expenses</div>
+<div class="expenses-chart"></div><br><br>
+<div class="chart-title">Savings Rate</div>
+<div class="savings-rate-chart"></div><br><br>
+
+<style>
+ .chart-title {
+  background: #ddd;
+  font-size: 1.2em;
+  font-weight: bold;
+  padding-top: 2em;
+  text-align: center;
+ }
+ .balance-chart      {background: #ddd; padding: 2em}
+ .savings-rate-chart {background: #ddd; padding: 2em}
+ .expenses-chart     {background: #ddd; padding: 2em}
+ .expenses-chart .axis {fill: #333}
+ .expenses-chart .axis path, 
+ .expenses-chart .axis line {
+  fill: none;
+  stroke: #333;
+  shape-rendering: crispEdges;
+ }
+ .savings-rate-chart .axis {fill: #333}
+ .savings-rate-chart .axis path, 
+ .savings-rate-chart .axis line {
+  fill: none;
+  stroke: #333;
+  shape-rendering: crispEdges;
+ }
+ .balance-chart .axis {fill: #333}
+ .balance-chart .axis path, 
+ .balance-chart .axis line {
+  fill: none;
+  stroke: #333;
+  shape-rendering: crispEdges;
+ }
+ .x path, .x line {display: none}
+ .y path, .x line {display: none}
+ .savings-rate-bar {fill: #1e58cd; shape-rendering: crispEdges}
+ .balance-bar      {fill: #1cc422; shape-rendering: crispEdges}
+ .expenses-bar     {fill: #4c0b34; shape-rendering: crispEdges; fill-opacity: .8}
+ .income-bar       {fill: #7e19a9; shape-rendering: crispEdges}
+</style>
+
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script>
+var margin = {top: 20, right: 20, bottom: 20, left: 80},
+    width = 960 - margin.left - margin.right,
+    height = 350 - margin.top - margin.bottom;
+
+var parseDate = d3.time.format("%Y-%m-%d").parse;
+
+var balance = {};
+balance.x     = d3.scale.ordinal().rangeRoundBands([0,width], .1);
+balance.y     = d3.scale.linear().range([height, 0]);
+balance.xAxis = d3.svg.axis().scale(balance.x).orient("bottom").tickFormat(formatDate);
+balance.yAxis = d3.svg.axis().scale(balance.y).orient("left").tickFormat(d3.format("0f")).ticks(4);
+balance.svg   = d3.select(".balance-chart")
+  .append("svg")
+    .attr("width",  width  + margin.left + margin.right)
+    .attr("height", height + margin.top  + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+var expenses = {};
+expenses.x     = d3.scale.ordinal().rangeRoundBands([0,width], .1);
+expenses.y     = d3.scale.linear().range([height, 0]);
+expenses.xAxis = d3.svg.axis().scale(expenses.x).orient("bottom").tickFormat(formatDate);
+expenses.yAxis = d3.svg.axis().scale(expenses.y).orient("left").tickFormat(d3.format("0f")).ticks(4);
+expenses.svg   = d3.select(".expenses-chart")
+  .append("svg")
+    .attr("width",  width  + margin.left + margin.right)
+    .attr("height", height + margin.top  + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+var savingsRate = {};
+savingsRate.x     = d3.scale.ordinal().rangeRoundBands([0,width], .1);
+savingsRate.y     = d3.scale.linear().range([height, 0]);
+savingsRate.xAxis = d3.svg.axis().scale(savingsRate.x).orient("bottom").tickFormat(formatDate);
+savingsRate.yAxis = d3.svg.axis().scale(savingsRate.y).orient("left").tickFormat(d3.format("0%")).ticks(4);
+savingsRate.svg   = d3.select(".savings-rate-chart")
+  .append("svg")
+    .attr("width",  width  + margin.left + margin.right)
+    .attr("height", height + margin.top  + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+d3.csv("/analysis/financial-summary-data/[% overview.accountId %]", function(error, data) {
+
+  data.forEach(function(d) { 
+    d.balance     = +d.balance; 
+    d.savings     = +d.savings; 
+    d.income      = +d.income; 
+    d.expenses    = +d.expenses; 
+    d.savingsRate = +d.savingsRate / 100; 
+    d.datetime    = parseDate(d.datetime);
+  });
+
+  // draw balance chart
+
+  balance.x.domain(data.map(function(d) { return d.datetime }));
+  balance.y.domain(d3.extent(data, function(d) { return d.balance }));
+  balance.bottom = calculateBottom(data, "balance");
+
+  balance.svg.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height + ")")
+      .call(balance.xAxis);
+
+  balance.svg.append("g")
+      .attr("class", "y axis")
+      .call(balance.yAxis);
+
+  balance.svg.selectAll(".balance-bar")
+      .data(data)
+    .enter().append("rect")
+      .attr("class", "balance-bar")
+      .attr("x",      function(d) { return balance.x(d.datetime) })
+      .attr("width",  balance.x.rangeBand())
+      .attr("y",      function(d) { return balance.y(Math.max(balance.bottom, d.balance)) })
+      .attr("height", function(d) { return Math.abs(balance.y(d.balance) - balance.y(balance.bottom)) });
+
+  // draw expenses chart
+
+  expenses.x.domain(data.map(function(d) { return d.datetime }));
+  expenses.y.domain(computeYDomain(data));
+  expenses.bottom = calculateBottom(data, "expenses");
+
+  expenses.svg.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height + ")")
+      .call(expenses.xAxis);
+
+  expenses.svg.append("g")
+      .attr("class", "y axis")
+      .call(expenses.yAxis);
+
+  expenses.barWidth = expenses.x.rangeBand();
+
+  expenses.svg.selectAll(".income-bar")
+      .data(data)
+    .enter().append("rect")
+      .attr("class", "income-bar")
+      .attr("x", function(d) { return expenses.x(d.datetime) })
+      .attr("width", expenses.barWidth)
+      .attr("y", function(d) { return expenses.y(Math.max(expenses.bottom, d.income)) })
+      .attr("height", function(d) { return Math.abs(expenses.y(d.income) - expenses.y(expenses.bottom)) });
+
+  expenses.svg.selectAll(".expenses-bar")
+      .data(data)
+    .enter().append("rect")
+      .attr("class", "expenses-bar")
+      .attr("x", function(d) { return expenses.x(d.datetime) })
+      .attr("width", expenses.barWidth)
+      .attr("y", function(d) { return expenses.y(Math.max(expenses.bottom, d.expenses)) })
+      .attr("height", function(d) { return Math.abs(expenses.y(d.expenses) - expenses.y(expenses.bottom)) });
+
+  // draw savings rate chart
+
+  savingsRate.x.domain(data.map(function(d) { return d.datetime }));
+  savingsRate.y.domain(d3.extent(data, function(d) { return d.savingsRate }));
+  savingsRate.bottom = calculateBottom(data, "savingsRate");
+
+  savingsRate.svg.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height + ")")
+      .call(savingsRate.xAxis);
+
+  savingsRate.svg.append("g")
+      .attr("class", "y axis")
+      .call(savingsRate.yAxis);
+
+  savingsRate.svg.selectAll(".savings-rate-bar")
+      .data(data)
+    .enter().append("rect")
+      .attr("class", "savings-rate-bar")
+      .attr("x", function(d) { return savingsRate.x(d.datetime) })
+      .attr("width", savingsRate.x.rangeBand())
+      .attr("y", function(d) { return savingsRate.y(Math.max(savingsRate.bottom, d.savingsRate)) })
+      .attr("height", function(d) { return Math.abs(savingsRate.y(d.savingsRate) - savingsRate.y(savingsRate.bottom)) });
+
+});
+
+function calculateBottom(data, key) {
+  var min = d3.min(data, function(d) { return d[key] });
+  if (min > 0) {
+    return min;
+  }
+  return 0;
+}
+
+function formatDate(datetime) {
+  var monthFormat = d3.time.format("%b");
+  var yearFormat  = d3.time.format("%Y");
+
+  if (datetime.getMonth() === 0) {
+    return yearFormat(datetime);
+  }
+
+  return monthFormat(datetime);
+}
+
+function computeYDomain(data) {
+  var maxIncome   = d3.max(data, function(d) { return d.income   });
+  var maxExpenses = d3.max(data, function(d) { return d.expenses });
+  var max         = d3.max([maxExpenses, maxIncome]);
+  return [0, max];
+}
+</script>
+
+[% INCLUDE footer.tt %]

@@ -1,0 +1,194 @@
+[% INCLUDE header.tt %]
+
+
+<div class="header">Import transactions</div>
+<br>
+<form id="fileupload" action="/import/upload/[% account.accountId %]/[% account.name %]" method="POST" enctype="multipart/form-data">
+  <input id="accountId" type="hidden" name="accountId" value="[% account.accountId %]">
+
+  <b>&raquo; Step 1: Upload a CSV file. </b><br>
+  &nbsp;&nbsp;&nbsp;Step 2: Indicate column order.<br>
+
+  <br>
+
+  <br>
+  You'll find this tool friendly and flexible.  Its looking for something that looks like either of the following 2 formats:
+  <br>
+  <br>
+
+  <table class="import" style="width: 40%; margin-right: 1em">
+    <tr>
+      <th>&nbsp;Date</th>
+      <th>&nbsp;Description</th>
+      <th>&nbsp;Amount</th>
+      <th><nobr>&nbsp;Category (optional)</th>
+    </tr>
+    <tr>
+      <td><nobr>2012-01-01</td>
+      <td>Airlines</td>
+      <td>-$1,000</td>
+      <td>Travel</td>
+    </tr>
+    <tr>
+      <td><nobr>2012-01-01</td>
+      <td>Paycheck</td>
+      <td>$10,000</td>
+      <td>Salary</td>
+    </tr>
+    <tr>
+      <td class="etc">&nbsp;</td>
+      <td class="etc">&nbsp;</td>
+      <td class="etc">&nbsp;</td>
+      <td class="etc">&nbsp;</td>
+    </tr>
+  </table>
+
+  <table class="import" style="width: 40%">
+    <tr>
+      <th>&nbsp;Date</th>
+      <th>&nbsp;Description</th>
+      <th><nobr>&nbsp;Amount in</th>
+      <th><nobr>&nbsp;Amount out</th>
+      <th><nobr>&nbsp;Category (optional)</th>
+    </tr>
+    <tr>
+      <td><nobr>2012-01-01</td>
+      <td>Airlines</td>
+      <td></td>
+      <td>$1,000</td>
+      <td>Travel</td>
+    </tr>
+    <tr>
+      <td><nobr>2012-01-01</td>
+      <td>Paycheck</td>
+      <td>$10,000</td>
+      <td></td>
+      <td>Salary</td>
+    </tr>
+    <tr>
+      <td class="etc">&nbsp;</td>
+      <td class="etc">&nbsp;</td>
+      <td class="etc">&nbsp;</td>
+      <td class="etc">&nbsp;</td>
+      <td class="etc">&nbsp;</td>
+    </tr>
+  </table>
+
+  <div class="clear"></div>
+  <div class="warning">
+    Please <a href="http://localhost:5000/export/29/Checking%20account">backup
+    your data</a> before doing an import.  If you make a mistake 
+    <a href="http://localhost:5000/account/manage/[% account.accountId %]/[% account.name %]/[% urls.datePart %]">
+    delete your account data</a> and reimport from your backup.
+  </div>
+  <br>
+
+<!--
+  <label><b>Delimiter</b></label>
+  <select id="delimiter" name="delimiter">
+      <option value=","  >Comma</option>
+      <option value=";"  >Semicolon</option>
+      <option value="	">Tab</option>
+      <option value="~"  >Tilde</option>
+  </select>
+  <div class="clear"></div>
+-->
+
+  <div class="upload">
+    <span class="btn fileinput-button">
+      <span>Choose a file to upload...</span>
+      <input id="fileupload" type="file" name="file">
+    </span>
+  </div>
+  <div class="clear"></div>
+  
+
+  <!-- The table listing the files available for upload/download -->
+  <table id="import" role="presentation" class="table table-striped">
+      <tbody class="files" data-toggle="modal-gallery" data-target="#modal-gallery">
+      </tbody>
+  </table>
+<!--   <tr><td><button id="startUpload" type="submit">Upload</button></td></tr> -->
+</form>
+
+<!-- The template to display files available for upload -->
+<script id="template-upload" type="text/x-tmpl">
+{% for (var i=0, file; file=o.files[i]; i++) { %}
+    <tr class="template-upload fade">
+        <td class="name"><span>{%=file.name%}</span></td>
+        <td class="size"><span>{%=o.formatFileSize(file.size)%}</span></td>
+        {% if (file.error) { %}
+            <td class="error" colspan="2">
+                <span class="label label-important">{%=locale.fileupload.error%}</span>
+                {%=locale.fileupload.errors[file.error] || file.error%}
+            </td>
+        {% } else if (o.files.valid && !i) { %}
+            <td colspan="2">
+                <div class="progress progress-success progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                    <div class="bar" style="width:0%;"></div>
+                </div>
+            </td>
+            <td class="start" style="display:none">{% if (!o.options.autoUpload) { %}
+                <button class="btn btn-primary">
+                    <i class="icon-upload icon-white"></i>
+                    <span>{%=locale.fileupload.start%}</span>
+                </button>
+            {% } %}</td>
+        {% } else { %}
+            <td colspan="2"></td>
+        {% } %}
+        <td class="cancel">{% if (!i) { %}
+            <button class="btn">
+                <i class="icon-trash"></i>
+                <span>{%=locale.fileupload.cancel%}</span>
+            </button>
+        {% } %}</td>
+    </tr>
+{% } %}
+</script>
+<!-- The template to display files available for download -->
+<script id="template-download" type="text/x-tmpl">
+{% for (var i=0, file; file=o.files[i]; i++) { %}
+    <tr class="template-download fade">
+        {% if (file.error) { %}
+            <td class="name"><span>{%=file.name%}</span></td>
+            <td class="size"><span>{%=o.formatFileSize(file.size)%}</span></td>
+            <td class="error" colspan="2">
+                <span class="label label-important">{%=locale.fileupload.error%}</span>
+                {%=locale.fileupload.errors[file.error] || file.error%}
+            </td>
+            <td class="delete">
+                <button class="btn" data-type="{%=file.delete_type%}" data-url="{%=file.delete_url%}">
+                    <i class="icon-trash"></i>
+                    <span>{%=locale.fileupload.destroy%}</span>
+                </button>
+            </td>
+        {% } else { %}
+            <td class="name">{%=file.name%}</td>
+            <td class="size"><span>{%=o.formatFileSize(file.size)%}</span></td>
+            <td colspan="3"></td>
+        {% } %}
+    </tr>
+{% } %}
+</script>
+<!-- The Templates plugin is included to render the upload/download listings -->
+<script src="http://blueimp.github.com/JavaScript-Templates/tmpl.min.js"></script>
+<script src="[% psgixAssets.4 %]"></script>
+<script>
+    $('#fileupload').fileupload();
+    $('#fileupload').fileupload('option', {
+        url               : '/import/upload',
+        sequentialUploads : true,
+        maxFileSize       : 1000000, // 1MB
+        maxNumberOfFiles  : 1,
+        acceptFileTypes   : /\.csv$/i,
+        autoUpload        : true
+    });
+    $('.progress').show();
+// TODO: handle file upload errors with 'fileuploaderror'?
+    $('#fileupload').bind('fileuploaddone', function () {
+        document.location = '/import/columns/[% account.accountId %]/[% account.name %]';
+    });
+</script>
+
+[% INCLUDE footer.tt %]

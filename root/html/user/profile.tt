@@ -1,0 +1,128 @@
+[% PROCESS header.tt %]
+
+<style>
+select {margin-left: 0}
+.paragraph {width: 40em; margin-bottom: 1em}
+
+#delete {margin-left: 0; border: solid 3px orange}
+#delete:hover {margin-left: 0; border: solid 3px red}
+#real-delete {width: 25em}
+.disabled {color: #999}
+.disabled:hover {border: solid 1px #999}
+.disabled:active {
+ background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #ccc), color-stop(.95, #fff));
+ background: -moz-linear-gradient(bottom, #ccc, #fff);
+}
+#confirmation {display: block; width: 24em}
+.preferences-label {width: 20em}
+</style>
+
+<div class="header">Preferences</div>
+
+  <br><br>
+
+  <h2>Financial settings</h2><br>
+  <form id="headForm" name="headForm" method="post" action="/user/[% user.user_id %]/preferences">
+    <label class="preferences-label">Currency</label>
+    <select class="currency" name="currencyCode" id="currencyCode">
+      [% currencyCode = preferences.currencyCode %]
+      <option value="[% currencyCode %]" selected>[% currencyCode %]: [% currencyName %]</option>
+      <option value="EUR">EUR: Euro</option>
+      <option value="GBP">GBP: Pound Sterling</option>
+      <option value="SGD">SGD: Singapore Dollar</option>
+      <option value="USD">USD: US Dollar</option>
+      <option value="--">----------------------------------</option>
+    [% FOREACH currency IN currencies %]
+      <option value="[% currency.code %]">[% currency.code %]: [% currency.name %]</option>
+    [% END %]
+    </select>
+    <div class="clear"></div>
+
+    <label class="preferences-label">Estimated annual withdrawal rate</label>
+    <input class="" name="withdrawalRate" type="text" value="[% preferences.withdrawalRate %]">
+    <label>%</label>
+    <div class="clear"></div>
+
+    <label class="preferences-label">Estimated annual rate of return on investment</label>
+    <input class="" name="roi" type="text" value="[% preferences.roi %]">
+    <label>%</label>
+    <div class="clear"></div>
+
+    <button class="button" type="submit">Save changes</button>
+  </form>
+  <br><br>
+  
+  <h2>User settings</h2><br>
+  Username
+  <form id="usernameForm" method="post" action="/user/usernameSubmit/[% user.userId %]">
+    <input class="" id="username" name="username" type="text">
+    <button class="button" type="submit">update</button>
+  </form>
+  <br>
+  Password
+  <form id="passwordForm" method="post" action="/user/passwordSubmit/[% user.userId %]">
+    <input class="" id="password" name="password" type="password">
+    <button class="button" type="submit">update</button>
+  </form>
+  <br><br>
+
+  <h2>Delete everything</h2><br>
+  <div class="paragraph">
+    Permanently delete all your data.  Forever.  You will be logged out of the
+    site and won't be able to log in again unless you create a new account.
+  </div>
+  <form id="deleteForm" method="post" action="/user/delete/[% user.userId %]">
+    <button id="delete" class="button" type="submit">Delete all my data</button>
+  </form>
+  <div id="lightbox" class="lightbox"> 
+    <a href="">close</a><br>
+    <div class="lightbox-title">
+      <div>ARE YOU SURE?</div>
+    </div>
+    <div class="lightbox-content">
+      This action <b>CANNOT</b> be undone!
+      <br><br>
+      This will permanently delete <b>all your data</b>.  You will be logged
+      out and will not be able to log in again unless you create a new account.
+      <br><br>
+      Type your username to confirm you want to do this:
+      <form name="deleteForm" method="post" action="/user/delete">
+        <input id="confirmation" name="confirmation">
+        <input type="hidden" name="userId" value="[% user.userId %]">
+        <div class="clear"></div>
+        <button id="real-delete" class="disabled" disabled>I understand the consequences</button>
+      </form>
+    </div>
+  </div>
+  <div id="lightbox-black" class="lightbox-black"></div>
+
+
+<script>
+  $(document).ready( function () {
+
+    $('#lightbox>a').bind('click', function () {
+      $("#lightbox, #lightbox-black").fadeOut(300);
+    });
+
+    $('#delete').bind('click', function () {
+      $("#lightbox, #lightbox-black").fadeIn(300);
+      return false;
+    });
+
+    $('#confirmation').bind('keyup', function () {
+      if ($(this).val() === '[% user.username %]') {
+        $('#real-delete').prop('disabled', false);
+        $('#real-delete').removeClass('disabled');
+      }
+      else {
+        $('#real-delete').prop('disabled', true);
+        if (!$(this).hasClass('disabled')) {
+          $('#real-delete').addClass('disabled');
+        }
+      }
+    });
+
+  });
+</script>
+
+[% PROCESS footer.tt %]

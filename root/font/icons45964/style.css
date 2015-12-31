@@ -1,0 +1,46 @@
+@font-face {
+	font-family: 'icons';
+	src:url('fonts/icons.eot');
+	src:url('fonts/icons.eot?#iefix') format('embedded-opentype'),
+		url('fonts/icons.svg#icons') format('svg'),
+		url('fonts/icons.woff') format('woff'),
+		url('fonts/icons.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
+
+/* Use the following CSS code if you want to use data attributes for inserting your icons */
+[data-icon]:before {
+	font-family: 'icons';
+	content: attr(data-icon);
+	speak: none;
+	font-weight: normal;
+	-webkit-font-smoothing: antialiased;
+}
+
+/* Use the following CSS code if you want to have a class per icon */
+[class^="icon-"]:before, [class*=" icon-"]:before {
+	font-family: 'icons';
+	font-style: normal;
+	speak: none;
+	font-weight: normal;
+	-webkit-font-smoothing: antialiased;
+}
+.icon-equalizer:before {
+	content: "\21";
+}
+.icon-chart:before {
+	content: "\22";
+}
+.icon-upload:before {
+	content: "\23";
+}
+.icon-download:before {
+	content: "\24";
+}
+.icon-calendar:before {
+	content: "\25";
+}
+.icon-info:before {
+	content: "\26";
+}

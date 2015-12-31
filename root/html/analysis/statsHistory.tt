@@ -1,0 +1,83 @@
+[% INCLUDE header.tt %]
+
+<style>
+ table.stats-history    {width: 100%}
+ table.stats-history th {text-align: right; font-weight: bold; padding: .2em}
+ table.stats-history th:first-child {text-align: left}
+ table.stats-history td {text-align: right; padding: .2em}
+ table.stats-history tr:hover {background: #ddd}
+</style>
+
+<table class="stats-history">
+  <tr>
+    <th></th>
+[% WHILE (h = history.stats.next) %]
+    <th>[% h.endDate.month_name %]</th>
+[% END %]
+  </tr>
+  <tr><th>&nbsp;</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+  <tr>
+    <th>Balance</th>
+[% throwaway = history.stats.reset %]
+[% WHILE (h = history.stats.next) %]
+    <td>[% h.balance %]</td>
+[% END %]
+  </tr>
+  <tr>
+    <th>Income</th>
+[% throwaway = history.stats.reset %]
+[% WHILE (h = history.stats.next) %]
+    <td>[% h.income %]</td>
+[% END %]
+  </tr>
+  <tr>
+    <th>Expenses</th>
+[% throwaway = history.stats.reset %]
+[% WHILE (h = history.stats.next) %]
+    <td>[% h.expenses %]</td>
+[% END %]
+  </tr>
+  <tr><th>&nbsp;</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+  <tr>
+    <th>Savings</th>
+[% throwaway = history.stats.reset %]
+[% WHILE (h = history.stats.next) %]
+    <td>[% h.savings %]</td>
+[% END %]
+  </tr>
+  <tr>
+    <th>Savings rate</th>
+[% throwaway = history.stats.reset %]
+[% WHILE (h = history.stats.next) %]
+    <td>[% h.savingsRate %]%</td>
+[% END %]
+  </tr>
+  <tr>
+    <th>Years to FI</th>
+[% throwaway = history.stats.reset %]
+[% WHILE (h = history.stats.next) %]
+    <td>[% h.yearsToFI %] yrs</td>
+[% END %]
+  </tr>
+  <tr>
+    <th>&nbsp;</th>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+[% throwaway = history.stats.reset %]
+[% WHILE (h = history.stats.next) %]
+  <tr>
+    <th>[% tag %]</th>
+[% throwaway = history.stats.reset %]
+[% WHILE (h = history.stats.next) %]
+    <td>[% h.tagBalance(tag) %]</td>
+[% END %]
+  </tr>
+[% END %]
+</table>
+
+[% INCLUDE footer.tt %]

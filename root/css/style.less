@@ -1,0 +1,1028 @@
+// === site =========
+
+// basic stuff
+body {
+ font: 10pt @family;
+ color: @black;
+ background: @milk;
+ padding: 0;
+ padding-bottom: 6em;
+ margin: 0;
+ min-width: 62em;
+}
+a {color: @black; font-weight: normal}
+:active, :focus, input:focus {outline: none}
+
+// forms
+form {margin: 0; padding: 0}
+input, textarea, label {
+ margin: .3em;
+ margin-right: 2em;
+ margin-left: 0;
+ padding: .5em;
+ font: 10pt @family;
+ font-size: 1.0em;
+ -moz-border-radius: 4px;
+ -webkit-border-radius: 4px;
+ background: @white;
+ color: @black;
+ float: left;
+ border: solid 1px #eee;
+}
+label.fi, input.value, label.units, label.warning {
+ margin: .1em;
+ margin-right: 2em;
+ margin-left: 0;
+ padding: .2em;
+ padding-left: .5em;
+ padding-right: .5em;
+}
+label.warning {background: transparent}
+label {
+ border: 0px; 
+ padding-left: 0em; 
+ padding-right: 1em;
+ width: 4em;
+ background: @milk;
+}
+select {
+ padding: .5em;
+ padding-bottom: .4em;
+ font: 10pt @family;
+ font-size: 1em;
+ -moz-border-radius: 4px;
+ -webkit-border-radius: 4px;
+ background: @white;
+ color: @black;
+ border:  solid 1px @color3;
+}
+input {border: solid 1px #aaa}
+input.withPadding, label.withPadding {padding: .5em}
+input.description {width: 16em}
+input.value {width: 8em; text-align: right}
+input.login {width: 10em}
+.moreOptions, .options {
+ margin: 0;
+ padding: 0;
+ padding-left: 12em;
+ display: inline-block;
+ border: solid 0px #ccc;
+ width: 39em;
+ label {
+  text-align: right;
+  float: left;
+  margin-left: 0;
+  margin-right: 1em;
+  padding-left: 0;
+  padding-left: 0;
+  padding-right: 0;
+  width: 13em;
+ }
+ input    {margin-right: 0}
+ .units   {width: 1em; margin-right: 1em}
+ .warning {
+  margin-left: 0; 
+  margin-right: 0; 
+  padding-left: 0;
+  padding-right: 0;
+  color: @color7; 
+  width: 11em; 
+  border: solid 0px #ddd;
+  text-align: left;
+ }
+}
+.moreOptions {display: none}
+
+// buttons
+button, button:visited, .btn, .btn:visited {
+ font: 10pt @family;
+ display: inline-block;
+ padding-top: .5em;
+ padding-left: 1.1em;
+ padding-right: 1.1em;
+ padding-bottom: .5em;
+ margin: .3em;
+ margin-left: 0;
+ margin-right: .6em;
+ color: @black;
+ text-decoration: none;
+ -moz-border-radius: 4px;
+ -webkit-border-radius: 4px;
+ text-shadow: 0 -0px 0px rgba(0,0,0,0.25);
+ border: solid 1px #999;
+ position: relative;
+ cursor: pointer;
+ font-size: 1.0em;
+ font-weight: bold;
+ background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #ccc), color-stop(.95, #fff));
+ background: -moz-linear-gradient(bottom, #ccc, #fff);
+}
+button:hover, .btn:hover  {
+ border: solid 1px #666;
+}
+button:active, .btn:active {
+ background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #aaa), color-stop(.05, #eee));
+ background: -moz-linear-gradient(bottom, #aaa, #eee);
+}
+.wide {padding-left: 2.5em; padding-right: 2.5em}
+.bigButton {font-size: 1.3em}
+
+// containers
+div.margin {
+ margin-left: @pageMargin;
+ margin-right: @pageMargin;
+ background: @milk;
+ clear:both;
+}
+.center {text-align: center}
+#bigNumbers {
+ margin: 0;
+ margin-top: 1em;
+ margin-bottom: 1em;
+ padding: 0;
+ padding-bottom: 2em;
+ background: transparent;
+ border-top: solid 1px transparent;
+ border-bottom: solid 1px transparent;
+ font-family: @family1;
+ line-height: 1em;
+ text-align: center;
+ .text {
+  float: left;
+  font-family: @family1;
+  font-size: 1.5em;
+  text-align: right;
+  width: 50%;
+  height: 1.3em;
+ }
+ .number {
+  float: right;
+  font-size: 4em;
+  font-weight: bold;
+  text-align: left;
+  width: 50%;
+ }
+ .smallNumber {
+  float: right;
+  font-size: 1.5em;
+  font-weight: bold;
+  text-align: left;
+  width: 50%;
+ }
+ .bigNumber {.number; height: .9em}
+ #savingsRate, #yearsToFI {height: .9em}
+}
+div#top {
+ padding: 1em;
+ padding-left:  @pageMargin;
+ padding-right: @pageMargin;
+ background: @milk;
+ border-bottom: solid 0px #d9d9d9;
+ vertical-align: bottom;
+ height: 4em;
+
+ a.topic {
+  color: #999;
+  display: inline-block;
+  float: right;
+  padding: 1em;
+  padding-top: 1.3em;
+  padding-bottom: 1em;
+  vertical-align: middle;
+  text-decoration: none;
+ }
+ a.topic:hover {color: #eee; background: #555}
+ a#logo          {color: #ccc; color: #666; .logo}
+ a#logoify       {color: #999; color: #ccc; .logo; padding-right: 0.5em}
+ a#logo:hover, a#logoify:hover {background: transparent}
+ div#tagline {
+  display: inline-block;
+  float: left;
+  font-size: .8em;
+  color: #999;
+  margin-right: 2em;
+  padding-top: 1.8em;
+ }
+}
+.logo {
+ text-decoration: none;
+ font-family: @family1;
+ float: left; 
+ font-size: 2.0em;
+ font-weight: bold;
+ padding: 0;
+ padding-top: .3em;
+}
+div#top a.hi {background: #444; color: #eee}
+
+// === menus ===
+ul.menu    {float: right; list-style: none}
+ul.menu>li>a {
+ display: block;
+ margin:  0;
+ padding: 0;
+ padding-left:  .5em;
+ padding-right: .5em;
+ background: transparent;
+ color: #333;
+ vertical-align: middle;
+ text-decoration: none;
+ .downarrow {
+  vertical-align: middle;
+  font-size: 0.5em;
+ }
+}
+ul.menu>li:hover {
+ a {background: #555; color: #999}
+ a:hover {color: #fff}
+}
+ul.menu>li>a:hover {background: #555; color: #eee}
+ul.menu>li>ul {
+ position: absolute; 
+ left: -999em;
+ margin:  0;
+ padding: 0;
+ list-style: none;
+ font-size: 0.8em;
+ z-index: 999;
+}
+ul.menu li ul li a { 
+ display: block;
+ padding: .6em;
+ padding-left:  1.3em;
+ padding-right: 1.3em;
+ background: #555;
+ border-bottom: solid 1px #666;
+ color: #999;
+ font-size: 1.2em;
+ text-decoration: none;
+ vertical-align: middle;
+}
+ul.menu li ul li a:hover {color: #eee}
+ul.menu>li:hover>ul {left: auto}
+ul.menu li ul li a#createAccount:hover {color: #eee}
+ul.menu li ul li a#createAccount {
+ background: #333;
+ color: #999;
+ -webkit-border-radius: 0 0 6px 6px;
+    -moz-border-radius: 0 0 6px 6px;
+         border-radius: 0 0 6px 6px;
+}
+ul.menu li ul li a#all:hover {color: #eee}
+ul.menu li ul li a#all {
+ background: #333;
+ color: #999;
+ border-bottom: solid 1px #444;
+ -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+         border-radius: 0;
+}
+ul.transactions>li>a  {
+ color: #999;
+ display: inline-block;
+ padding: 1em;
+ padding-top: 1.3em;
+ padding-bottom: 1em;
+ vertical-align: middle;
+ text-decoration: none;
+}
+ul.settings      {float: right}
+ul.settings>li>a {
+ padding-top: .6em;
+ padding-bottom: .6em;
+ line-height: .5em;
+ font-size: 2em;
+ font-family: 'icons';
+ font-weight: normal;
+ color: #999;
+ -webkit-font-smoothing: antialiased;
+}
+ul.account {float: left}
+ul.account>li>a {
+ width: 10em; 
+ padding: 1.2em; 
+ border-right: solid 0px #ccc;
+ font-size: 1.5em;
+ background: transparent;
+ color: #333;
+}
+ul.account>li>a>div {
+ font-size: .5em;
+}
+ul.account>li:hover {a {background: #555; color: #999}}
+ul.account>li>ul>li>a {width: 16.8em; margin-left: 0em}
+
+// labels
+.networthLabel {
+ font-weight: bold; 
+ font-size: 1.3em; 
+ width: 100%;
+}
+label.login {
+ float: left; 
+ margin-bottom: 0;
+ padding-bottom: 0;
+ font-weight: bold; 
+ font-size: 1.3em; 
+ width: 7.1em;
+}
+.title {font-weight: bold; font-size: 2.5em; margin-top: 1em; margin-bottom: 1em; margin-left: 0em}
+.body {
+ padding: 0em;
+ margin: 0em; 
+ margin-left: 8em;
+ margin-right: 8em;
+ background: @white;
+ background: red;
+ clear: both;
+ float: none;
+ display: block;
+ overflow: hidden;
+}
+
+// tables
+table#fi {
+ width: 100%;
+ th {
+  padding: 1em;
+  padding-top: .5em;
+  padding-bottom: .5em;
+  background: #028800;
+  background: #333;
+  color: #333;
+  color: #fff;
+  text-align: center;
+  border: solid 1px #ccc;
+ }
+ td {
+  border: solid 1px #ccc;
+  background: #fff;
+  padding: 1em;
+  padding-top: .5em;
+  padding-bottom: .5em;
+  text-align: right;
+ }
+}
+#startUpload {
+ clear: both;
+ float: left;
+}
+.historyRow {
+ width: 100%;
+ float: left;
+ padding: 0em;
+ background: #eee;
+ background: @milk;
+ border: solid 0px #ddd;
+ border-bottom: solid 0px @milk;
+ div {
+  padding: 1em;
+  padding-top: .5em;
+  padding-bottom: .5em;
+  float: left;
+ }
+ div.account {width: 8em}
+ div.action {
+  width: 20em;
+  div.actionTop  {font-size: 1.5em; height: .5em; padding: 0; padding-bottom: 0.5em; }
+  div.actionDate {padding: 0}
+  align: left;
+ }
+ div.date    {width: 8em}
+ div.tag     {width: 8em; float: right}
+ div.value   {width: 8em; float: right; text-align: right; font-weight: bold}
+ div.balance {width: 8em; float: right; text-align: right;}
+ div.delta   {width: 8em; float: right; text-align: right; font-weight: bold}
+}
+.historyRowTitle {background: #333; color: #fff}
+.insertRow, .row {
+ width: 100%;
+ float: left;
+ cursor: pointer;
+ padding: 0em;
+ background: #eee;
+ background: @milk;
+ border: solid 0px #ddd;
+ border-bottom: solid 0px @milk;
+ div {
+  padding: 1em;
+  padding-top: .5em;
+  padding-bottom: .5em;
+  float: left;
+ }
+ div.value, div.balance, div.tag {
+  float: right;
+ }
+ div.account {width: 8em}
+ div.date    {width: 8em}
+ div.tag     {width: 8em}
+ div.value   {width: 8em; text-align: right; font-weight: bold; background: transparent}
+ div.balance {width: 8em; text-align: right; color: #999; background: transparent}
+}
+#addTransaction {float: right; margin-right: 0}
+#insertForm {display: none}
+#insert, #editable {
+ cursor: default;
+ background: #3777D7;
+ background: #ccc;
+ border-top: solid 1px #eee;
+ border-bottom: solid 1px #eee;
+ border: solid 1px #aaa;
+ border-bottom: solid 1px #aaa;
+ div {
+  padding-top: 0em;
+  padding-bottom: 0em;
+  padding-left: .5em;
+  padding-right: .5em;
+  margin-right: 1em;
+  label {background: transparent; width: 100%; padding-left: 0.5em}
+  input {
+   background: #fff;
+   color: #333;
+   width: 100%;
+   border: solid 1px #777;
+   border-right: solid .4em #777;
+  }
+  input:focus {
+   outline: solid 0px #777;
+   border: solid 1px #555;
+   border-right: solid .4em #555;
+  }
+ }
+ div.account     {width: 8em}
+ div.description {width: 40%}
+ div.date        {width: 8em}
+ div.tag         {width: 8em}
+ div.value       {
+  width: 8em;
+  background: transparent;
+  margin-left: 1em;
+  margin-right: 0em;
+ }
+ input.eValue {width: 6.6em; text-align: right}
+ input.eDate  {width: 6.6em}
+ input.eTag   {width: 6.6em}
+ div.value label {font-weight: bold}
+}
+#insertButtons, #editButtons {
+ display: none;
+ width: 100%;
+ background: #ccc;
+ a {margin-right: 1em; color: #333}
+ padding-bottom: 1em;
+ padding-top: 1em;
+ padding-right: 0em;
+ clear: both;
+ text-align: right;
+ border-bottom: solid 1px #eee;
+ border: solid 1px #aaa;
+ border-top: solid 0px #eee;
+ -webkit-border-radius: 0px 0px 6px 6px;
+    -moz-border-radius: 0px 0px 6px 6px;
+         border-radius: 0px 0px 6px 6px;
+}
+#insertButtons {
+ display: block;
+}
+
+// bars
+.categories {
+ width: 100%; 
+ margin-top: 2em;
+ float: left;
+}
+.categories>div>a {
+ margin-bottom: 1px;
+ width: 100%;
+ float: left;
+ .text {
+//  padding-top: .4em;
+  padding: .5em;
+  width: 12%;
+  float: left;
+ }
+
+ .value {
+  padding: .5em;
+  padding-right: 1em;
+//  padding-top: .4em;
+  width: 12%;
+  width: 7em; 
+  text-align: right; 
+  width: 12%;
+  float: left;
+ }
+}
+.bar-minus {
+  background: @color7; 
+  height: 2.2em;
+  float: left;
+  border-right: solid 1px @color6;
+}
+.bar-minus-prev {
+  background: @color7; 
+  background: #ddd;
+  height: 2.2em;
+  float: left;
+  border-right: solid 1px #eee;
+}
+.bar-plus {
+  background: @color5; 
+  height: 2.2em;
+  float: left;
+  border-right: solid 1px @color4;
+}
+.categories>div>a:hover {background: #ddd}
+.categories>.categories-title>a {
+ font-weight: bold;
+ background: transparent;
+ color: #333;
+}
+.categories>.categories-title>a:hover {
+ background: transparent;
+ color: #333;
+}
+.assets {display: none}
+.assets .row {
+ background: #ddd;
+ .value {background: #ccc}
+}
+.assets .row:hover {background: #ddd}
+#showSplitForm {
+ display: none;
+ clear: both;
+ text-align: right;
+ background: #ddd;
+ padding: 1em;
+ padding-bottom: .5em;
+ padding-top: .5em;
+ border-top:    solid 1px #eee;
+ border-bottom: solid 1px #eee;
+}
+#tagSplit {
+ display: none;
+ clear: both;
+ padding: 1em;
+ padding-top: .5em;
+ padding-bottom: .5em;
+ height: 9em;
+ background: #ccc;
+ background: #ddd;
+ border-top: solid 1px #eee;
+ label  {
+  width: 10em; 
+  background: transparent; 
+  padding-left: 1em; 
+  margin-right: 1em;
+ }
+ select {
+  width: 10em; 
+  float: left;
+  margin-right: 3em;
+ }
+ input  {
+  float: left;
+  margin-right: 0;
+  text-align: right;
+  width: 3em;
+  background: #fff;
+  border: solid 1px #999;
+ }
+ .units {width: 1em; padding-left: .3em}
+ #cancelSplit {padding-left: 3em; padding-top: 1em; float: left}
+}
+.delete {color: #fff; padding-left: 1em}
+
+// ids
+#instructions {
+ float: right;
+ margin: 0;
+ margin-right: 1em;
+ padding: 0;
+ height: 1em;
+}
+#savingsRateNew, #yearsToFINew, .calculatorGraphLabel {
+ padding: 0;
+ padding-left: 1em;
+ padding-right: 1em;
+ color: greenyellow;
+ color: #333;
+ color: #fff;
+ font-size: .9em;
+ font-weight: bold;
+ background: #666;
+ -moz-border-radius: 4px;
+ -webkit-border-radius: 4px;
+}
+#stats {
+ .text {
+  width: 15em;
+  float: right;
+ }
+}
+#assumptions {
+ display: none;
+ width: 36em;
+ background: #ccc;
+ color: #333;
+ padding: 2em;
+ margin-top: 3em;
+ margin-bottom: 0;
+ text-align: left;
+}
+#moreAssumptions {float: right; margin-right: 1em}
+#controlPanel {margin-left: 12.1em; margin-right: .7em}
+.fiMessage {
+ display: inline-block;
+ text-align: center;
+ width: 42em;
+ text-align: left;
+ margin-top: 0em;
+ margin-bottom: 2em;
+}
+.fiRight {
+ border: solid 1px #fff;
+ float: right;
+ text-align: center;
+}
+#accountYearsToFI, #accountSavingsRate {
+ padding: .4em;
+ vertical-align: middle;
+ display: inline-block;
+}
+#accountYearsToFI .number {padding-right: 1em}
+#accountStats {
+ text-align: right;
+ vertical-align: middle;
+}
+
+// misc
+.emptyLabel {height: .1em}
+.remember  {margin-top: .3em; margin-right: .3em}
+.exampleDescription {float: left; width: 16em; padding-left: .5em; padding-right: .5em; margin-right: 1em}
+.exampleValue       {float: left; width:  8em; padding-left: .5em; padding-right: .5em; margin-right: 1em; text-align: right}
+.money {text-align: right}
+.progress {
+ background: @color3;
+ background: #ddd;
+ height: 2em;
+ margin-top: .5em;
+ margin-bottom: .5em;
+ border: solid 1px #bbb;
+ -moz-border-radius: 4px;
+ -webkit-border-radius: 4px;
+ .bar {
+  background: @color4;
+  height: 2em;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+ }
+}
+.progress-extended {
+ padding-bottom: .5em;
+}
+.header      {
+ padding: 0em;
+ color: #333;
+ font-weight: bold;
+ font-size: 3em;
+ background: transparent;
+ margin-bottom: 0em;
+ margin-top: 0em;
+}
+.fiHeader {
+ margin: 0;
+ margin-top: 2em;
+ margin-bottom: 1em;
+ padding: 0;
+}
+#accountTitle {
+ float: left;
+ background: #ddd;
+ padding: 0em;
+ padding-left: 2em;
+ padding-right: 3em;
+ height: 6.4em;
+ margin-left: 3em;
+ margin-bottom: 0em;
+ position:relative;
+ top: -2em;
+// margin-left:  6em;
+// margin-right: 6em;
+ vertical-align: middle;
+ border-bottom: solid 0px transparent;
+ border-top: solid 0px transparent;
+ -webkit-border-radius: 16px 16px 16px 16px;
+    -moz-border-radius: 16px 16px 16px 16px;
+         border-radius: 16px 16px 16px 16px;
+}
+ul#links {float: right; list-style: none}
+ul#links li {float: right}
+ul#links li a {
+ float: right;
+ padding: 1.5em;
+ padding-left: 1em;
+ padding-right: 1em;
+ margin: 0;
+ margin-right: .1em;
+ background: transparent;
+ color: #fff;
+ text-align: center;
+ text-decoration: none;
+ font-size: 1.2em;
+}
+ul#links li a:hover {
+ background: #333;
+ background: @darkBlue;
+ background: transparent;
+ color: #333;
+ color: #fff;
+ color: greenyellow;
+}
+#prev, #next {
+ padding-top: 0.1em;
+ padding-bottom: 0.2em;
+ padding-left: .2em;
+ padding-right: .2em;
+ text-decoration: none;
+ line-height: .6em;
+ font-size: 3em;
+ float: right;
+ color: #333;
+}
+a#prev:hover, a#next:hover {color: #666}
+#dateStuff {
+ float: left;
+ padding: 2em;
+ padding-right: 0em;
+ margin: 0;
+ margin-top: .3em;
+ margin-left: 0em;
+ background: transparent;
+ color: #fff;
+ color: #333;
+ vertical-align: middle;
+ -webkit-border-radius: 6px 6px 6px 6px;
+    -moz-border-radius: 6px 6px 6px 6px;
+         border-radius: 6px 6px 6px 6px;
+ div {
+  display: inline-block;
+  float: right;
+  line-height: 1.3em;
+  width: 3em;
+  text-align: center;
+ }
+ span#year  {font-size: 0.8em}
+ span#month {font-size: 1.2em}
+}
+.splitDropdown {
+ float: left;
+ margin-left: .5em;
+}
+#split, #delete, #transfer {
+ float: left;
+ margin-top: .5em;
+ margin-left: 1em;
+}
+table.import {
+ width: 100%;
+ td {
+  padding: 1em;
+  padding-top: .5em;
+  padding-bottom: .5em;
+  padding-left: 1.5em;
+  background: #eee;
+  border-bottom: solid 1px @milk;
+ }
+ th {
+  background: #ccc;
+  padding: 1em;
+  padding-top: .5em;
+  padding-bottom: .5em;
+  padding-left: 1em;
+  border-bottom: solid 1px @milk;
+ }
+ td.etc {
+  background: -webkit-gradient(linear, left bottom, left top, color-stop(0, @milk), color-stop(.95, #eee));
+  background: -moz-linear-gradient(bottom, @milk, #eee);
+ }
+}
+.rightHalf, .leftHalf {
+ float: left;
+ width: 50%;
+ border: solid 0px black;
+}
+.dateFormat label, .numberFormat label {width: 10em}
+.pos {border-right: solid 2px #999; border-left: solid 0px #ccc}
+.neg {border-right: solid 1px #ccc; border-left: solid 0px #ccc}
+.currentBalance {
+ color: #0E9F00;
+ color: #333;
+ color: #BBBED8;
+ color: #fff;
+ background: #6eff33;
+ background: #666;
+ background: #bbb;
+ background: #52667A;
+ background: #3777D7;
+ background: #444;
+ float: left;
+ padding: 2em;
+ font-family: @family;
+ .text {
+  font-size: .7em;
+ }
+ .number {
+  font-size: 1.5em;
+ }
+}
+#history, #import {float: right; margin-right: 1em}
+// #darkerBlue  {background: @darkerBlue; .color}
+// #darkBlue    {background: @darkBlue;   .color}
+// #gray        {background: #666666;     .color}
+// #red         {background: #E30842;     .color}
+// #redOrange   {background: #FC4630;     .color}
+// #orange      {background: #FF9317;     .color}
+// #yellowg     {background: #C4FF0D;     .color}
+// #yellow      {background: #FFE545;     .color}
+// #plum        {background: #33242B;     .color}
+// #greenyellow {background: greenyellow; .color}
+// #green       {background: green;       .color}
+// .color {
+//  height: 3px;
+//  padding-left: @pageMargin;
+//  padding-right: @pageMargin;
+// }
+.ulRow {
+ display: inline-block;
+ list-style: none;
+ li {
+  width: 10em;
+  display: inline-block;
+ }
+}
+.default-cursor {cursor: default !important}
+#demo {
+ position: relative;
+ width: 100%;
+ background: #444;
+ color: #ccc;
+ text-align: center;
+ font-weight: bold;
+ a {color: #eee; padding-left: 1em; padding-right: 1em}
+ padding-top: 1em;
+ padding-bottom: 1em;
+ z-index: 9999;
+}
+
+// lightbox
+.lightbox-black {
+ display: none;
+ background: #000;
+ opacity: 0.9;
+ filter: alpha(opacity=90);
+ position: absolute;
+ top: 0;
+ left: 0;
+ min-width: 100%;
+ min-height: 100%;
+ z-index: 1000;
+}
+.lightbox {
+ display:none;
+ position:fixed;
+ top:100px;
+ left:50%;
+ margin-left:-200px;
+ width:400px;
+ background:#FFFFFF;
+ z-index:1001;
+ -webkit-border-radius: 6px 6px 6px 6px;
+    -moz-border-radius: 6px 6px 6px 6px;
+         border-radius: 6px 6px 6px 6px;
+
+ .lightbox-title {
+  font-size: 1.5em;
+  background: #333;
+  color: #fff;
+  margin-top: .5em;
+  width: 100%;
+  div {
+   padding: 1em;
+   padding-top: .5em;
+   padding-bottom: .5em;
+   text-align: center;
+  }
+ }
+
+ .lightbox-content {padding: 2em}
+}
+.lightbox>a:hover {color: #333}
+.lightbox>a {
+  float: right;
+  color: #ccc;
+  margin: .5em;
+  margin-right: 2em;
+}
+.message-top {
+  padding: 1em;
+  padding-left: 8em;
+  padding-right: 8em;
+  background: #009947;
+  border-bottom: solid 3px #5eea52;
+  color: #fff;
+}
+.message {
+  padding: 1em;
+  background: #009947;
+  border-left: solid 1em #5eea52;
+  color: #fff;
+}
+.message a, .message-top a {color: #fff; font-weight:bold}
+.error {
+  position: relative;
+  top: 0px;
+  left: -2em;
+  padding: 1em;
+  background: #f51400;
+  border-left: solid 2em #ff4400;
+  border-right: solid 1em transparent;
+  color: #fff;
+}
+.error-top {
+  padding: 1em;
+  padding-left: 8em;
+  padding-right: 8em;
+  background: #f51400;
+  border-bottom: solid 3px #ff4400;
+  color: #fff;
+}
+.error a, .error-top a {color: #fff; font-weight:bold}
+.warning {
+  position: relative;
+  top: 0px;
+  left: -2em;
+  padding: 1em;
+  background: #ff4400;
+  border-left: solid 2em #f51400;
+  border-right: solid 1em transparent;
+  color: #fff;
+}
+.warning-top {
+  padding: 1em;
+  padding-left: 8em;
+  padding-right: 8em;
+  background: #f51400;
+  border-bottom: solid 3px #ff4400;
+  color: #fff;
+}
+.warning a, .warning-top a {color: #fff; font-weight:bold}
+
+
+// == Icon font helpers ==
+// use it like this: <span data-icon="&#x21;">Boop</span>
+[data-icon]:before {
+  font-family: 'icons';
+  content: attr(data-icon);
+  speak: none;
+  font-weight: normal;
+  -webkit-font-smoothing: antialiased;
+}
+
+
+// === Variables =========
+@pageMargin: 6em;
+
+// colors
+@color0    : #333;        // header
+@color2    : #ccc;        // form
+@color3    : #999;        // form
+
+@color4    : #02660b;     // plus
+@color5    : #05991e;     // plus
+@color6    : #910c1c;     // minus
+@color7    : #C42F4F;     // minus
+
+@milk      : #eee;
+@white     : #fff;
+@black     : #333;
+
+@blue      : @milk;
+@darkBlue  : #333;
+@darkerBlue: #444;
+@blue      : green;
+@darkBlue  : green;
+@darkerBlue: greenyellow;
+@blue      : #888;
+@darkBlue  : #666;
+@darkerBlue: #444;
+@blue      : #066699;
+@darkBlue  : #0A5483;
+@darkerBlue: #02416D;
+@blue      : @milk;
+@darkBlue  : @milk;
+@darkerBlue: @milk;
+
+// fonts 
+@family: 'Helvetica Nue', Helvetica, Arial, sans-serif;
+@family1: 'Economica', @family;

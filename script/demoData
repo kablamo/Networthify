@@ -1,0 +1,105 @@
+#!/usr/bin/env perl
+
+use strict;
+use warnings;
+use v5.19.6;
+
+use DateTime;
+use Getopt::Long::Descriptive;
+use Networth::Schema;
+
+my $USER_ID    = 306300;                                                                                                                                       
+my $ACCOUNT_ID = 320;
+
+{
+    my ($options, $usage) = describe_options(
+        '%c %o',
+        [ 'help|h',	   "print this message" ],
+    );
+
+    die($usage->text) if $options->help;
+
+    my $start   = DateTime->now
+        ->set_day(20)
+        ->set_hour(0)
+        ->set_minute(0)
+        ->set_second(0);
+    my $end = $start->clone->subtract(years => 1);
+    my $now = $start->clone;
+
+    my $user = getUser();
+    my $account = getAccount($user);
+    
+    deleteDemoData($user);
+
+    while ( DateTime->compare($now, $end) ) {
+        say ">> " . $now->ymd;
+        $user->assets->create({ accountId => $ACCOUNT_ID, %$_ }) 
+            for transactions($now);
+
+        $now->subtract(months => 1);
+    }
+}
+
+sub getUser {
+    return Networth::Schema->rs('User')
+        ->withUserId($USER_ID)
+        ->withUsername('demo')
+        ->first;
+}
+
+sub getAccount {
+    shift->accounts->withAccountId($ACCOUNT_ID)->withName('Checking account');
+}
+
+sub deleteDemoData {
+    my ($user) = @_;
+    $user->accounts->withAccountId({ '!=' => $ACCOUNT_ID })->delete_all;
+    $user->assets->delete_all;
+    $user->transactionHistory->delete_all;
+}
+
+sub transactions {
+    my ($date) = @_;
+    ({
+          description => "Dinosaur: Manly Fragrance.",
+          value       => -70,
+          tag         => 'Household',
+          date        => $date->clone->subtract(days => 7),
+       },{
+          description => '800 Super strong magnets',
+          value       => -80,
+          tag         => 'Entertainment',
+          date        => $date->clone->subtract(days => 6),
+       },{
+          description => 'Debonaire bow tie and suspenders',
+          value       => -50,
+          tag         => 'Clothes',
+          date        => $date->clone->subtract(days => 5),
+       },{
+          description => 'Concrete coffee mug',
+          value       => -10,
+          tag         => 'Household',
+          date        => $date->clone->subtract(days => 4),
+       },{
+          description => 'Hearty steak',
+          value       => -10,
+          tag         => 'Dining out',
+          date        => $date->clone->subtract(days => 3),
+       },{
+          description => '50 pounds of pizza flavored dog kibbles',
+          value       => -40,
+          tag         => 'Dog',
+          date        => $date->clone->subtract(days => 2),
+       },{
+          description => 'Wild Man Beard Shampoo',
+          value       => -20,
+          tag         => 'Household',
+          date        => $date->clone->subtract(days => 1),
+       },{
+          description => 'Rocky Mountain Wilderness Rescue',
+          value       => 1000,
+          tag         => 'Salary',
+          date        => $date,
+    });
+}

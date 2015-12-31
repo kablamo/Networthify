@@ -1,0 +1,99 @@
+[% INCLUDE header.tt %]
+
+<div class="chart-title">Account Balance</div>
+<div class="balance-chart"></div><br><br>
+
+<style>
+ .chart-title {
+  background: #ddd;
+  font-size: 1.2em;
+  font-weight: bold;
+  padding-top: 2em;
+  text-align: center;
+ }
+ .balance-chart      {background: #ddd; padding: 2em}
+ .balance-chart .axis {fill: #333}
+ .balance-chart .axis path, 
+ .balance-chart .axis line {
+  fill: none;
+  stroke: #333;
+  shape-rendering: crispEdges;
+ }
+ .x path, .x line {display: none}
+ .y path, .x line {display: none}
+ .balance-bar      {fill: #1cc422; shape-rendering: crispEdges}
+</style>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.1.6/d3.min.js"></script>
+<script>
+var margin = {top: 20, right: 20, bottom: 20, left: 80},
+    width  = 960 - margin.left - margin.right,
+    height = 350 - margin.top - margin.bottom;
+
+var parseDate = d3.time.format("%Y-%m-%d").parse;
+
+var balance = {};
+balance.x     = d3.scale.ordinal().rangeRoundBands([0,width], .1);
+balance.y     = d3.scale.linear().range([height, 0]);
+balance.xAxis = d3.svg.axis().scale(balance.x).orient("bottom").tickFormat(formatDate);
+balance.yAxis = d3.svg.axis().scale(balance.y).orient("left").tickFormat(d3.format("0f")).ticks(4);
+balance.svg   = d3.select(".balance-chart")
+  .append("svg")
+    .attr("width",  width  + margin.left + margin.right)
+    .attr("height", height + margin.top  + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+d3.csv("/analysis/account-balance-data/[% overview.accountId %]", function(error, data) {
+
+  data.forEach(function(d) { 
+    d.balance     = +d.balance; 
+    d.datetime    = parseDate(d.datetime);
+  });
+
+  // draw balance chart
+
+  balance.x.domain(data.map(function(d) { return d.datetime }));
+  balance.y.domain(d3.extent(data, function(d) { return d.balance }));
+  balance.bottom = calculateBottom(data, "balance");
+
+  balance.svg.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height + ")")
+      .call(balance.xAxis);
+
+  balance.svg.append("g")
+      .attr("class", "y axis")
+      .call(balance.yAxis);
+
+  balance.svg.selectAll(".balance-bar")
+      .data(data)
+    .enter().append("rect")
+      .attr("class", "balance-bar")
+      .attr("x",      function(d) { return balance.x(d.datetime) })
+      .attr("width",  balance.x.rangeBand())
+      .attr("y",      function(d) { return balance.y(Math.max(balance.bottom, d.balance)) })
+      .attr("height", function(d) { return Math.abs(balance.y(d.balance) - balance.y(balance.bottom)) });
+});
+
+function calculateBottom(data, key) {
+  var min = d3.min(data, function(d) { return d[key] });
+  if (min > 0) {
+    return min;
+  }
+  return 0;
+}
+
+function formatDate(datetime) {
+  var monthFormat = d3.time.format("%b");
+  var yearFormat  = d3.time.format("%Y");
+
+  if (datetime.getMonth() === 0) {
+    return yearFormat(datetime);
+  }
+
+  return monthFormat(datetime);
+}
+</script>
+
+[% INCLUDE footer.tt %]

@@ -1,0 +1,13 @@
+[% INCLUDE header.tt %]
+
+<div class="header">Export transactions</div>
+<br>
+Download your transactions from '[% account.name %]' as a CSV file.  This is a
+great way to back up your data.
+<br>
+<br>
+<form id="export" action="/export/submit/[% urls.base %]">
+  <button>Export transactions</button>
+</form>
+
+[% INCLUDE footer.tt %]

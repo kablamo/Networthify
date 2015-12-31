@@ -1,0 +1,66 @@
+@import url(//fonts.googleapis.com/css?family=Economica:400,700);
+@font-face {
+        font-family: 'icons';
+        src:url('/font/icons.eot');
+        src:url('/font/icons.eot?#iefix') format('embedded-opentype'),
+                url('/font/icons.svg#icons') format('svg'),
+                url('/font/icons.woff') format('woff'),
+                url('/font/icons.ttf') format('truetype');
+        font-weight: normal;
+        font-style: normal;
+}
+
+/* === mini reset === */
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, input, textarea, table, caption, tbody, tfoot, thead, tr, th, td {
+ margin: 0;
+ padding: 0;
+ border: 0;
+ outline: 0;
+ vertical-align: baseline;
+ background: transparent;
+}
+body {line-height: 1}
+ol, ul {list-style: disc inside none;}
+html, body, div, form, fieldset, legend, label {margin: 0; padding: 0}
+table {border-collapse: collapse; border-spacing: 0}
+th, td {text-align: left; vertical-align: top}
+h1, h2, h3, h4, h5, h6, th, td, caption {font-weight:normal}
+img {border: 0}
+input:hover  {outline: 0}
+input:active {outline: 0}
+/* === clearing floats === */
+/* clear floated elements */
+/* http://sonspring.com/journal/clearing-floats */
+html body * span.clear,
+html body * div.clear,
+html body * li.clear,
+html body * dd.clear {
+ background: none;
+ border: 0;
+ clear: both;
+ display: block;
+ float: none;
+ overflow: hidden;
+ font-size: 12px;
+ list-style: none;
+ margin: 0;
+ padding: 0;
+ visibility: hidden;
+ width: 0;
+ height: 0;
+}
+/* http://www.positioniseverything.net/easyclearing.html */
+.clearfix:after  {clear: both; content: '.'; display: block; visibility: hidden; height: 0;}
+.clearfix        {display: inline-block;}
+* html .clearfix {height: 1%;}
+.clearfix        {display: block;}
+/* === layout === */
+/* basic html */
+body {background: @color8; color: @color9; padding: 0 0 40px}
+/* headings */
+h1 {font-size: 2.0em}
+h2 {font-size: 1.5em}
+h3 {font-size: 1.4em}
+h4 {font-size: 1.3em}
+h5 {font-size: 1.2em}
+h6 {font-size: 1.1em}

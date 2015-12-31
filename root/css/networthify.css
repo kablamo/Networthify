@@ -1,0 +1,1267 @@
+body {
+  font: 10pt 'Helvetica Nue', Helvetica, Arial, sans-serif;
+  color: #333333;
+  background: #eeeeee;
+  padding: 0;
+  padding-bottom: 6em;
+  margin: 0;
+  min-width: 62em;
+}
+a {
+  color: #333333;
+  font-weight: normal;
+}
+:active,
+:focus,
+input:focus {
+  outline: none;
+}
+form {
+  margin: 0;
+  padding: 0;
+}
+input,
+textarea,
+label {
+  margin: .3em;
+  margin-right: 2em;
+  margin-left: 0;
+  padding: .5em;
+  font: 10pt 'Helvetica Nue', Helvetica, Arial, sans-serif;
+  font-size: 1.0em;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  background: #ffffff;
+  color: #333333;
+  float: left;
+  border: solid 1px #eee;
+}
+label.fi,
+input.value,
+label.units,
+label.warning {
+  margin: .1em;
+  margin-right: 2em;
+  margin-left: 0;
+  padding: .2em;
+  padding-left: .5em;
+  padding-right: .5em;
+}
+label.warning {
+  background: transparent;
+}
+label {
+  border: 0px;
+  padding-left: 0em;
+  padding-right: 1em;
+  width: 4em;
+  background: #eeeeee;
+}
+select {
+  padding: .5em;
+  padding-bottom: .4em;
+  font: 10pt 'Helvetica Nue', Helvetica, Arial, sans-serif;
+  font-size: 1em;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  background: #ffffff;
+  color: #333333;
+  border: solid 1px #999999;
+}
+input {
+  border: solid 1px #aaaaaa;
+}
+input.withPadding,
+label.withPadding {
+  padding: 0.5em;
+}
+input.description {
+  width: 16em;
+}
+input.value {
+  width: 8em;
+  text-align: right;
+}
+input.login {
+  width: 10em;
+}
+.moreOptions,
+.options {
+  margin: 0;
+  padding: 0;
+  padding-left: 12em;
+  display: inline-block;
+  border: solid 0px #ccc;
+  width: 39em;
+}
+.moreOptions label,
+.options label {
+  text-align: right;
+  float: left;
+  margin-left: 0;
+  margin-right: 1em;
+  padding-left: 0;
+  padding-left: 0;
+  padding-right: 0;
+  width: 13em;
+}
+.moreOptions input,
+.options input {
+  margin-right: 0;
+}
+.moreOptions .units,
+.options .units {
+  width: 1em;
+  margin-right: 1em;
+}
+.moreOptions .warning,
+.options .warning {
+  margin-left: 0;
+  margin-right: 0;
+  padding-left: 0;
+  padding-right: 0;
+  color: #c42f4f;
+  width: 11em;
+  border: solid 0px #ddd;
+  text-align: left;
+}
+.moreOptions {
+  display: none;
+}
+button,
+button:visited,
+.btn,
+.btn:visited {
+  font: 10pt 'Helvetica Nue', Helvetica, Arial, sans-serif;
+  display: inline-block;
+  padding-top: .5em;
+  padding-left: 1.1em;
+  padding-right: 1.1em;
+  padding-bottom: .5em;
+  margin: .3em;
+  margin-left: 0;
+  margin-right: .6em;
+  color: #333333;
+  text-decoration: none;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  text-shadow: 0 0px 0px rgba(0, 0, 0, 0.25);
+  border: solid 1px #999;
+  position: relative;
+  cursor: pointer;
+  font-size: 1.0em;
+  font-weight: bold;
+  background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #cccccc), color-stop(0.95, #ffffff));
+  background: -moz-linear-gradient(bottom, #cccccc, #ffffff);
+}
+button:hover,
+.btn:hover {
+  border: solid 1px #666;
+}
+button:active,
+.btn:active {
+  background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #aaaaaa), color-stop(0.05, #eeeeee));
+  background: -moz-linear-gradient(bottom, #aaaaaa, #eeeeee);
+}
+.wide {
+  padding-left: 2.5em;
+  padding-right: 2.5em;
+}
+.bigButton {
+  font-size: 1.3em;
+}
+div.margin {
+  margin-left: 6em;
+  margin-right: 6em;
+  background: #eeeeee;
+  clear: both;
+}
+.center {
+  text-align: center;
+}
+#bigNumbers {
+  margin: 0;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  padding: 0;
+  padding-bottom: 2em;
+  background: transparent;
+  border-top: solid 1px transparent;
+  border-bottom: solid 1px transparent;
+  font-family: 'Economica', 'Helvetica Nue', Helvetica, Arial, sans-serif;
+  line-height: 1em;
+  text-align: center;
+}
+#bigNumbers .text {
+  float: left;
+  font-family: 'Economica', 'Helvetica Nue', Helvetica, Arial, sans-serif;
+  font-size: 1.5em;
+  text-align: right;
+  width: 50%;
+  height: 1.3em;
+}
+#bigNumbers .number {
+  float: right;
+  font-size: 4em;
+  font-weight: bold;
+  text-align: left;
+  width: 50%;
+}
+#bigNumbers .smallNumber {
+  float: right;
+  font-size: 1.5em;
+  font-weight: bold;
+  text-align: left;
+  width: 50%;
+}
+#bigNumbers .bigNumber {
+  float: right;
+  font-size: 4em;
+  font-weight: bold;
+  text-align: left;
+  width: 50%;
+  height: 0.9em;
+}
+#bigNumbers #savingsRate,
+#bigNumbers #yearsToFI {
+  height: 0.9em;
+}
+div#top {
+  padding: 1em;
+  padding-left: 6em;
+  padding-right: 6em;
+  background: #eeeeee;
+  border-bottom: solid 0px #d9d9d9;
+  vertical-align: bottom;
+  height: 4em;
+}
+div#top a.topic {
+  color: #999;
+  display: inline-block;
+  float: right;
+  padding: 1em;
+  padding-top: 1.3em;
+  padding-bottom: 1em;
+  vertical-align: middle;
+  text-decoration: none;
+}
+div#top a.topic:hover {
+  color: #eee;
+  background: #555555;
+}
+div#top a#logo {
+  color: #ccc;
+  color: #666;
+  text-decoration: none;
+  font-family: 'Economica', 'Helvetica Nue', Helvetica, Arial, sans-serif;
+  float: left;
+  font-size: 2.0em;
+  font-weight: bold;
+  padding: 0;
+  padding-top: .3em;
+}
+div#top a#logoify {
+  color: #999;
+  color: #ccc;
+  text-decoration: none;
+  font-family: 'Economica', 'Helvetica Nue', Helvetica, Arial, sans-serif;
+  float: left;
+  font-size: 2.0em;
+  font-weight: bold;
+  padding: 0;
+  padding-top: .3em;
+  padding-right: 0.5em;
+}
+div#top a#logo:hover,
+div#top a#logoify:hover {
+  background: transparent;
+}
+div#top div#tagline {
+  display: inline-block;
+  float: left;
+  font-size: .8em;
+  color: #999;
+  margin-right: 2em;
+  padding-top: 1.8em;
+}
+.logo {
+  text-decoration: none;
+  font-family: 'Economica', 'Helvetica Nue', Helvetica, Arial, sans-serif;
+  float: left;
+  font-size: 2.0em;
+  font-weight: bold;
+  padding: 0;
+  padding-top: .3em;
+}
+div#top a.hi {
+  background: #444;
+  color: #eeeeee;
+}
+ul.menu {
+  float: right;
+  list-style: none;
+}
+ul.menu > li > a {
+  display: block;
+  margin: 0;
+  padding: 0;
+  padding-left: .5em;
+  padding-right: .5em;
+  background: transparent;
+  color: #333;
+  vertical-align: middle;
+  text-decoration: none;
+}
+ul.menu > li > a .downarrow {
+  vertical-align: middle;
+  font-size: 0.5em;
+}
+ul.menu > li:hover a {
+  background: #555;
+  color: #999999;
+}
+ul.menu > li:hover a:hover {
+  color: #ffffff;
+}
+ul.menu > li > a:hover {
+  background: #555;
+  color: #eeeeee;
+}
+ul.menu > li > ul {
+  position: absolute;
+  left: -999em;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.8em;
+  z-index: 999;
+}
+ul.menu li ul li a {
+  display: block;
+  padding: .6em;
+  padding-left: 1.3em;
+  padding-right: 1.3em;
+  background: #555;
+  border-bottom: solid 1px #666;
+  color: #999;
+  font-size: 1.2em;
+  text-decoration: none;
+  vertical-align: middle;
+}
+ul.menu li ul li a:hover {
+  color: #eeeeee;
+}
+ul.menu > li:hover > ul {
+  left: auto;
+}
+ul.menu li ul li a#createAccount:hover {
+  color: #eeeeee;
+}
+ul.menu li ul li a#createAccount {
+  background: #333;
+  color: #999;
+  -webkit-border-radius: 0 0 6px 6px;
+  -moz-border-radius: 0 0 6px 6px;
+  border-radius: 0 0 6px 6px;
+}
+ul.menu li ul li a#all:hover {
+  color: #eeeeee;
+}
+ul.menu li ul li a#all {
+  background: #333;
+  color: #999;
+  border-bottom: solid 1px #444;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+}
+ul.transactions > li > a {
+  color: #999;
+  display: inline-block;
+  padding: 1em;
+  padding-top: 1.3em;
+  padding-bottom: 1em;
+  vertical-align: middle;
+  text-decoration: none;
+}
+ul.settings {
+  float: right;
+}
+ul.settings > li > a {
+  padding-top: .6em;
+  padding-bottom: .6em;
+  line-height: .5em;
+  font-size: 2em;
+  font-family: 'icons';
+  font-weight: normal;
+  color: #999;
+  -webkit-font-smoothing: antialiased;
+}
+ul.account {
+  float: left;
+}
+ul.account > li > a {
+  width: 10em;
+  padding: 1.2em;
+  border-right: solid 0px #ccc;
+  font-size: 1.5em;
+  background: transparent;
+  color: #333;
+}
+ul.account > li > a > div {
+  font-size: .5em;
+}
+ul.account > li:hover a {
+  background: #555;
+  color: #999999;
+}
+ul.account > li > ul > li > a {
+  width: 16.8em;
+  margin-left: 0em;
+}
+.networthLabel {
+  font-weight: bold;
+  font-size: 1.3em;
+  width: 100%;
+}
+label.login {
+  float: left;
+  margin-bottom: 0;
+  padding-bottom: 0;
+  font-weight: bold;
+  font-size: 1.3em;
+  width: 7.1em;
+}
+.title {
+  font-weight: bold;
+  font-size: 2.5em;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  margin-left: 0em;
+}
+.body {
+  padding: 0em;
+  margin: 0em;
+  margin-left: 8em;
+  margin-right: 8em;
+  background: #ffffff;
+  background: red;
+  clear: both;
+  float: none;
+  display: block;
+  overflow: hidden;
+}
+table#fi {
+  width: 100%;
+}
+table#fi th {
+  padding: 1em;
+  padding-top: .5em;
+  padding-bottom: .5em;
+  background: #028800;
+  background: #333;
+  color: #333;
+  color: #fff;
+  text-align: center;
+  border: solid 1px #ccc;
+}
+table#fi td {
+  border: solid 1px #ccc;
+  background: #fff;
+  padding: 1em;
+  padding-top: .5em;
+  padding-bottom: .5em;
+  text-align: right;
+}
+#startUpload {
+  clear: both;
+  float: left;
+}
+.historyRow {
+  width: 100%;
+  float: left;
+  padding: 0em;
+  background: #eee;
+  background: #eeeeee;
+  border: solid 0px #ddd;
+  border-bottom: solid 0px #eeeeee;
+}
+.historyRow div {
+  padding: 1em;
+  padding-top: .5em;
+  padding-bottom: .5em;
+  float: left;
+}
+.historyRow div.account {
+  width: 8em;
+}
+.historyRow div.action {
+  width: 20em;
+  align: left;
+}
+.historyRow div.action div.actionTop {
+  font-size: 1.5em;
+  height: .5em;
+  padding: 0;
+  padding-bottom: 0.5em;
+}
+.historyRow div.action div.actionDate {
+  padding: 0;
+}
+.historyRow div.date {
+  width: 8em;
+}
+.historyRow div.tag {
+  width: 8em;
+  float: right;
+}
+.historyRow div.value {
+  width: 8em;
+  float: right;
+  text-align: right;
+  font-weight: bold;
+}
+.historyRow div.balance {
+  width: 8em;
+  float: right;
+  text-align: right;
+}
+.historyRow div.delta {
+  width: 8em;
+  float: right;
+  text-align: right;
+  font-weight: bold;
+}
+.historyRowTitle {
+  background: #333;
+  color: #ffffff;
+}
+.insertRow,
+.row {
+  width: 100%;
+  float: left;
+  cursor: pointer;
+  padding: 0em;
+  background: #eee;
+  background: #eeeeee;
+  border: solid 0px #ddd;
+  border-bottom: solid 0px #eeeeee;
+}
+.insertRow div,
+.row div {
+  padding: 1em;
+  padding-top: .5em;
+  padding-bottom: .5em;
+  float: left;
+}
+.insertRow div.value,
+.row div.value,
+.insertRow div.balance,
+.row div.balance,
+.insertRow div.tag,
+.row div.tag {
+  float: right;
+}
+.insertRow div.account,
+.row div.account {
+  width: 8em;
+}
+.insertRow div.date,
+.row div.date {
+  width: 8em;
+}
+.insertRow div.tag,
+.row div.tag {
+  width: 8em;
+}
+.insertRow div.value,
+.row div.value {
+  width: 8em;
+  text-align: right;
+  font-weight: bold;
+  background: transparent;
+}
+.insertRow div.balance,
+.row div.balance {
+  width: 8em;
+  text-align: right;
+  color: #999;
+  background: transparent;
+}
+#addTransaction {
+  float: right;
+  margin-right: 0;
+}
+#insertForm {
+  display: none;
+}
+#insert,
+#editable {
+  cursor: default;
+  background: #3777D7;
+  background: #ccc;
+  border-top: solid 1px #eee;
+  border-bottom: solid 1px #eee;
+  border: solid 1px #aaa;
+  border-bottom: solid 1px #aaa;
+}
+#insert div,
+#editable div {
+  padding-top: 0em;
+  padding-bottom: 0em;
+  padding-left: .5em;
+  padding-right: .5em;
+  margin-right: 1em;
+}
+#insert div label,
+#editable div label {
+  background: transparent;
+  width: 100%;
+  padding-left: 0.5em;
+}
+#insert div input,
+#editable div input {
+  background: #fff;
+  color: #333;
+  width: 100%;
+  border: solid 1px #777;
+  border-right: solid .4em #777;
+}
+#insert div input:focus,
+#editable div input:focus {
+  outline: solid 0px #777;
+  border: solid 1px #555;
+  border-right: solid .4em #555;
+}
+#insert div.account,
+#editable div.account {
+  width: 8em;
+}
+#insert div.description,
+#editable div.description {
+  width: 40%;
+}
+#insert div.date,
+#editable div.date {
+  width: 8em;
+}
+#insert div.tag,
+#editable div.tag {
+  width: 8em;
+}
+#insert div.value,
+#editable div.value {
+  width: 8em;
+  background: transparent;
+  margin-left: 1em;
+  margin-right: 0em;
+}
+#insert input.eValue,
+#editable input.eValue {
+  width: 6.6em;
+  text-align: right;
+}
+#insert input.eDate,
+#editable input.eDate {
+  width: 6.6em;
+}
+#insert input.eTag,
+#editable input.eTag {
+  width: 6.6em;
+}
+#insert div.value label,
+#editable div.value label {
+  font-weight: bold;
+}
+#insertButtons,
+#editButtons {
+  display: none;
+  width: 100%;
+  background: #ccc;
+  padding-bottom: 1em;
+  padding-top: 1em;
+  padding-right: 0em;
+  clear: both;
+  text-align: right;
+  border-bottom: solid 1px #eee;
+  border: solid 1px #aaa;
+  border-top: solid 0px #eee;
+  -webkit-border-radius: 0px 0px 6px 6px;
+  -moz-border-radius: 0px 0px 6px 6px;
+  border-radius: 0px 0px 6px 6px;
+}
+#insertButtons a,
+#editButtons a {
+  margin-right: 1em;
+  color: #333333;
+}
+#insertButtons {
+  display: block;
+}
+.categories {
+  width: 100%;
+  margin-top: 2em;
+  float: left;
+}
+.categories > div > a {
+  margin-bottom: 1px;
+  width: 100%;
+  float: left;
+}
+.categories > div > a .text {
+  padding: .5em;
+  width: 12%;
+  float: left;
+}
+.categories > div > a .value {
+  padding: .5em;
+  padding-right: 1em;
+  width: 12%;
+  width: 7em;
+  text-align: right;
+  width: 12%;
+  float: left;
+}
+.bar-minus {
+  background: #c42f4f;
+  height: 2.2em;
+  float: left;
+  border-right: solid 1px #910c1c;
+}
+.bar-minus-prev {
+  background: #c42f4f;
+  background: #ddd;
+  height: 2.2em;
+  float: left;
+  border-right: solid 1px #eee;
+}
+.bar-plus {
+  background: #05991e;
+  height: 2.2em;
+  float: left;
+  border-right: solid 1px #02660b;
+}
+.categories > div > a:hover {
+  background: #dddddd;
+}
+.categories > .categories-title > a {
+  font-weight: bold;
+  background: transparent;
+  color: #333;
+}
+.categories > .categories-title > a:hover {
+  background: transparent;
+  color: #333;
+}
+.assets {
+  display: none;
+}
+.assets .row {
+  background: #ddd;
+}
+.assets .row .value {
+  background: #cccccc;
+}
+.assets .row:hover {
+  background: #dddddd;
+}
+#showSplitForm {
+  display: none;
+  clear: both;
+  text-align: right;
+  background: #ddd;
+  padding: 1em;
+  padding-bottom: .5em;
+  padding-top: .5em;
+  border-top: solid 1px #eee;
+  border-bottom: solid 1px #eee;
+}
+#tagSplit {
+  display: none;
+  clear: both;
+  padding: 1em;
+  padding-top: .5em;
+  padding-bottom: .5em;
+  height: 9em;
+  background: #ccc;
+  background: #ddd;
+  border-top: solid 1px #eee;
+}
+#tagSplit label {
+  width: 10em;
+  background: transparent;
+  padding-left: 1em;
+  margin-right: 1em;
+}
+#tagSplit select {
+  width: 10em;
+  float: left;
+  margin-right: 3em;
+}
+#tagSplit input {
+  float: left;
+  margin-right: 0;
+  text-align: right;
+  width: 3em;
+  background: #fff;
+  border: solid 1px #999;
+}
+#tagSplit .units {
+  width: 1em;
+  padding-left: 0.3em;
+}
+#tagSplit #cancelSplit {
+  padding-left: 3em;
+  padding-top: 1em;
+  float: left;
+}
+.delete {
+  color: #fff;
+  padding-left: 1em;
+}
+#instructions {
+  float: right;
+  margin: 0;
+  margin-right: 1em;
+  padding: 0;
+  height: 1em;
+}
+#savingsRateNew,
+#yearsToFINew,
+.calculatorGraphLabel {
+  padding: 0;
+  padding-left: 1em;
+  padding-right: 1em;
+  color: greenyellow;
+  color: #333;
+  color: #fff;
+  font-size: .9em;
+  font-weight: bold;
+  background: #666;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+}
+#stats .text {
+  width: 15em;
+  float: right;
+}
+#assumptions {
+  display: none;
+  width: 36em;
+  background: #ccc;
+  color: #333;
+  padding: 2em;
+  margin-top: 3em;
+  margin-bottom: 0;
+  text-align: left;
+}
+#moreAssumptions {
+  float: right;
+  margin-right: 1em;
+}
+#controlPanel {
+  margin-left: 12.1em;
+  margin-right: 0.7em;
+}
+.fiMessage {
+  display: inline-block;
+  text-align: center;
+  width: 42em;
+  text-align: left;
+  margin-top: 0em;
+  margin-bottom: 2em;
+}
+.fiRight {
+  border: solid 1px #fff;
+  float: right;
+  text-align: center;
+}
+#accountYearsToFI,
+#accountSavingsRate {
+  padding: .4em;
+  vertical-align: middle;
+  display: inline-block;
+}
+#accountYearsToFI .number {
+  padding-right: 1em;
+}
+#accountStats {
+  text-align: right;
+  vertical-align: middle;
+}
+.emptyLabel {
+  height: 0.1em;
+}
+.remember {
+  margin-top: .3em;
+  margin-right: 0.3em;
+}
+.exampleDescription {
+  float: left;
+  width: 16em;
+  padding-left: .5em;
+  padding-right: .5em;
+  margin-right: 1em;
+}
+.exampleValue {
+  float: left;
+  width: 8em;
+  padding-left: .5em;
+  padding-right: .5em;
+  margin-right: 1em;
+  text-align: right;
+}
+.money {
+  text-align: right;
+}
+.progress {
+  background: #999999;
+  background: #ddd;
+  height: 2em;
+  margin-top: .5em;
+  margin-bottom: .5em;
+  border: solid 1px #bbb;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+}
+.progress .bar {
+  background: #02660b;
+  height: 2em;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+}
+.progress-extended {
+  padding-bottom: .5em;
+}
+.header {
+  padding: 0em;
+  color: #333;
+  font-weight: bold;
+  font-size: 3em;
+  background: transparent;
+  margin-bottom: 0em;
+  margin-top: 0em;
+}
+.fiHeader {
+  margin: 0;
+  margin-top: 2em;
+  margin-bottom: 1em;
+  padding: 0;
+}
+#accountTitle {
+  float: left;
+  background: #ddd;
+  padding: 0em;
+  padding-left: 2em;
+  padding-right: 3em;
+  height: 6.4em;
+  margin-left: 3em;
+  margin-bottom: 0em;
+  position: relative;
+  top: -2em;
+  vertical-align: middle;
+  border-bottom: solid 0px transparent;
+  border-top: solid 0px transparent;
+  -webkit-border-radius: 16px 16px 16px 16px;
+  -moz-border-radius: 16px 16px 16px 16px;
+  border-radius: 16px 16px 16px 16px;
+}
+ul#links {
+  float: right;
+  list-style: none;
+}
+ul#links li {
+  float: right;
+}
+ul#links li a {
+  float: right;
+  padding: 1.5em;
+  padding-left: 1em;
+  padding-right: 1em;
+  margin: 0;
+  margin-right: .1em;
+  background: transparent;
+  color: #fff;
+  text-align: center;
+  text-decoration: none;
+  font-size: 1.2em;
+}
+ul#links li a:hover {
+  background: #333;
+  background: #eeeeee;
+  background: transparent;
+  color: #333;
+  color: #fff;
+  color: greenyellow;
+}
+#prev,
+#next {
+  padding-top: 0.1em;
+  padding-bottom: 0.2em;
+  padding-left: .2em;
+  padding-right: .2em;
+  text-decoration: none;
+  line-height: .6em;
+  font-size: 3em;
+  float: right;
+  color: #333;
+}
+a#prev:hover,
+a#next:hover {
+  color: #666666;
+}
+#dateStuff {
+  float: left;
+  padding: 2em;
+  padding-right: 0em;
+  margin: 0;
+  margin-top: .3em;
+  margin-left: 0em;
+  background: transparent;
+  color: #fff;
+  color: #333;
+  vertical-align: middle;
+  -webkit-border-radius: 6px 6px 6px 6px;
+  -moz-border-radius: 6px 6px 6px 6px;
+  border-radius: 6px 6px 6px 6px;
+}
+#dateStuff div {
+  display: inline-block;
+  float: right;
+  line-height: 1.3em;
+  width: 3em;
+  text-align: center;
+}
+#dateStuff span#year {
+  font-size: 0.8em;
+}
+#dateStuff span#month {
+  font-size: 1.2em;
+}
+.splitDropdown {
+  float: left;
+  margin-left: .5em;
+}
+#split,
+#delete,
+#transfer {
+  float: left;
+  margin-top: .5em;
+  margin-left: 1em;
+}
+table.import {
+  width: 100%;
+}
+table.import td {
+  padding: 1em;
+  padding-top: .5em;
+  padding-bottom: .5em;
+  padding-left: 1.5em;
+  background: #eee;
+  border-bottom: solid 1px #eeeeee;
+}
+table.import th {
+  background: #ccc;
+  padding: 1em;
+  padding-top: .5em;
+  padding-bottom: .5em;
+  padding-left: 1em;
+  border-bottom: solid 1px #eeeeee;
+}
+table.import td.etc {
+  background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #eeeeee), color-stop(0.95, #eeeeee));
+  background: -moz-linear-gradient(bottom, #eeeeee, #eeeeee);
+}
+.rightHalf,
+.leftHalf {
+  float: left;
+  width: 50%;
+  border: solid 0px black;
+}
+.dateFormat label,
+.numberFormat label {
+  width: 10em;
+}
+.pos {
+  border-right: solid 2px #999;
+  border-left: solid 0px #cccccc;
+}
+.neg {
+  border-right: solid 1px #ccc;
+  border-left: solid 0px #cccccc;
+}
+.currentBalance {
+  color: #0E9F00;
+  color: #333;
+  color: #BBBED8;
+  color: #fff;
+  background: #6eff33;
+  background: #666;
+  background: #bbb;
+  background: #52667A;
+  background: #3777D7;
+  background: #444;
+  float: left;
+  padding: 2em;
+  font-family: 'Helvetica Nue', Helvetica, Arial, sans-serif;
+}
+.currentBalance .text {
+  font-size: .7em;
+}
+.currentBalance .number {
+  font-size: 1.5em;
+}
+#history,
+#import {
+  float: right;
+  margin-right: 1em;
+}
+.ulRow {
+  display: inline-block;
+  list-style: none;
+}
+.ulRow li {
+  width: 10em;
+  display: inline-block;
+}
+.default-cursor {
+  cursor: default !important;
+}
+#demo {
+  position: relative;
+  width: 100%;
+  background: #444;
+  color: #ccc;
+  text-align: center;
+  font-weight: bold;
+  padding-top: 1em;
+  padding-bottom: 1em;
+  z-index: 9999;
+}
+#demo a {
+  color: #eee;
+  padding-left: 1em;
+  padding-right: 1em;
+}
+.lightbox-black {
+  display: none;
+  background: #000;
+  opacity: 0.9;
+  filter: alpha(opacity=90);
+  position: absolute;
+  top: 0;
+  left: 0;
+  min-width: 100%;
+  min-height: 100%;
+  z-index: 1000;
+}
+.lightbox {
+  display: none;
+  position: fixed;
+  top: 100px;
+  left: 50%;
+  margin-left: -200px;
+  width: 400px;
+  background: #FFFFFF;
+  z-index: 1001;
+  -webkit-border-radius: 6px 6px 6px 6px;
+  -moz-border-radius: 6px 6px 6px 6px;
+  border-radius: 6px 6px 6px 6px;
+}
+.lightbox .lightbox-title {
+  font-size: 1.5em;
+  background: #333;
+  color: #fff;
+  margin-top: .5em;
+  width: 100%;
+}
+.lightbox .lightbox-title div {
+  padding: 1em;
+  padding-top: .5em;
+  padding-bottom: .5em;
+  text-align: center;
+}
+.lightbox .lightbox-content {
+  padding: 2em;
+}
+.lightbox > a:hover {
+  color: #333333;
+}
+.lightbox > a {
+  float: right;
+  color: #ccc;
+  margin: .5em;
+  margin-right: 2em;
+}
+.message-top {
+  padding: 1em;
+  padding-left: 8em;
+  padding-right: 8em;
+  background: #009947;
+  border-bottom: solid 3px #5eea52;
+  color: #fff;
+}
+.message {
+  padding: 1em;
+  background: #009947;
+  border-left: solid 1em #5eea52;
+  color: #fff;
+}
+.message a,
+.message-top a {
+  color: #fff;
+  font-weight: bold;
+}
+.error {
+  position: relative;
+  top: 0px;
+  left: -2em;
+  padding: 1em;
+  background: #f51400;
+  border-left: solid 2em #ff4400;
+  border-right: solid 1em transparent;
+  color: #fff;
+}
+.error-top {
+  padding: 1em;
+  padding-left: 8em;
+  padding-right: 8em;
+  background: #f51400;
+  border-bottom: solid 3px #ff4400;
+  color: #fff;
+}
+.error a,
+.error-top a {
+  color: #fff;
+  font-weight: bold;
+}
+.warning {
+  position: relative;
+  top: 0px;
+  left: -2em;
+  padding: 1em;
+  background: #ff4400;
+  border-left: solid 2em #f51400;
+  border-right: solid 1em transparent;
+  color: #fff;
+}
+.warning-top {
+  padding: 1em;
+  padding-left: 8em;
+  padding-right: 8em;
+  background: #f51400;
+  border-bottom: solid 3px #ff4400;
+  color: #fff;
+}
+.warning a,
+.warning-top a {
+  color: #fff;
+  font-weight: bold;
+}
+[data-icon]:before {
+  font-family: 'icons';
+  content: attr(data-icon);
+  speak: none;
+  font-weight: normal;
+  -webkit-font-smoothing: antialiased;
+}

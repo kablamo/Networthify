@@ -1,0 +1,210 @@
+[% INCLUDE header.tt %]
+
+<style>
+ select#period {
+  float: left;
+  padding: .2em;
+  padding-right: .5em;
+  padding-left: .5em;
+  width: 7em;
+ }
+ input.value {width: 6em}
+ #bigNumbers span.bigNumber {font-size: 4em}
+ #bigNumbers span.sentence {font-weight: normal; font-size: 0.4em; float: right; text-align: left; width: 100%}
+ #bigNumbers span.sentence {font-weight: normal; font-size: 0.4em; float: right; text-align: left; width: 100%}
+ .black {
+  float: left;
+  background: #333;
+  color: #eee;
+  width: 100%;
+  padding-top: 3em;
+  padding-bottom: 3em;
+  min-width: 54em;
+ }
+ .big {
+  font-size: 4em;
+  font-family: Economica;
+  font-weight: bold;
+ }
+ .bigify {font-size: 1.2em; line-height: .5em}
+ table#cost tr th {background: #666; color: #eee; font-weight: bold}
+ table#cost tr th,
+ table#cost tr td {
+  padding: 1em;
+  padding-top: .5em;
+  padding-bottom: .5em;
+  text-align: right;
+ }
+ table#cost {margin: auto}
+ body {padding-bottom: 0}
+ .even {background: #444}
+ .options {padding-left: 13em}
+ .moreOptions {padding-left: 13em}
+ .left  {width: 50%; float: left}
+ .right {width: 50%; float: right}
+ #controlPanel {margin-left: 4.3em}
+ form {display: inline-block} /* needed for moreOptions to work.  no idea why */
+
+ @media screen and (max-width: 60em) {
+  .right {clear: both; width: 100%;}
+  .left {clear: both; width: 100%; margin-top: 3em}
+ }
+</style>
+
+<div class="center">
+  <div class="header">Understand recurring charges</div>
+  <br>
+
+  <div class="fiMessage">
+    Recurring charges feel small and that can be deceiving.  The total price
+    you pay includes not just the sticker price but also the <b>opportunity
+    cost</b> or the income you could have earned from investing that money.
+    You should also consider how much it will cost you to maintain this expense
+    after retirement.  
+    <a href="http://www.mrmoneymustache.com/2011/04/15/getting-started-3-eliminate-short-termitis-the-bankruptcy-disease/">Learn more.</a>
+  </div>
+
+  <form action="/calculator/recurring-charges">
+    <div class="options">
+      <label class="fi">Price</label>
+      <input id="price" class="value" name="price" type="text" value="[% price %]">
+      <label class="units"></label>
+      <label id="interestWarning" class="warning"></label>
+      <div class="clear"></div>
+
+      <label class="fi">Frequency</label>
+      <select id="period" name="period">
+        <option value="daily"   [% IF period == 'daily'   %]selected[% END %]>Daily  </option>
+        <option value="weekly"  [% IF period == 'weekly'  %]selected[% END %]>Weekly </option>
+        <option value="monthly" [% IF period == 'monthly' %]selected[% END %]>Monthly</option>
+        <option value="annual"  [% IF period == 'annual'  %]selected[% END %]>Yearly </option>
+      </select>
+      <div class="clear"></div>
+
+      <label class="fi">Hourly wage after taxes</label>
+      <input id="hourlyWage" class="value" name="hourlyWage" type="text" value="[% hourlyWage %]">
+      <label class="units"></label>
+      <label id="interestWarning" class="warning"></label>
+      <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+
+    <div class="moreOptions">
+      <label class="fi">Annual return on investment</label>
+      <input id="interest" class="value" name="roi" type="text" value="[% roi %]">
+      <label class="units">%</label>
+      <label id="interestWarning" class="warning"></label>
+      <div class="clear"></div>
+
+      <label class="fi">Annual withdrawal rate</label>
+      <input id="withdrawalRate" class="value" name="withdrawalRate" type="text" value="[% withdrawalRate %]">
+      <label class="units">%</label>
+      <label id="interestWarning" class="warning"></label>
+      <div class="clear"></div>
+
+      <label class="fi">Savings rate</label>
+      <input id="savingsRate" class="value" name="savingsRate" type="text" value="[% savingsRate %]">
+      <label class="units">%</label>
+      <label id="interestWarning" class="warning"></label>
+      <div class="clear"></div>
+
+      <label class="fi">Hours in a working day</label>
+      <input id="workDay" class="value" name="workDay" type="text" value="[% workDay %]">
+      <label class="units">hrs</label>
+      <label id="interestWarning" class="warning"></label>
+      <div class="clear"></div>
+
+      <label class="fi">Working days in a year</label>
+      <input id="daysPerYear" class="value" name="daysPerYear" type="text" value="[% daysPerYear %]">
+      <label class="units">dys</label>
+      <label id="interestWarning" class="warning"></label>
+      <div class="clear"></div>
+    </div>
+
+    <div class="clear"></div>
+    <a href="" id="controlPanel">+ Show more options</a>
+    <button id="fiButton" class="button" type="submit">Crunch the numbers</button>
+  </form>
+</div>
+<div class="clear" style="height:2em"></div>
+  
+<center>
+  <div class="black">
+      <div class="right">
+
+        To generate [% period %] income of $[% price %]<br>
+        with a withdrawal rate of [% withdrawalRate %]%<br>
+        you need an investment of<br>
+        <div class="big">$[% egg %]</div>
+        <pre>[% out.equations %]</pre>
+        <div class="" style="height:2em"></div>
+
+        To save $[% egg %]<br>
+        work [% workDay %] hours a day every day nonstop for
+        <div class="big">[% out.workTime %]</div>
+
+      </div>
+      <div class="left">
+
+        <table id="cost">
+          <tr>
+            <th></th>
+            <th class="bigify">Total Cost</th>
+            <th class="bigify">Total Work</th>
+          </tr>
+        [% i    = 1 %]
+        [% even = -1 %]
+        [% FOREACH cost IN realCost %]
+          <tr class="[% IF even > 0 %]even[% END %]">
+            <td>After [% i FILTER format('%.2d') %] years</td>
+            <td class="bigify">$[% cost.money %]</td>
+            <td class="bigify">[% cost.timeWorked %]</td>
+          </tr>
+          [% i    = i + 1     %]
+          [% even = even * -1 %]
+        [% END %]
+        </table>
+
+  <br><br><br><br><br>
+
+  <div style="float: right; width: 34em">
+    <div style="float: left; border: solid 0px red; padding: .2em"                                                          class='st_email_hcount'   st_url="http://networthify.com/calculator/recurring-charges" st_title="Understand your recurring charges" st_summary="Networthify: tools for savings extremists" displayText='Email'        ></div>
+    <div style="float: left; border: solid 0px red; padding: .2em"                                                          class='st_twitter_hcount' st_url="http://networthify.com/calculator/recurring-charges" st_title="Understand your recurring charges" st_summary="Networthify: tools for savings extremists" displayText='Tweet'        ></div>
+    <div style="float: left; border: solid 0px red; padding-top: .1em"                                                      class='st_fblike_hcount'  st_url="http://networthify.com/calculator/recurring-charges" st_title="Understand your recurring charges" st_summary="Networthify: tools for savings extremists" displayText='Facebook Like'></div>
+    <div style="float: left; border: solid 0px red; padding: .2em; padding-right: 0; padding-top: .3em; padding-left: .8em" class='st_plusone_hcount' st_url="http://networthify.com/calculator/recurring-charges" st_title="Understand your recurring charges" st_summary="Networthify: tools for savings extremists" displayText='Google +1'    ></div>
+  </div>
+
+      </div>
+  </div>
+</center>
+
+<script>
+$(document).ready(function () {
+  var optionsHidden = true;
+
+  $("#controlPanel").bind('click', function () {
+    if (optionsHidden) {
+      $(".moreOptions").show('fast');
+      $('#controlPanel').html('- Show less options');
+      $.cookie('recurring-charges-more-options', 1);
+      optionsHidden = false;
+    }
+    else {
+      $(".moreOptions").hide('fast');
+      $('#controlPanel').html('+ Show more options');
+      $.removeCookie('recurring-charges-more-options');
+      optionsHidden = true;
+    }
+    return false;
+  });
+
+  if ($.cookie('recurring-charges-more-options')) {
+    $(".moreOptions").css('display', 'inline-block');
+    $('#controlPanel').html('- Show less options');
+    $.cookie('recurring-charges-more-options', 1);
+    optionsHidden = false;
+  }
+});
+</script>
+
+[% INCLUDE footer.tt %]

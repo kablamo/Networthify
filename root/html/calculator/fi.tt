@@ -1,0 +1,187 @@
+[% INCLUDE header.tt %]
+
+<style>
+ .sources {
+  float: left; 
+  margin-left: 1.8em; 
+  font-size: 10px;
+  color: #666;
+ }
+ .countries {
+  position: absolute;
+  border: solid 0px red;
+  color: #666;
+  font-size: 10px;
+  -webkit-transform-origin: top left;
+     -moz-transform-origin: top left;
+       -o-transform-origin: top left;
+  -webkit-transform:rotate(-90deg);
+     -moz-transform:rotate(-90deg);
+      -o-transform: rotate(-90deg);
+ }
+ #yaxis {
+  position: relative;
+  padding: 1em;
+  height: 0;
+  width: 120px;
+  top: 30px;
+  left: -160px;
+  color: @black;
+  -webkit-transform-origin: bottom right;
+     -moz-transform-origin: bottom right;
+       -o-transform-origin: bottom right;
+  -webkit-transform:rotate(-90deg);
+     -moz-transform:rotate(-90deg);
+      -o-transform: rotate(-90deg);
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+ }
+ #xaxis {text-align: center; color: @black; margin-bottom: 2em}
+ #placeholder  {width: 100%; height: 200px; float: left}
+ #placeholder2 {width: 20%; height: 400px; float: left}
+</style>
+
+<div class="center">
+  <center>
+  <div class="header">When can I retire?</div>
+  <br>
+
+  <center>
+    <div class="fiMessage">
+      Compound interest is powerful but takes a long time.  To retire in 5
+      or 10 years the most important number is not your return on investment.
+      It's your savings rate.  <a href="http://www.mrmoneymustache.com/2012/01/13/the-shockingly-simple-math-behind-early-retirement/">Learn more.</a>
+    </div>
+  </center>
+
+  <div class="options">
+    <label class="fi">Current annual income</label>
+    <input id="income" class="value" name="income" type="text" value="50000">
+    <label class="units">&nbsp;</label>
+    <label id="incomeWarning" class="warning"></label>
+    <div class="clear"></div>
+  
+    <label class="fi">Current annual savings</label>
+    <input id="annualSavings" class="value" name="annualSavings" type="text" value="30000">
+    <label class="units">&nbsp;</label>
+    <label id="annualSavingsWarning" class="warning"></label>
+    <div class="clear"></div>
+  
+    <label class="fi">Current annual expenses</label>
+    <input id="annualExpenses" class="value" name="annualExpenses" type="text" value="20000">
+    <label class="units">&nbsp;</label>
+    <label id="annualExpensesWarning" class="warning"></label>
+    <div class="clear"></div>
+  
+    <label class="fi">Current savings rate</label>
+    <input id="savingsRate" class="value" name="savingsRate" type="text" value="60">
+    <label class="units">%</label>
+    <label id="savingsRateWarning" class="warning"></label>
+    <div class="clear"></div>
+  
+    <label class="fi">Current portfolio value</label>
+    <input id="initialBalance" class="value" name="initialBalance" type="text" value="0">
+    <label class="units">&nbsp;</label>
+    <label id="initialBalanceWarning" class="warning"></label>
+    <div class="clear"></div>
+  </div>
+  
+  <div class="moreOptions">
+    <label class="fi">Annual return on investment</label>
+    <input id="annualPct" class="value" name="annualPct" type="text" value="5">
+    <label class="units">%</label>
+    <label id="annualPctWarning" class="warning"></label>
+    <div class="clear"></div>
+    
+    <label class="fi">Withdrawal rate</label>
+    <input id="withdrawalRate" class="value" name="withdrawalRate" type="text" value="4">
+    <label class="units">%</label>
+    <label id="withdrawalRateWarning" class="warning"></label>
+    <div class="clear"></div>
+  </div>
+  
+  <div class="clear"></div>
+  <a href="" id="controlPanel">+ Show more options</a>
+  <button id="fiButton" class="button" type="submit">Crunch the numbers</button> or click on the chart
+  <div class="clear"></div>
+
+  </center>
+  <div class="clear"></div>
+  
+  <center>
+    <div id="assumptions">
+      This calculator makes assumptions
+      <ul>
+        <li>Your <i>current annual expenses</i> equal your annual expenses in retirement</li>
+        <li>You will never draw down the principal.  Your net worth will never shrink.</li>
+        <li><i>Current annual income</i> is after taxes</li>
+        <li><i>Annual return on investment</i> is after taxes and inflation</li>
+      </ul>
+    </div>
+  </center>
+  
+  <div id="yaxis">Years to retirement</div>
+  <a href="" id="moreAssumptions">Show assumptions</a>
+  <div class="sources">
+    *Avg Household Savings Rates (2008) Sources: <a>OECD</a>, <a>IMF</a>
+  </div>
+  <div id="placeholder"></div>
+  <div class="clear"></div>
+  <div id="xaxis">Savings rate</div>
+  <br>
+  
+  <div id="bigNumbers">
+    <span class="text">You can retire in&nbsp;</span>
+    <span class="number" id="yearsToFI">12.4 years</span>
+    <span class="clear"></span>
+  
+    <span class="text">with a savings rate of&nbsp;</span>
+    <span class="number" id="savingsRate">60%</span>
+    <span class="clear"></span>
+  
+    <span class="text">annual expenses&nbsp;</span>
+    <span class="smallNumber" id="annualExpenses">20,000</span>
+    <span class="clear"></span>
+    
+    <span class="text">annual savings&nbsp;</span>
+    <span class="smallNumber" id="annualSavings">30,000</span>
+    <span class="clear"></span>
+  
+    <span class="text">monthly expenses&nbsp;</span>
+    <span class="smallNumber" id="monthlyExpenses">1,667</span>
+    <span class="clear"></span>
+    
+    <span class="text">monthly savings&nbsp;</span>
+    <span class="smallNumber" id="monthlySavings">2,500</span>
+    <span class="clear"></span>
+  </div>
+  
+  <table id="fi"></table><br>
+
+  When your annual <strong>return on investments</strong> cover 100% of your <strong>expenses</strong> you are financially independent.<br>
+  The above table will likely show you need to work slightly longer because your <i>withdrawal rate</i> should be less than your <i>return on investments</i>.
+
+  <br><br><br><br><br><br>
+
+  <div style="float: right">
+    <div style="float: left; border: solid 0px red; padding: .2em"                                                          class='st_email_hcount'   st_url="http://networthify.com/calculator/earlyretirement" st_title="When can I retire?" st_summary="Networthify: tools for savings extremists" displayText='Email'        ></div>
+    <div style="float: left; border: solid 0px red; padding: .2em"                                                          class='st_twitter_hcount' st_url="http://networthify.com/calculator/earlyretirement" st_title="When can I retire?" st_summary="Networthify: tools for savings extremists" displayText='Tweet'        ></div>
+    <div style="float: left; border: solid 0px red; padding-top: .1em"                                                      class='st_fblike_hcount'  st_url="http://networthify.com/calculator/earlyretirement" st_title="When can I retire?" st_summary="Networthify: tools for savings extremists" displayText='Facebook Like'></div>
+    <div style="float: left; border: solid 0px red; padding: .2em; padding-right: 0; padding-top: .3em; padding-left: .8em" class='st_plusone_hcount' st_url="http://networthify.com/calculator/earlyretirement" st_title="When can I retire?" st_summary="Networthify: tools for savings extremists" displayText='Google +1'    ></div>
+  </div>
+
+  </center>
+</div>
+
+<script type="text/javascript" src="[% psgixAssets.0 %]"></script>
+<script type="text/javascript">
+    FI.Plot({
+       'initialBalance' : [% initialBalance %],
+       'income'         : [% income %],
+       'expenses'       : [% expenses %],
+       'annualPct'      : [% annualPct %],
+       'withdrawalRate' : [% withdrawalRate %],
+    });
+</script>
+
+<div style="height:0">
+[% INCLUDE footer.tt %]

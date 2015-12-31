@@ -1,0 +1,31 @@
+#!/bin/bash
+
+if [ ! -r ~/.duplicity ]; then
+    echo "~/.duplicity is missing"
+    exit 0
+fi
+
+source ~/.duplicity
+
+if [ -z $1 ]; then
+    echo "usage: backup daily"
+    echo "   or  backup weekly"
+    echo "   or  backup monthly"
+    exit 0
+fi
+
+echo "list files from the latest $1 backup"
+TIME=$1
+
+duplicity \
+    list-current-files \
+        ${DUPLICITY_DEST}/$TIME
+
+# Reset the ENV variables. Don't need them sitting around
+export AWS_ACCESS_KEY_ID=
+export AWS_SECRET_ACCESS_KEY=
+export PASSPHRASE=
+export GPG_KEY=
+export DUPLICITY_SOURCE=
+export DUPLICITY_DEST=
+

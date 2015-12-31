@@ -1,0 +1,28 @@
+[% PROCESS header.tt %]
+
+<br>
+<div class="header">LOGIN</div>
+<br>
+<br>
+
+<form method="post" action="/user/loginSubmit" id="loginForm">
+
+  <label class="login">email</label>
+  <label class="login">password</label>
+  <div class="clear"></div>
+
+  <input class="login" id="email"    name="email"    type="text">
+  <input class="login" id="password" name="password" type="password">
+  <button type="submit">login</button>
+  <div class="clear"></div>
+
+  <div class="remember">
+    <input class="remember" id="remember" name="remember" type="checkbox">
+    remember me
+  </div>
+  <div class="clear"></div>
+</form>
+
+<script>$("#email").focus();</script>
+
+[% PROCESS footer.tt %]

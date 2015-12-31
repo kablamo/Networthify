@@ -1,0 +1,119 @@
+[% INCLUDE header.tt %]
+
+<div class="header">Import transactions</div>
+<br>
+<form id="parseOptions" action="/import/parse" method="POST" enctype="multipart/form-data">
+  <input id="accountId" type="hidden" name="accountId" value="[% account.accountId %]">
+  <input id="name"      type="hidden" name="name"      value="[% account.name%]">
+  <input id="delimter"  type="hidden" name="delimiter" value="[% delimiter %]">
+
+  &nbsp;&nbsp;&nbsp;Step 1: Upload a file.<br>
+  <b>&raquo; Step 2: Indicate column order.</b>
+
+  <br>
+  <br>
+
+  Indicate which columns are the <b>Date</b>,
+  <b>Description</b>, <b>Amount</b>, and <b>Category</b> (optional) columns.
+
+  <br><br>
+  <table class="import">
+    <tr>
+    [% count = 0 %]
+    [% WHILE count < numberOfColumns %]
+      <th>
+        <select name="[% count %]">
+          <option value="date"        [% IF count == 0 %]selected[% END %]                        >Date</option>
+          <option value="description" [% IF count == 1 %]selected[% END %]                        >Description</option>
+          <option value="value"       [% IF numberOfColumns <= 4 && count == 2 %]selected[% END %]>Amount</option>
+          <option value="valueOut"    [% IF numberOfColumns >  4 && count == 2 %]selected[% END %]>Amount Out</option>
+          <option value="valueIn"     [% IF numberOfColumns >  4 && count == 3 %]selected[% END %]>Amount In</option>
+          <option value="category"    [% IF numberOfColumns == (count + 1) %]selected[% END %]    >Category</option>
+          <option value="none"                                                                    >Ignore</option>
+        </select>
+      </th>
+    [% count = count + 1 %]
+    [% END %]
+    </tr>
+
+    [% FOREACH r IN rows %]
+    <tr>
+      [% FOREACH value IN r %]   
+      <td>[% value %]</td>
+      [% END %]
+    </tr>
+    [% END %]
+
+    <tr>
+    [% count = 0 %]
+    [% WHILE count < numberOfColumns %]
+      <td class="etc">&nbsp;</td>
+    [% count = count + 1 %]
+    [% END %]
+    </tr>
+  </table>
+  
+  <div class="dateFormat leftHalf">
+    <label><b>Date format</b></label>
+    <div class="clear"></div>
+    <select name="dtFormat">
+      <option value="y/m/d" selected>Y/M/D</option>
+      <option value="d/m/y"         >D/M/Y</option>
+      <option value="m/d/y"         >M/D/Y</option>
+    </select>
+  </div>
+
+  <div class="numberFormat rightHalf">
+    <label><b>Number format</b></label>
+    <div class="clear"></div>
+
+    <div>
+      <label>Thousands separator</label>
+      <select name="thousandsSep">
+        <option value="">None</option>
+        <option value=".">Period</option>
+        <option value=" ">Space</option>
+        <option value="," selected>Comma</option>
+      </select>
+    </div>
+    <div class="clear"></div>
+
+    <div>
+      <label>Decimal point</label>
+      <select name="decimalPoint">
+        <option value=",">Comma</option>
+        <option value=" ">Space</option>
+        <option value="." selected>Period</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="clear" style="height: 1em"></div>
+  <button id="finishImport" type="submit">Finish Import</button>
+
+</form>
+
+<style>
+ .wait {font-size: 1.5em; margin-bottom: 1em}
+</style>
+<div id="lightbox" class="lightbox"> 
+  <a href="/import/[% account.accountId %]/[% account.name %]">cancel</a><br><br>
+  <center>
+    <div class="wait">Crunching your numbers...</div>
+  </center>
+</div>
+<div id="lightbox-black" class="lightbox-black"></div>
+
+<script src="[% psgixAssets.4 %]"></script>
+<script>
+  $(document).ready( function () {
+
+    $('#finishImport').bind('click', function () {
+      $("#lightbox, #lightbox-black").fadeIn(300);
+    });
+
+  });
+</script>
+
+
+[% INCLUDE footer.tt %]

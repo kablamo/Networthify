@@ -1,0 +1,112 @@
+[% INCLUDE header.tt %]
+
+<style>
+.odd {background: #ddd}
+.deleteHistory, .undoAction {margin-top: 0em; margin-bottom: 1em; width: 42em}
+.deleteHistory button       {margin-top: 9px;  width: 15em; float: right}
+.deleteHistory button:hover {margin-top: 5px; border: solid 5px red}
+.deleteHistoryLabel {width: 22em}
+.undoActionLabel    {width: 22em}
+.undoAction button       {margin: 9px; width: 15em; float: right}
+.undoAction button:hover {margin: 9px}
+</style>
+
+<h2>Transaction History</h2>
+
+<br>
+<!--
+<form class="undoAction" action="/account/delete" method="post">
+  <label class="undoActionLabel">
+    This will undo your last added, updated or deleted transaction.
+  </label>
+  <button>Undo last action</button>
+</form>
+<div class="clear"></div>
+
+<form class="deleteHistory" action="/account/delete" method="post">
+  <label class="deleteHistoryLabel">
+    This action CANNOT be reversed.  This will delete all the transactions for this account permanently.
+  </label>
+  <button>Delete all transactions</button>
+</form>
+<div class="clear"></div>
+-->
+<br>
+
+  <div class="historyRow historyRowTitle">
+    [% IF !account %]
+    <div class="account"     >&nbsp;</div>
+    [% END %]
+    <div class="action"      >
+      <div class="actionTop" >&nbsp;</div>
+    </div>
+    <div class="date"        >DATE</div>
+    <div class="description" >DESCRIPTION</div>
+    <div class="delta"       >DELTA</div>
+    <div class="value"       >VALUE</div>
+    <div class="tag"         >CATEGORY</div>
+  </div>
+
+[% odd = 0 %]
+[% FOR h IN history %]
+ [% IF h.action == 'insert' %]
+  <div class="historyRow[% IF odd %][% ' odd' %][% END %]">
+    [% IF !account %]
+    <div class="account"     >[% h.account.name %]</div>
+    [% END %]
+    <div class="action"      >
+      <div class="actionTop" >[% h.action FILTER upper %]</div><br>
+      <div class="actionDate">[% h.date.month_abbr %] [% h.date.day %] [% h.date.hms %]</div>
+    </div>
+    <div class="date"        >[% h.newDate.month_abbr %] [% h.newDate.day %]</div>
+    <div class="description" >[% h.newDescription     %]</div>
+    <div class="delta"       >[% h.delta %]</div>
+    <div class="value"       >[% h.newCurrency        %]</div>
+    <div class="tag"         >[% h.newTag             %]</div>
+  </div>
+ [% ELSIF h.action == 'delete' %]
+  <div class="historyRow[% IF odd %][% ' odd' %][% END %]">
+    [% IF !account %]
+    <div class="account"     >[% h.account.name %]</div>
+    [% END %]
+    <div class="action"      >
+      <div class="actionTop" >[% h.action FILTER upper %]</div><br>
+      <div class="actionDate">[% h.date.month_abbr %] [% h.date.day %] [% h.date.hms %]</div>
+    </div>
+    <div class="date"        >[% h.oldDate.month_abbr %] [% h.oldDate.day %]</div>
+    <div class="description" >[% h.oldDescription     %]</div>
+    <div class="delta"       >[% h.delta %]</div>
+    <div class="value"       >[% h.oldCurrency        %]</div>
+    <div class="tag"         >[% h.oldTag             %]</div>
+  </div>
+ [% ELSE %]
+  <div class="historyRow[% IF odd %][% ' odd' %][% END %]">
+    [% IF !account %]
+    <div class="account"     >[% h.account.name %]</div>
+    [% END %]
+    <div class="action"      >
+      <div class="actionTop" >[% h.action FILTER upper %]</div><br>
+      <div class="actionDate">[% h.date.month_abbr %] [% h.date.day %] [% h.date.hms %]</div>
+    </div>
+    <div class="date"        >[% h.newDate.month_abbr %] [% h.newDate.day %]</div>
+    <div class="description" >[% h.newDescription     %]</div>
+    <div class="delta"       >[% h.delta %]</div>
+    <div class="value"       >[% h.newCurrency        %]</div>
+    <div class="tag"         >[% h.newTag             %]</div>
+  </div>
+  <div class="historyRow[% IF odd %][% ' odd' %][% END %]">
+    [% IF !account %]
+    <div class="account"     >[% h.account.name %]</div>
+    [% END %]
+    <div class="action"      > </div>
+    <div class="date"        >[% h.oldDate.month_abbr %] [% h.oldDate.day %]</div>
+    <div class="description" >[% h.oldDescription     %]</div>
+    <div class="delta"       ></div>
+    <div class="value"       >[% h.oldCurrency        %]</div>
+    <div class="tag"         >[% h.oldTag             %]</div>
+  </div>
+ [% END %]
+ [% IF odd == 1 %][% odd = 0 %][% ELSE %][% odd = 1 %][% END %]
+[% END %]
+
+[% INCLUDE footer.tt %]

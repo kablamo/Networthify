@@ -1,0 +1,427 @@
+[% INCLUDE header.tt %]
+&nbsp;
+
+<style>
+#gauge {height: 10em}
+.gauge-box {height: 10em; width: 15em}
+.currentBalance {margin-right: 4em; background: #ddd; color: #333}
+.dashboard {
+ background: #ddd;
+ background: transparent;
+ font-size: .8em;
+ padding: 2em;
+}
+.dashboard .left   {float: left; width: 27em}
+.dashboard .text   {display: inline-block; font-size: 1em; width: 7em}
+.dashboard .number {display: inline-block; font-size: 2em; width: 7em; font-weight: bold; text-align: right}
+.small {
+ float: left;
+ font-size: 1.0em;
+ text-align: left;
+}
+.small .text   {
+ padding: 1.4em;
+ float: left; 
+ font-size: 1.4em;
+ width: 8em;
+ background: #555;
+ background: #8fc8de;
+ background: #52667A;
+ background: #666;
+ background: #BBBED8;
+ background: #3777D7;
+ background: #444;
+ background: #bbb;
+ background: #ddd;
+ color: #2F687E;
+ color: #333;
+ color: #52667A;
+ color: #fff;
+ color: #333;
+}
+.small .smallprint {
+ font-size: 1.4em;
+}
+.small .number {
+ float: left; 
+ margin-right: 1em;
+ margin-top: 0em; 
+ padding: 1.2em;
+ padding-left: .5em;
+ padding-right: .8em;
+ width: 5em;
+ text-align: right; 
+ font-size: 2em;
+ color: #005B9F;
+ color: #2F687E;
+ color: #52667A;
+ color: #fff;
+ color: #333;
+ background: #2fbbff;
+ background: #444;
+ background: #52667A;
+ background: #666;
+ background: #bbb;
+ background: #BBBED8;
+ background: #3777D7;
+ background: #444;
+ background: #ddd;
+}
+.big {
+ float: left; 
+ margin: 0;
+ padding: 0;
+ line-height: 2em;
+ text-align: left;
+ font-size: 2em;
+}
+#savingsRate, #yearsToFI {height: .9em}
+.assets .row:hover { color: #333 }
+
+/* bar experiment */
+div.bar {
+ padding: 0;
+ margin-top: 1em;
+ width: 21.2em;
+}
+div.bar-plus-label {
+ padding: 0;
+ padding-left: 2em;
+ margin: 0;
+ border: 0;
+ float: right;
+ text-align: right;
+ color: #999;
+ width: 7em;
+}
+div.bar-minus-label {
+ padding: 0;
+ padding-right: 2em;
+ margin: 0;
+ border: 0;
+ float: left;
+ color: #666;
+ width: 8em;
+}
+div.bar-plus {
+ padding: 0;
+ margin: 0;
+ border: 0;
+ height: 1em;
+ float: left;
+ background-color: #999;
+ width: 79%;
+}
+div.bar-minus {
+ padding: 0;
+ margin: 0;
+ border: 0;
+ height: 1em;
+ float: left;
+ background-color: #666;
+ width: 21%;
+}
+div.bar-minus-part {
+ padding: 0;
+ margin: 0;
+ border-left: solid 0px red;
+ height: 6em;
+ float: left;
+ background-color: orangered;
+}
+div.details {
+ margin-top: 2em;
+ width: 50%;
+ float: left;
+ border: solid 0px red;
+}
+div.details .name {
+ font-size: 2em;
+}
+div.details .amount {
+ font-size: 2em;
+ font-weight: bold;
+ padding-left: 2em;
+}
+.pie { float: left; border: solid 0px red; width: 50% }
+.income-chart   { float: left; width: 100%; margin: 0; padding: 0; border: 0 }
+.expenses-chart { float: left; width: 100%; margin: 0; padding: 0; border: 0 }
+.chart rect {  shape-rendering: crispEdges; stroke-linecap: square; stroke-width: .5; stroke: white; }
+.savings-chart { position: absolute; top: 21.4em; left: 49.9em; margin: 0; padding: 0; border: 0 }
+.face {
+ font-size: 50px;
+ width: 50px;
+ -webkit-border-radius: 6px 6px 6px 6px;
+    -moz-border-radius: 6px 6px 6px 6px;
+         border-radius: 6px 6px 6px 6px;
+}
+</style>
+
+<br>
+<div class="dashboard">
+  <div class="currentBalance">
+    <div class="text">ACCOUNT BALANCE</div>
+    <div class="number">[% account.balance || balance %]</div>
+  </div>
+  <div class="left">
+    <div>
+      <span class="text">INCOME&nbsp;</span>
+      <span class="number" id="income">[% overview.income %]</span>
+    </div>
+    <div>
+      <span class="text">EXPENSES&nbsp;</span>
+      <span class="number" id="annualExpenses">[% overview.expenses %]</span>
+    </div>
+    <div>
+      <span class="text">SAVINGS&nbsp;</span>
+      <span class="number" id="annualSavings">[% overview.savings %]</span>
+    </div>
+  </div>
+  <div class="clear"></div>
+</div>
+
+<!--
+<div class="dashboard">
+  RETIREMENT<br><br>
+  <div class="small">
+    <div class="text"><nobr>You can be financially<br>independent in</nobr></div>
+  </div>
+  <div class="small">
+    <span class="number"><nobr>[% overview.yearsToFI %] years</nobr></span><br>
+  </div>
+  <div class="small">
+    <div class="smallprint">
+    To reach this goal you must have:<br>
+     - a [% overview.savingsRate %]% savings rate,<br>
+     - a 7% annual rate of return on your savings, and<br>
+     - a 4% withdrawal rate after retirement.<br>
+    </div>
+    <a href="/calculator/earlyretirement?income=[% overview.annualIncome.value %]&initialBalance=[% FILTER format('%02.2f') %][% user.networth.value %][% END %]&expenses=[% -1 * overview.annualExpenses.value %]&annualPct=[% overview.roi %]&withdrawalRate=[% overview.withdrawalRate %]" id="yearsToFI">Explore and learn more.</a>
+  </div>
+  <div class="clear"></div>
+</div>
+-->
+
+<div class="dashboard">
+<div class="big">INCOME</div>
+    <div class="income-chart"></div>
+    <div class="clear"></div>
+<br><br>
+<div class="big">EXPENSES</div>
+    <div class="expenses-chart"></div>
+    <div class="clear"></div>
+</div>
+
+<br>
+<div class="gauge-box">
+    <div id="gauge"></div>
+</div>
+
+<!-- <div class="pie"></div> -->
+<!--
+<div class="details">
+  <span class="name">RENT</span>
+  <span class="amount">-475.00 GBP</span>
+  <br>
+  <br>
+  You spent <b>3dys</b> this month working to pay this expense.
+  <br>
+  <br>
+  If you saved <b>142,500 GBP</b> and <br>
+  invested it in passive index funds, <br>
+  assuming a <b>7% annual rate of return</b>, <br>
+  you would earn enough income from your investment to pay for this expense forever.
+</div>
+-->
+
+
+[% IF dev %]
+<script src="/js/d3.min.js"></script>
+[% ELSE %]
+<script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.1.6/d3.min.js"></script>
+[% END %]
+<script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.2/raphael-min.js"></script>
+<script src="/js/justgage.js"></script>
+<script>
+var g = new JustGage({
+  id    : "gauge",
+  value : [% overview.savingsRate %],
+  min   : 0,
+  max   : 100,
+  title : "SAVINGS RATE",
+  label : "percent",
+  gaugeColor: '#aaa',
+  levelColors: ['#333'],
+  valueFontColor: '#333',
+  titleFontColor: '#333',
+  labelFontColor: '#333',
+  shadowOpacity: 0
+}); 
+</script>
+<script>
+// 480 960
+var margin      = {top: 20, right: 20, bottom: 20, left: 80};
+var nameWidth   = 100;
+var amountWidth = 75;
+var totalWidth  = 720;
+var barWidth    = totalWidth - nameWidth - amountWidth;
+var height      = 25;
+var between     = 5;
+var posCount    = [% posCount %]
+
+//var blacks = [ "#333", "#444", "#555", "#666", "#777", "#888", "#999", "#aaa", "#bbb", "#ccc", "#ddd", "#eee" ];
+var blacks = [ "#333333", "#393939", "#444444", "#4a4a4a", "#555555", "#5b5b5b", "#666666", "#6c6c6c", "#777777", "#7d7d7d", "#888888", "#8e8e8e", "#999999", "#9f9f9f", "#999", "#8e8e8e", "#888", "#7d7d7d", "#777" ];
+var greens = [ "#6eff33", "#7fff44", "#8fff55", "#9fff66", "#afff77", "#bfff88", "#cfff99", "#dfffaa", "#efffbb", "#ffffcc", "#ffffdd", "#ffffee" ];
+var greens = [ "#0E9F00", "#1faf00", "#2fbf00", "#3fcf00", "#4fdf00", "#5fef00", "#6fff00", "#7fff00", "#8fff00", "#9fff00", "#afff00", "#bfff00" ];
+
+var chart = {};
+chart.svg = d3.select(".income-chart")
+  .append("svg")
+    .attr("class", "chart")
+    .attr("width",  totalWidth)
+    .attr("height", (height + between) * posCount);
+
+d3.csv("/analysis/categories/income-data/[% urls.base %]", function(error, data) {
+
+  chart.svg.selectAll("rect").data(data).enter()
+    .append("rect")
+      .attr("fill",   function(d, i) { return greens[i]; })
+      .attr("fill",   function(d, i) { return blacks[i]; })
+      .attr("fill",   '#666')
+      .attr("y",      function(d, i) { return i * (height + between) + between; })
+      .attr("x",      nameWidth)
+      .attr("x",      function(d) { return nameWidth + amountWidth + 3; })
+      .attr("width",  function(d) { return d.percent; })
+      .attr("height", height)
+
+  chart.svg.selectAll(".nameBg").data(data).enter()
+    .append("rect")
+      .attr("class",   'nameBg')
+      .attr("fill",   '#ddd')
+      .attr("y",      function(d, i) { return i * (height + between) + between; })
+      .attr("width",  nameWidth)
+      .attr("height", height)
+      .text(function(d) { console.log(d.name); return d.name; });
+
+  chart.svg.selectAll(".name").data(data).enter()
+    .append("text")
+      .attr("class",   'name')
+      .attr("font-size",   '12')
+      .attr("fill",   '#333')
+      .attr("y",      function(d, i) { return i * (height + between) + between + 17; })
+      .attr("x",      5)
+      .text(function(d) { console.log(d.name); return d.name; });
+
+  chart.svg.selectAll(".amountBg").data(data).enter()
+    .append("rect")
+      .attr("class",   'amountBg')
+      .attr("fill",   function(d, i) { return greens[i]; })
+      .attr("fill",   '#ccc')
+      .attr("y",      function(d, i) { return i * (height + between) + between; })
+      .attr("x",      function(d) { return nameWidth + 1 * d.percent + 1; })
+      .attr("x",      nameWidth)
+      .attr("width",  amountWidth)
+      .attr("height", height)
+
+  chart.svg.selectAll(".amount").data(data).enter()
+    .append("text")
+      .attr("class",   'amount')
+      .attr("fill",   '#fff')
+      .attr("fill",   '#333')
+      .attr("font-size",   '12')
+      .attr("font-weight",   'bold')
+      .attr("y",      function(d, i) { return i * (height + between) + between + 17; })
+      .attr("x",      function(d) { return nameWidth + 1 * d.percent + 7; })
+      .attr("x",      nameWidth + 5)
+      .text(function(d) { return d.total });
+});
+</script>
+<script>
+// 480 960
+var margin      = {top: 20, right: 20, bottom: 20, left: 80};
+var nameWidth   = 100;
+var amountWidth = 75;
+var totalWidth  = 720;
+var barWidth    = totalWidth - nameWidth - amountWidth;
+var height      = 25;
+var between     = 5;
+var negCount    = [% negCount %]
+
+var reds = [ "#f00000", "#e00000", "#d00000", "#c00000", "#b00000", "#a00000", "#900000", "#800000", "#700000", "#600000", "#500000", "#400000" ];
+var yellows = [ "#fffd00", "#eeec00", "#dddb00", "#ccca00", "#bbb900", "#aaa800", "#999700", "#888600", "#777500", "#666400", "#555300", "#444200" ];
+
+var chart2 = {};
+chart2.svg = d3.select(".expenses-chart")
+  .append("svg")
+    .attr("class", "chart")
+    .attr("width",  totalWidth)
+    .attr("height", (height + between) * negCount);
+
+d3.csv("/analysis/categories/expenses-data/[% urls.base %]", function(error, data) {
+
+  chart2.svg.selectAll("rect").data(data).enter()
+    .append("rect")
+      .attr("fill",   '#ff4500')
+      .attr("fill",   function(d, i) { return blacks[i]; })
+      .attr("fill",   '#999')
+      .attr("y",      function(d, i) { return i * (height + between) + between; })
+      .attr("x",      nameWidth)
+      .attr("x",      function(d) { return nameWidth + amountWidth + 3; })
+      .attr("width",  function(d) { return d.percent; })
+      .attr("height", height)
+
+  chart2.svg.selectAll(".nameBg").data(data).enter()
+    .append("rect")
+      .attr("class",   'nameBg')
+      .attr("fill",   '#ddd')
+      .attr("y",      function(d, i) { return i * (height + between) + between; })
+      .attr("width",  nameWidth)
+      .attr("height", height)
+      .text(function(d) { console.log(d.name); return d.name; });
+
+  chart2.svg.selectAll(".name").data(data).enter()
+    .append("text")
+      .attr("class",   'name')
+      .attr("font-size",   '12')
+      .attr("fill",   '#333')
+      .attr("y",      function(d, i) { return i * (height + between) + between + 17; })
+      .attr("x",      5)
+      .text(function(d) { console.log(d.name); return d.name; });
+
+  chart2.svg.selectAll(".amountBg").data(data).enter()
+    .append("rect")
+      .attr("class",   'amountBg')
+      .attr("fill",   function(d, i) { return reds[i]; })
+      .attr("fill",   '#ccc')
+      .attr("y",      function(d, i) { return i * (height + between) + between; })
+      .attr("x",      function(d) { return nameWidth + 1 * d.percent + 1; })
+      .attr("x",      nameWidth)
+      .attr("width",  amountWidth)
+      .attr("height", height)
+
+  chart2.svg.selectAll(".amount").data(data).enter()
+    .append("text")
+      .attr("class",   'amount')
+      .attr("fill",   '#fff')
+      .attr("fill",   '#333')
+      .attr("font-size",   '12')
+      .attr("font-weight",   'bold')
+      .attr("y",      function(d, i) { return i * (height + between) + between + 17; })
+      .attr("x",      function(d) { return nameWidth + 1 * d.percent + 7; })
+      .attr("x",      nameWidth + 5)
+      .text(function(d) { return d.total });
+});
+</script>
+
+<br>
+<br>
+<br>
+<br>
+.
+<br>
+<br>
+<br>
+<br>
+.
+
+[% INCLUDE footer.tt %]

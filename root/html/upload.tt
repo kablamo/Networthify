@@ -1,0 +1,40 @@
+[% PROCESS header.tt %]
+
+<div id="controlPanel">
+    <h1>Preferences</h1>
+    <br>
+
+    Currency
+    <form id="headForm" name="headForm" method="post" action="/user/[% user.user_id %]/preferences">
+      <select class="currency" name="currencyCode" id="currencyCode">
+        [% currencyCode = user.preferences.currencyCode %]
+        [% currencyName = user.preferences.currencyName %]
+        <option value="[% currencyCode %]" selected>[% currencyCode %]: [% currencyName %]</option>
+        <option value="EUR">EUR: Euro</option>
+        <option value="GBP">GBP: Pound Sterling</option>
+        <option value="SGD">SGD: Singapore Dollar</option>
+        <option value="USD">USD: US Dollar</option>
+        <option value="--">----------------------------------</option>
+      [% FOREACH currency IN currencies %]
+        <option value="[% currency.code %]">[% currency.code %]: [% currency.name %]</option>
+      [% END %]
+      </select>
+      <button class="button" type="submit">update</button>
+    </form>
+    <br>
+
+    Password
+    <form id="passwordForm" action="/user/passwordSubmit/[% user.userId %]">
+      <input class="" id="password" name="password" type="password">
+      <button class="button" type="submit">update</button>
+    </form>
+    <br>
+    
+    Username
+    <form id="usernameForm" action="/user/usernameSubmit/[% user.userId %]">
+      <input class="" id="username" name="username" type="text">
+      <button class="button" type="submit">update</button>
+    </form>
+</div>
+
+[% PROCESS footer.tt %]

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>[% title %]</title>
+    <meta name="description" content="[% description %]" />
+    <meta name="google-site-verification" content="foo" />
+    <link rel="stylesheet" type="text/css" href="[% psgixAssets.2 %]">
+    <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
+    <style>
+     .frontWide {width: 11.6em}
+     label {width: 8em; margin-right: 0; background: transparent; text-align: left}
+     a#logo          {
+       color: #ccc; color: #666; 
+       text-decoration: none;
+       font-family: 'Economica', 'Helvetica Nue', Helvetica, Arial, sans-serif;
+       float: left; 
+       font-size: 2.0em;
+       font-weight: bold;
+       padding: 0;
+       padding-top: .3em;
+     }
+     a#logoify       {
+       color: #999; 
+       color: #ccc; 
+       text-decoration: none;
+       font-family: 'Economica', 'Helvetica Nue', Helvetica, Arial, sans-serif;
+       float: left; 
+       font-size: 2.0em;
+       font-weight: bold;
+       padding: 0;
+       padding-top: .3em;
+       padding-right: 0.5em;
+     }
+     div.index-title a#logo    {float: none; font-size: 3em}
+     div.index-title a#logoify {float: none; font-size: 3em; padding-right: 0}
+     .low {vertical-align: bottom; color: #ccc}
+     .middle {margin-left:6em; margin-right: 6em; width: 35em}
+     div.index-title {
+       color: #666;
+       margin: 0; padding-left: 6em; padding-right: 6em;
+       -webkit-border-radius: 0 0 0 0 ;
+          -moz-border-radius: 0 0 0 0 ;
+               border-radius: 0 0 0 0 ;
+     }
+     input {width: 14em; margin-right: 0; color: #aaa; border: solid 2px #555}
+     input:focus {border: solid 2px #333}
+     button {border: solid 2px #555}
+     button:hover {border: solid 2px #333}
+     a {color: #666}
+     .blackHeader {
+      background: #666;
+      color: #ccc; 
+      width: 100%;
+      text-align: center;
+     }
+     .blackHeader a {color: #fff}
+     .darkHeader {
+      width: 100%;
+      text-align: center;
+      padding-top: 1em;
+      padding-bottom: 1em;
+     }
+     .darkerHeader {
+      background: #aaa;
+      background: #ccc;
+      width: 100%;
+      text-align: center;
+      padding-top: 1em;
+      padding-bottom: 1em;
+     }
+/*     #demo {width: 25.3em} */
+     #demo-link {
+      display: block;
+      width: 25.3em;
+      background: #333;
+      color: #eee;
+      padding: 2em;
+     }
+     .loginBox {
+      width: 31em;
+      border: solid 0px black;
+     }
+     .featureBox {
+      width: 28em;
+      border: solid 0px black;
+      text-align: left;
+     }
+     .floatLeft {float: left}
+     .floatRight {float: right}
+     #invite-form {display: inline-block}
+     #demo-form   {display: inline-block}
+    </style>
+[% IF dev -%]
+    <script src="/js/jquery-1.7.2.min.js"></script>
+[% ELSE -%]
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
+[% END -%]
+  </head>
+  <body>
+
+    <div class="blackHeader">
+      <br>Looking for the <a href="calculator/earlyretirement">early retirement calculator</a>?<br>&nbsp;
+    </div>
+
+    <div class="index-title">
+      <center>
+        <br><br><br>
+        <a id="logo" href="/">Networth</a><a id="logoify" href="/">ify</a><span class="low">beta</span>
+            
+        <br><br><br>
+        <h2>Personal finance for savings extremists and early retirement savants</h2>
+        <br>
+        <div class="middle">
+          Track your financial progress and get <i>useful</i> detailed analytics.  Know
+          with a glance how many working days you have left before retirement.
+        </div>
+      </center>
+    </div>
+
+    <br>
+    <br>
+    <br>
+
+    <div class="margin">
+      <center>
+        <div class="loginBox">
+            <form method="POST" action="[% IF !dev %]https://networthify.com[% END %]/user/loginSubmit">
+            <input type="hidden" name="email" value="demo">
+            <input type="hidden" name="password" value="demo">
+            <button class="try-demo frontWide" style="float: left">Try the demo</button> 
+          </form>
+          <form class="floatLeft" method="POST" action="[% IF !dev %]https://networthify.com[% END %]/user/signup">
+            <button id="signup" class="floatLeft frontWide">Sign Up</button>
+          </form>
+          <form class="floatLeft" method="POST" action="[% IF !dev %]https://networthify.com[% END %]/user/login">
+            <button class="floatLeft">Login</button>
+          </form>
+          <div class="clear"></div>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>Free during the beta</i>
+        </div>
+      </center>
+    </div>
+
+    <br>
+    <br>
+    <br>
+
+    <div class="margin">
+      <center>
+        <div class="featureBox">
+          <h3>Features</h3>
+          <ul id="features">
+            <li>All your financial accounts in one place.</li>
+            <li>Know <a href="/calculator/earlyretirement">how long</a> you have left to retirement.</li>
+            <li>Track your <b>net worth</b>.</li>
+            <li>Track your <b>savings rate</b>.</li>
+            <li>Track your <b>spending</b>.</li>
+            <li>See the <a href="/calculator/real-cost">real cost</a> of your expenses over time.</li>
+            <li>Awesome charts and analytics.</li>
+            <li>Powerful <a href="/calculator/earlyretirement">calculators</a>.</li>
+            <li>Split transactions and categories.</li>
+            <li>Stay anonymous and <b>keep your privacy</b>.  No need to reveal your identity or your bank passwords.</li>
+            <li>SSL/TLS Encryption.</li>
+          </ul>
+        </div>
+
+        <br><br><br><br>
+
+        <div class="featureBox">
+          <div style="float: left; border: solid 0px red; padding: .2em" class='st_email_hcount'   displayText='Email'        ></div>
+          <div style="float: left; border: solid 0px red; padding: .2em" class='st_twitter_hcount' displayText='Tweet'        ></div>
+          <div style="float: left; border: solid 0px red; padding-top: .1em" class='st_fblike_hcount'  displayText='Facebook Like'></div>
+          <div style="float: left; border: solid 0px red; padding: .2em; padding-right: 0; padding-top: .3em; padding-left: .8em" class='st_plusone_hcount' displayText='Google +1'    ></div>
+        </div>
+
+      <center>
+    </div>
+
+    <br>
+    <br>
+
+<script>
+$(document).ready(function () {
+    $('#login').bind('click', function() {
+      $('#form').attr('action', '/user/loginSubmit');
+      $('#form').submit();
+    });
+
+    $('#signup').bind('click', function() {
+      $('#form').attr('action', '/user/create');
+      $('#form').submit();
+    });
+
+    $('#invite-form input').on('focus', function () {
+        $(this).val('');
+        $(this).css('color', '#333');
+    });
+});
+</script>
+
+[% INCLUDE footer.tt %]

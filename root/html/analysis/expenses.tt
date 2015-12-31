@@ -1,0 +1,120 @@
+[% INCLUDE header.tt %]
+
+<div class="chart-title">Income vs Expenses</div>
+<div class="expenses-chart"></div><br><br>
+
+<style>
+ .chart-title {
+  background: #ddd;
+  font-size: 1.2em;
+  font-weight: bold;
+  padding-top: 2em;
+  text-align: center;
+ }
+ .expenses-chart     {background: #ddd; padding: 2em}
+ .expenses-chart .axis {fill: #333}
+ .expenses-chart .axis path, 
+ .expenses-chart .axis line {
+  fill: none;
+  stroke: #333;
+  shape-rendering: crispEdges;
+ }
+ .x path, .x line {display: none}
+ .y path, .x line {display: none}
+ .expenses-bar     {fill: #4c0b34; shape-rendering: crispEdges; fill-opacity: .8}
+ .income-bar       {fill: #7e19a9; shape-rendering: crispEdges}
+</style>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.1.6/d3.min.js"></script>
+<script>
+var margin = {top: 20, right: 20, bottom: 20, left: 80},
+    width = 960 - margin.left - margin.right,
+    height = 350 - margin.top - margin.bottom;
+
+var parseDate = d3.time.format("%Y-%m-%d").parse;
+
+var expenses = {};
+expenses.x     = d3.scale.ordinal().rangeRoundBands([0,width], .1);
+expenses.y     = d3.scale.linear().range([height, 0]);
+expenses.xAxis = d3.svg.axis().scale(expenses.x).orient("bottom").tickFormat(formatDate);
+expenses.yAxis = d3.svg.axis().scale(expenses.y).orient("left").tickFormat(d3.format("0f")).ticks(4);
+expenses.svg   = d3.select(".expenses-chart")
+  .append("svg")
+    .attr("width",  width  + margin.left + margin.right)
+    .attr("height", height + margin.top  + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+d3.csv("/analysis/expenses-data/[% overview.accountId %]", function(error, data) {
+
+  data.forEach(function(d) { 
+    d.income      = +d.income; 
+    d.expenses    = +d.expenses; 
+    d.datetime    = parseDate(d.datetime);
+  });
+
+  // draw expenses chart
+
+  expenses.x.domain(data.map(function(d) { return d.datetime }));
+  expenses.y.domain(computeYDomain(data));
+  expenses.bottom = calculateBottom(data, "expenses");
+
+  expenses.svg.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height + ")")
+      .call(expenses.xAxis);
+
+  expenses.svg.append("g")
+      .attr("class", "y axis")
+      .call(expenses.yAxis);
+
+  expenses.barWidth = expenses.x.rangeBand();
+
+  expenses.svg.selectAll(".income-bar")
+      .data(data)
+    .enter().append("rect")
+      .attr("class", "income-bar")
+      .attr("x", function(d) { return expenses.x(d.datetime) })
+      .attr("width", expenses.barWidth)
+      .attr("y", function(d) { return expenses.y(Math.max(expenses.bottom, d.income)) })
+      .attr("height", function(d) { return Math.abs(expenses.y(d.income) - expenses.y(expenses.bottom)) });
+
+  expenses.svg.selectAll(".expenses-bar")
+      .data(data)
+    .enter().append("rect")
+      .attr("class", "expenses-bar")
+      .attr("x", function(d) { return expenses.x(d.datetime) })
+      .attr("width", expenses.barWidth)
+      .attr("y", function(d) { return expenses.y(Math.max(expenses.bottom, d.expenses)) })
+      .attr("height", function(d) { return Math.abs(expenses.y(d.expenses) - expenses.y(expenses.bottom)) });
+
+});
+
+function calculateBottom(data, key) {
+  var min = d3.min(data, function(d) { return d[key] });
+  if (min > 0) {
+    return min;
+  }
+  return 0;
+}
+
+function formatDate(datetime) {
+  var monthFormat = d3.time.format("%b");
+  var yearFormat  = d3.time.format("%Y");
+
+  if (datetime.getMonth() === 0) {
+    return yearFormat(datetime);
+  }
+
+  return monthFormat(datetime);
+}
+
+function computeYDomain(data) {
+  var maxIncome   = d3.max(data, function(d) { return d.income   });
+  var maxExpenses = d3.max(data, function(d) { return d.expenses });
+  var max         = d3.max([maxExpenses, maxIncome]);
+  return [0, max];
+}
+</script>
+
+[% INCLUDE footer.tt %]

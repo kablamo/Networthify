@@ -1,0 +1,539 @@
+[% INCLUDE header.tt %]
+
+<style>
+.grayHeader {margin-bottom: 2em; color: #999; text-align: right}
+.grayHeader a {float: right; padding: .8em; margin-right: 1em}
+.transaction-header div {color: #333; font-weight: bold}
+.transaction-header div.value {border-right: solid 0px red}
+.even  {background: #ddd; color: #333}
+.hover {background: #444; color: #fff}
+</style>
+
+<div class="grayHeader">
+[% IF account %]
+  <button id="addTransaction">Add transaction</button>
+  <a href="/import/[% account.accountId %]/[% account.name %]">Import transactions</a>&nbsp;&nbsp;&nbsp;&nbsp;
+[% ELSE %]
+  Edit mode disabled.
+[% END %]
+<!-- <button id="history">View transaction history</button> -->
+<div class="clear"></div>
+</div>
+
+  <div class="row transaction-header default-cursor">
+    [% IF !account %]
+    <div class="account"    >ACCOUNT</div>
+    [% END %]
+    <div class="date"       ></div>
+    <div class="balance"    >account<br>balance</div>
+    <div class="value"      ></div>
+    <div class="description"></div>
+    <div class="tag"        ></div>
+  </div>
+<div class="clear"></div>
+
+<form action="/transaction/create" method="post" name="updateForm" id="insertForm">
+  <div id="insert" class="insertRow">
+    <div class="date"       ><input type="text" class="eDate"        name="date"        value="[% now.ymd %]" ></div>
+    <div class="balance"    ><label type="text" class="eBalance"     name="balance"                           >&nbsp;</label></div>
+    <div class="value"      ><input type="text" class="eValue"       name="value"       value=""              ></div>
+    <div class="description"><input type="text" class="eDescription" name="description" value="Description"   ></div>
+    <div class="tag"        ><input type="text" class="eTag"         name="tag"         value="Category"      ></div>
+  </div>
+  <input type="hidden" name="accountId"   value="[% account.accountId %]">
+  <input type="hidden" name="accountName" value="[% account.name      %]">
+  <input type="hidden" name="urlBase"     value="[% urls.base         %]">
+  <div id="insertButtons">
+    <a href="" id="cancelTransaction">Cancel</a>
+    <button id="add">Add</button>
+  </div>
+</form>
+<!--
+<form action="/transaction/update" method="post" name="updateForm" id="updateForm">
+[% WHILE (s = assets.next) %]
+  [% 
+     SET class = "row";
+     SET class = class _ " default-cursor" IF !account;
+     SET pos_neg = "neg";
+     SET pos_neg = "pos" IF s.value.value > 0;
+  %]
+  <div class="[% class %]">
+    [% IF !account %]
+    <div class="account"            >[% s.account.name %]</div>
+    [% END %]
+    <div class="date"               >[% s.date.month_abbr %] [% s.date.day %]</div>
+    <div class="balance"            >[% s.balance.value   %]</div>
+    <div class="value [% pos_neg %]">[% s.value           %]</div>
+    <div class="description"        >[% s.description     %]</div>
+    <div class="tag"                >[% s.tag             %]</div>
+    <input type="hidden" class="assetId" name="assetId" value="[% s.assetId  %]">
+    <input type="hidden" class="dateRaw" name="dateRaw" value="[% s.date.ymd %]">
+  </div>
+  [% SET bal = bal - s.value; %]
+[% END %]
+  <input id="accountId"   type="hidden" name="accountId"   value="[% account.accountId %]">
+  <input id="accountName" type="hidden" name="accountName" value="[% account.name      %]">
+  <input id="urlBase"     type="hidden" name="urlBase"     value="[% urls.base         %]">
+</form>
+-->
+<form action="/transaction/update" method="post" name="updateForm" id="updateForm">
+  <input id="accountId"   type="hidden" name="accountId"   value="[% account.accountId %]">
+  <input id="accountName" type="hidden" name="accountName" value="[% account.name      %]">
+  <input id="urlBase"     type="hidden" name="urlBase"     value="[% urls.base         %]">
+</form>
+<div class="clear"></div>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.1.6/d3.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/keymage/1.0.1/keymage.min.js"></script>
+<script>
+  //
+  // BUILD transaction rows
+  //
+  d3.csv("/transactions/view-data/[% urls.base %]", buildTransactionRows);
+
+  function buildTransactionRows(error, data) {
+
+    // delete any rows that might exist
+    $('#updateForm div.row').remove();
+    $('#editButtons').remove();
+ 
+    // create rows
+    var rows = d3.select("#updateForm").selectAll('div.row')
+      .data(data).enter()
+        .append('div').attr('class','row');
+
+    // foreach column populate the <div>
+    var columns = ['date', 'balance', 'value', 'description', 'tag'];
+    columns.forEach(function(column) {
+
+      function buildClass(d) {
+        if (column == 'value') {
+          if (d.charAt(0) == '-') {
+            return 'value neg';
+          }
+          else {
+            return 'value pos';
+          }
+        }
+        return column;
+      }
+
+      rows.selectAll('div.' + column)
+        .data(function(row) { return [row[column]] }).enter()
+        .append('div')
+          .attr('class', buildClass)
+          .text(function(d) { return d });
+
+    });
+
+    // foreach column populate the <input type="hidden">
+    var columns = ['assetId', 'dateRaw', 'valueRaw'];
+    columns.forEach(function(column) {
+
+      rows.selectAll('input.' + column)
+        .data(function(row) { return [row[column]] }).enter()
+        .append('input')
+          .attr('type', 'hidden')
+          .attr('class', column)
+          .attr('value', function(d) { return d });
+
+    });
+
+    // handle clicks
+    $(".row").bind('click', handleRowClick);
+
+    // color alternate rows
+    $('#updateForm .row:even').addClass('even');
+
+    // change color on row hover
+    $('#updateForm .row').hover(
+      function () { 
+        if ($(this).attr('id') == 'editable') {
+          return;
+        }
+        $(this).addClass('hover'); 
+      },
+      function () { $(this).removeClass('hover') }
+    );
+    if (index != -1) {
+        $('#updateForm .row').eq(index).addClass('hover'); 
+    }
+  }
+
+  var N = {};
+  N.lastFocus = 'eValue';
+  
+  //
+  // ADD TRANSACTION HANDLERS -- #insertForm
+  //
+  $("#addTransaction").bind('click', function () {
+      $("#insertForm").show();
+      $("#addTransaction").hide();
+      $("#insertForm").find('.' + N.lastFocus).focus();
+      return false;
+  });
+  $("#add").bind('click', function () {
+      var classes = ['.eDate', '.eDescription', '.eValue'];
+      for (var i in classes) {
+          var e = $('#insert').find(classes[i]);
+          if (e.attr('value') === '') {
+              e.css('border', 'solid 1px orange');
+              e.css('border-right', 'solid .4em orange');
+              e.select();
+              return false;
+          }
+      }
+  });
+  $("#cancelTransaction").bind('click', function () {
+      $("#insertForm").hide();
+      $("#addTransaction").show();
+      return false;
+  });
+
+  //
+  // UPDATE TRANSACTION HANDLERS -- #updateForm
+  //
+  function handleRowClick() {
+
+    // return false if its the row header
+    if ($(this).attr('class') == 'row transaction-header default-cursor') {
+      return false;
+    }
+
+    // return false if we are already editing this row
+    if ($(this).attr('id') === 'editable') {
+      return false;
+    }
+
+    // if some other row is being edited, cancel that edit
+    if ($('#editable').attr('id') === 'editable') {
+      $('#cancel').click();
+    }
+
+    // get old values
+    N.dateRaw     = $(this).find('.dateRaw'    ).attr('value');
+    N.date        = $(this).find('.date'       ).text();
+    N.description = $(this).find('.description').text();
+    N.tag         = $(this).find('.tag'        ).text();
+    N.valueRaw    = $(this).find('.valueRaw'   ).attr('value');
+    N.value       = $(this).find('.value'      ).text();
+
+    // get old html values
+    N.dateHtml        = $(this).find('.date'       ).html();
+    N.descriptionHtml = $(this).find('.description').html();
+    N.tagHtml         = $(this).find('.tag'        ).html();
+    N.valueHtml       = $(this).find('.value'      ).html();
+
+    // make new html so the row is editable
+    $(this).find('.date'       ).html('<input type="text" class="eDate"        name="date"        value="' + N.dateRaw     + '">');
+    $(this).find('.description').html('<input type="text" class="eDescription" name="description" value="' + N.description + '">');
+    $(this).find('.tag'        ).html('<input type="text" class="eTag"         name="tag"         value="' + N.tag         + '">');
+    $(this).find('.value'      ).html('<input type="text" class="eValue"       name="value"       value="' + N.valueRaw    + '">');
+    $(this).find('.balance'    ).css('padding-top', '.8em');
+    $(this).find('.balance'    ).css('padding-bottom', '.8em');
+    $(this).attr('id', 'editable');
+    $(this).find('.' + N.lastFocus).focus();
+
+    // make some new buttons
+    var assetId       = $(this).find('.assetId').attr('value');
+    var editButtons = '';
+    editButtons += '<div id="editButtons">';
+    editButtons += '  <a id="split"    href="#">Split</a>';
+    editButtons += '  <a id="transfer" href="#">Transfer</a>';
+    editButtons += '  <a id="delete"   href="#">Delete</a>';
+    editButtons += '  <input type="hidden" name="assetId" value="' + assetId + '">';
+    editButtons += '  <a id="cancel"      href="">Cancel</a>';
+    editButtons += '  <button id="update">Update</button>';
+    editButtons += '</div>';
+    $(this).after(editButtons);
+
+    var split;
+
+    // do stuff when someone clicks the Save button
+    $("#update").bind('click', function () {
+
+      N.lastFocus = $('input:focus').attr('class');
+
+      // validate the input values
+      var classes = ['#updateForm input.eDate', '#updateForm input.eDescription', '#updateForm input.eValue'];
+      if (!validInputs(classes)) {
+        return false;
+      }
+
+      var postData = {
+        accountId   : $('#accountId'                    ).attr('value'),
+        assetId     : $('#editButtons input'            ).attr('value'),
+        date        : $('#updateForm input.eDate'       ).attr('value'),
+        description : $('#updateForm input.eDescription').attr('value'),
+        value       : $('#updateForm input.eValue'      ).attr('value'),
+        tag         : $('#updateForm input.eTag'        ).attr('value'),
+      };
+      $.post('/transaction/update', postData, function(data) {
+        $('.currentBalance .number').html(data.currentBalance);
+      });
+      d3.csv("/transactions/view-data/[% urls.base %]", buildTransactionRows);
+
+      return false;
+    });
+
+    // do stuff when someone clicks the Transfer button
+    $("#transfer").bind('click', function () {
+
+      // return row to its original (non editable) form
+      var ed = $('#editable');
+      ed.find('.date'       ).html('<div class="date"       ><label>' + N.date        + '</label></div>');
+      ed.find('.description').html('<div class="description"><label>' + N.description + '</label></div>');
+      ed.find('.tag'        ).html('<div class="tag"        ><label>' + N.tag         + '</label></div>');
+      ed.find('.value'      ).html('<div class="value"      ><label>' + N.value       + '</label></div>');
+
+      // add a drop down so the user can select which account to transfer to 
+      $('#transfer').before(buildAccountsDropdown());
+      $('#split'   ).detach();
+      $('#transfer').detach();
+      $('#delete'  ).detach();
+      $('#update'  ).before('<button id="do-transfer">Transfer</button>');
+      $('#update'  ).detach();
+
+      $("#do-transfer").bind('click', function () {
+        var postData = {
+          accountId   : $('#accountId'        ).attr('value'),
+          accountId2  : $('#accountId2'       ).attr('value'),
+          assetId     : $('#editButtons input').attr('value'),
+        };
+        $.post('/transaction/transfer', postData, function(data) {
+          $('.currentBalance .number').html(data.currentBalance);
+        });
+        d3.csv("/transactions/view-data/[% urls.base %]", buildTransactionRows);
+        return false;
+      });
+
+      return false;
+    });
+
+    $("#split").bind('click', function () {
+      $('#updateForm').attr('action', '/transaction/split');
+
+      var ed = $('#editable');
+
+      ed.find('.date'       ).html('<label>' + N.date        + '</label>');
+      ed.find('.description').html('<label>' + N.description + '</label>');
+      ed.find('.tag'        ).html('<label>' + N.tag         + '</label>');
+
+      split = ed.clone();
+      split.find('.eDate'       ).attr('name', 'date2'       );
+      split.find('.eDescription').attr('name', 'description2');
+      split.find('.eTag'        ).attr('name', 'tag2'        );
+      split.find('.eValue'      ).attr('name', 'value2'      );
+      ed.after(split);
+
+      $('#split'   ).before(buildAccountsDropdown());
+      $('#split'   ).detach();
+      $('#transfer').detach();
+      $('#delete'  ).detach();
+      $('#update'  ).before('<button id="do-split">Split</button>');
+      $('#update'  ).detach();
+
+      var eValue1   = ed.find('.eValue');
+      var eValue2   = split.find('.eValue');
+      var eValues   = [eValue1, eValue2];
+      var value1    = getCleanValue(eValue1.attr('value'));
+      var total     = value1 * 1;
+      var newValue1 = Math.round(value1 * 100 / 2) / 100;
+      var newValue2 = Math.round((total - newValue1) * 100) / 100;
+      eValue1.attr('value', newValue1);
+      eValue2.attr('value', newValue2);
+      for (var i in eValues) {
+        eValues[i].bind('blur', function () {
+          if ($(this).attr('value') === '') {
+            $(this).attr('value', '0');
+          }
+          if ($(this).attr('value') === eValue1.attr('value')) {
+            var result = Math.round((total - eValue1.attr('value')) * 100) / 100;
+            eValue2.attr('value', result);
+          }
+          else {
+            var result = Math.round((total - eValue2.attr('value')) * 100) / 100;
+            eValue1.attr('value', result);
+          }
+        });
+      }
+
+      split.bind('click', handleRowClick);
+
+      $("#do-split").bind('click', function () {
+          var postData = {
+            accountId   : $('#accountId'        ).attr('value'),
+            accountId2  : $('#accountId2'       ).attr('value'),
+            assetId     : $('#editButtons input').attr('value'),
+            value       :    ed.find('.eValue').attr('value'),
+            value2      : split.find('.eValue').attr('value'),
+          };
+          $.post('/transaction/split', postData, function (data) {
+            $('.currentBalance .number').html(data.currentBalance);
+          });
+          d3.csv("/transactions/view-data/[% urls.base %]", buildTransactionRows);
+          return false;
+      });
+
+      return false;
+    });
+
+    // do stuff after someone clicks the Cancel button
+    $("#cancel").bind('click', function () {
+      $('#editButtons').detach();
+
+      N.lastFocus = $('input:focus').attr('class');
+
+      if ($(split).attr('id') === 'editable') {
+        split.detach();
+      }
+
+      $('#editable .date'       ).html(N.date);
+      $('#editable .description').html(N.description);
+      $('#editable .tag'        ).html(N.tag);
+      $('#editable .value'      ).html(N.value);
+      $('#editable .balance'    ).css('padding-top', '.5em');
+      $('#editable .balance'    ).css('padding-bottom', '.5em');
+      $('#editable'             ).attr('id', '');
+
+      return false;
+    });
+
+    // do stuff after someone clicks the Delete button
+    $("#delete").bind('click', function () {
+      var assetId = $('#editButtons input').attr('value');
+
+      $.post('/transaction/delete', {assetId: assetId}, function (data) {
+        $('#editable').detach();
+        $('#editButtons').detach();
+      } )
+
+      return false;
+    });
+
+    $('#editButtons').show();
+
+    return false;
+  };
+
+  // TODO: use N.getCleanValue()
+  function getCleanValue(v) {
+    v = v.replace(/^\./, '0.');
+    v = v.replace(/^[^0-9-]*/, '');
+    v = v.replace(/\D*$/, '');
+    v = v.replace(/,/g, '');
+    return v;
+  };
+  
+  function validInputs(classes) {
+    for (var i in classes) {
+      var a = $(classes[i]).first();
+      if (a.attr('value') === '') {
+        a.css('border', 'solid 1px orange');
+        a.css('border-right', 'solid .4em orange');
+        a.select();
+        return false;
+      }
+    }
+    return 1;
+  }
+  
+  // add a drop down so the user can select which account to transfer to 
+  function buildAccountsDropdown() {
+    var accountsDropdown = '';
+    accountsDropdown += '  <select id="accountId2" class="splitDropdown" name="accountId2">';
+  [% throwaway = accounts.reset %]
+  [% WHILE (a = accounts.next) %]
+    accountsDropdown += '    <option value="[% a.accountId %]">[% a.name %]</option>';
+  [% END %]
+    accountsDropdown += '  </select>';
+    return accountsDropdown;
+  }
+
+  //
+  // keyboard shortcuts
+  //
+  keymage('k',     up);
+  keymage('j',     down);
+  keymage('up',    up);
+  keymage('down',  down);
+  keymage('enter', edit);
+  keymage('esc',   cancel);
+  keymage('alt-s',     split);
+  keymage('alt-t',     transfer);
+
+  var index = -1;
+  function up () {
+    if ($('#editable').length > 0) {
+      return;
+    }
+
+    if (index == -1 || index == 0) {
+      index = 0;
+      $('#updateForm .row').eq(index).addClass('hover');
+      return;
+    }
+    var current = $('#updateForm .row').eq(index).removeClass('hover')
+      .prev().addClass('hover');
+    index = index - 1;
+
+    // scroll
+    var height = $(window).height();
+    var pos    = current.position().top;
+    $('html body').scrollTop(pos - height * (2/3));
+
+    return false;
+  }
+  function down () {
+    if ($('#editable').length > 0) {
+      return;
+    }
+
+    if (index == -1) {
+      index = 0;
+      $('#updateForm .row').eq(index).addClass('hover');
+      return;
+    }
+    var prev = $('#updateForm .row').eq(index);
+    var current = prev.next();
+    if (!current.hasClass('row')) {
+      return;
+    }
+    prev.removeClass('hover');
+    current.addClass('hover');
+    index = index + 1;
+
+    // scroll
+    var height = $(window).height();
+    var pos    = current.position().top - height * (2/3);
+    $('html body').scrollTop(pos);
+
+    return false;
+  }
+  function edit () { 
+    if ($('#editable').length == 0) {
+      $('#updateForm .row').eq(index).click(); 
+      return false; 
+    }
+  }
+  function split () { 
+    if ($('#split').length == 1) {
+      $('#split').click(); 
+      return false; 
+    }
+  }
+  function transfer () { 
+    if ($('#transfer').length == 1) {
+      $('#transfer').click(); 
+      return false; 
+    }
+  }
+  function cancel () {
+    if ($('#cancel').length == 1) {
+      $('#cancel').click();
+      return false;
+    }
+  }
+</script>
+
+[% INCLUDE footer.tt %]

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>[% title %]</title>
+    <meta name="description" content="[% description %]" />
+    <meta name="google-site-verification" content="foo" />
+[% IF dev -%]
+    <link rel="stylesheet" type="text/css" href="/css/minireset.css">
+    <link rel="stylesheet" type="text/css" href="/css/networthify.css">
+[% ELSE -%]
+    <link rel="stylesheet" type="text/css" href="[% psgixAssets.2 %]">
+[% END -%]
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
+[% IF importPage -%]
+    <link rel="stylesheet" type="text/css" href="[% psgixAssets.5 %]">
+    <!-- Shim to make HTML5 elements usable in older Internet Explorer versions -->
+    <!--[if lt IE 9]><script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+[% END -%]
+[% IF dev -%]
+    <script src="/js/jquery-1.7.2.min.js"></script>
+    <script src="/js/jquery.cookie.js"></script>
+[% ELSE -%]
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.2/jquery.cookie.min.js"></script>
+[% END -%]
+  </head>
+  <body>
+
+[% IF user.username == 'demo' %]
+    <div id="demo">THIS A DEMO.  <a href="/user/logout">I'm done with the demo, thanks.</a></div>
+[% END %]
+
+    <div id="top">
+      <a id="logo" href="/">Networth</a><a id="logoify" href="/">ify</a>
+[% INCLUDE accountbar.tt %]
+[% IF user.guest == 'y'|| !user  %]
+      <a class="topic" href='https://networthify.com/user/login'>Login</a>
+      <a class="topic" href='/'>Sign up</a>
+      <a class="topic" href="http://networthify.uservoice.com/forums/165071-networthify">Feedback</a>
+      <a class="topic" href="http://blog.networthify.com">Blog</a>
+      <ul class="menu transactions">
+        <li>
+          <a href="">Calculators</a>
+          <ul>
+            <li><a href='/calculator/earlyretirement'>When can I retire?</a></li>
+            <li><a href="/calculator/recurring-charges">Recurring charges</a><li>
+          </ul>
+        </li>
+      </ul>
+[% END %]
+[% IF user && user.guest != 'y' %]
+      <ul class="menu settings">
+        <li>
+          <a class="settings" href="">'</a>
+          <ul>
+            <li><a href='/user/view'>Preferences</a></li>
+            <li><a href="/account/manage/[% urls.base %]">Accounts</a><li>
+            <li><a href="http://networthify.uservoice.com/forums/165071-networthify">Feedback</a><li>
+            <li><a href='/user/logout'>Logout</a></li>
+          </ul>
+        </li>
+      </ul>
+      <ul class="menu transactions">
+        <li>
+          <a href="">Calculators</a>
+          <ul>
+            <li><a href='/calculator/earlyretirement'>When can I retire?</a></li>
+            <li><a href="/calculator/recurring-charges">Recurring charges</a><li>
+          </ul>
+        </li>
+      </ul>
+      <ul class="menu transactions">
+        <li>
+          <a id="analysis" href="">Analysis</a>
+          <ul>
+            <li><a href="/spending/[% urls.base %]"               >This month</a></li>
+       <!-- <li><a href="/spending/[% urls.base %]"               >Networth</a></li> -->
+          </ul>
+        </li>
+      </ul>
+      <ul class="menu transactions">
+        <li>
+          <a id="transactions" href="">Transactions</a>
+          <ul>
+            <li><a href="/transactions/view/[% urls.base %]"                >View transactions</a></li>
+        <!--<li><a href="/history/[% urls.base %]"                          >History</a></li>-->
+            <li><a href="/export/[% account.accountId %]/[% account.name %]">Export</a></li>
+            <li><a href="/import/[% account.accountId %]/[% account.name %]">Import</a></li>
+          </ul>
+        </li>
+      </ul>
+[% END %]
+    </div>
+
+<div class="margin">
+

@@ -1,0 +1,50 @@
+#!/usr/bin/env perl
+
+use strict;
+use warnings;
+use v5.19.6;
+
+use DateTime;
+use Getopt::Long::Descriptive;
+use Networth::Schema;
+use Authen::Passphrase::BlowfishCrypt;
+
+my $USER_ID    = 1;                                                                                                                                       
+my $ACCOUNT_ID = 1666;
+
+{
+    my ($options, $usage) = describe_options(
+        '%c %o',
+        [ 'help|h',	   "print this message" ],
+    );
+
+    die($usage->text) if $options->help;
+
+    my $password = Authen::Passphrase::BlowfishCrypt->new(
+        passphrase  => 'demo',
+        salt_random => 1,
+        cost        => 14,
+    );
+    my $user = Networth::Schema->rs('User')->create({
+        userId   => $USER_ID,
+        username => 'demo',
+        password => $password,
+        email    => 'demo',
+        guest    => 'n',
+        slug     => 'demo',
+    });
+    Networth::Schema->rs('Preference')->create({
+        userId         => $USER_ID,
+        currencyCode   => 'USD',
+        withdrawalRate => 4.0,
+        roi            => 7.0,
+        hourlyWage     => 20.0,
+        workDay        => 8.0,
+        daysPerYear    => 232.0,
+    });
+    $user->accounts->create({
+        accountId => $ACCOUNT_ID,
+        name      => 'Checking account',
+    });
+}
+

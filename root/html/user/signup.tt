@@ -1,0 +1,32 @@
+[% PROCESS header.tt %]
+
+<br>
+<div class="header">SIGN UP</div>
+<br>
+<br>
+
+<form method="post" action="/user/create" id="registerForm">
+  <label class="login">email</label>
+  <label class="login">password</label>
+  <div class="clear"></div>
+
+  <input class="login" id="email"    name="email"    type="text">
+  <input class="login" id="password" name="password" type="password">
+  <button type="submit">create account</button>
+  <div style="height: 3em" class="clear"></div>
+</form>
+
+<script>$("#email").focus();</script>
+<script>
+  var networthify_register_email = function (event) {
+    $("#email").attr("value","");
+  };
+  var networthify_register_password = function (event) {
+    $("#password").attr("value","");
+  };
+
+  $("#email").focus(networthify_register_email);
+  $("#password").focus(networthify_register_password);
+</script>
+
+[% PROCESS footer.tt %]

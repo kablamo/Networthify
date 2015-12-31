@@ -1,0 +1,19 @@
+[% INCLUDE header.tt %]
+
+<style>
+ div#errorMessage {
+  padding: 0em;
+  color: #333;
+ }
+</style>
+
+<div class="margin">
+  <br>
+  <br>
+
+[% FOREACH error IN errors %]
+  <div id="errorMessage"><code>[% error %]</code></div>
+[% END %]
+</div>
+
+[% INCLUDE footer.tt %]

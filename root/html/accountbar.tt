@@ -1,0 +1,64 @@
+[% IF showAccounts %]
+<div id="accountTitle">
+
+  <ul class="menu account">
+    <li>
+      <a>
+        <div class="text">ACCOUNT</div>
+        [% account.name || 'All accounts' %]
+        <span class="downarrow">▼<span>
+      </a>
+      <ul>
+      [% WHILE (a = accounts.next) %]
+        [% IF a.accountId != account.accountId %]
+        <li><a href="/[% urls.firstPart %]/[% a.accountId %]/[% a.name %]/[% urls.datePart %]">[% a.name %]</a></li>
+        [% END %]
+      [% END %]
+        <li><a id="all" href="/[% urls.firstPart %]">All Accounts</a></li>
+        <li><a id="createAccount" href="/account/create">+ Create Account</a></li>
+      </ul>
+    </li>
+  </ul>
+
+  [% IF date && !hideDate %]
+  <div id="dateStuff">
+    <a id="next" href="[% urls.next %]">&raquo;</a>
+    <div>
+      <span id="month">[% date.month_abbr %]</span><br>
+      <span id="year">[% date.year %]</span>
+    </div>
+    <a id="prev" href="[% urls.prev %]">&laquo;</a>
+  </div>
+  [% END %]
+
+</div>
+
+<style>
+</style>
+<div id="create-account-lightbox" class="lightbox">
+  <a href="">close</a>
+  <div class="lightbox-content">
+    <form method="post" action="/account/create" id="loginForm">
+      <input class="login" id="name" name="name" type="text">
+      <button type="submit">Create new account</button>
+      <div class="clear"></div>
+    </form>
+  </div>
+</div>
+<div id="create-account-lightbox-black" class="lightbox-black"></div>
+
+<script>
+  $(document).ready(function () {
+
+    $('#create-account-lightbox>a').bind('click', function () {
+      $("#create-account-lightbox, #create-account-lightbox-black").fadeOut(300);
+    });
+
+    $("#createAccount").bind('click', function () {
+      $("#create-account-lightbox, #create-account-lightbox-black").fadeIn(300);
+      return false;
+    });
+
+  }); 
+</script>
+[% END %]

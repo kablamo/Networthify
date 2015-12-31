@@ -1,0 +1,85 @@
+#!/usr/bin/env perl
+
+use strict;
+use warnings;
+use v5.19.6;
+
+use DateTime;
+use Getopt::Long::Descriptive;
+use Networth::Schema;
+
+my $USER_ID    = 1;                                                                                                                                       
+my $ACCOUNT_ID = 1666;
+
+{
+    my ($options, $usage) = describe_options(
+        '%c %o',
+        [ 'help|h',	   "print this message" ],
+    );
+
+    die($usage->text) if $options->help;
+
+    my $user = Networth::Schema->rs('User')->find({
+        userId   => $USER_ID,
+        username => 'demo',
+        email    => 'demo',
+        guest    => 'n',
+        slug     => 'demo',
+    }) || die "demo user is gone";
+
+    my $account = Networth::Schema->rs('Account')->find({
+        accountId => $ACCOUNT_ID,
+        userId    => $USER_ID,
+        name      => 'Checking account',
+    }) || die "checking account is gone";
+
+    $account->assets->create({userId => $USER_ID, %$_}) 
+        for transactionsForNewUsers();
+
+}
+
+sub transactionsForNewUsers {
+    my $today = Networth::Utils->now;
+    return ({
+        description => "Dinosaur: Manly Fragrance.",
+        value       => -70,
+        tag         => 'Household',
+        date        => $today->clone->subtract(days => 7),
+    },{
+        description => '800 Super strong magnets',
+        value       => -80,
+        tag         => 'Entertainment',
+        date        => $today->clone->subtract(days => 6),
+    },{
+        description => 'Debonaire bow tie and suspenders',
+        value       => -50,
+        tag         => 'Clothes',
+        date        => $today->clone->subtract(days => 5),
+    },{
+        description => 'Concrete coffee mug',
+        value       => -10,
+        tag         => 'Household',
+        date        => $today->clone->subtract(days => 4),
+    },{
+        description => 'Hearty steak',
+        value       => -10,
+        tag         => 'Dining out',
+        date        => $today->clone->subtract(days => 3),
+    },{
+        description => '50 pounds of pizza flavored dog kibbles',
+        value       => -40,
+        tag         => 'Dog',
+        date        => $today->clone->subtract(days => 2),
+    },{
+        description => 'Wild Man Beard Shampoo',
+        value       => -20,
+        tag         => 'Household',
+        date        => $today->clone->subtract(days => 1),
+    },{
+        description => 'Rocky Mountain Wilderness Rescue',
+        value       => 1000,
+        tag         => 'Salary',
+        date        => $today,
+    });
+}
+
