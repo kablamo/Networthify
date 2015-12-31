@@ -7,12 +7,12 @@ glance how many working days you have left before retirement.
 
 # Setup
 
-   # git clone 
-   # cd Networth
-   carton
-   cat schema.sql | sqlite3 networth.db.dev
-   script/createDemoUser
-   script/updateDemoUser
-   carton exec plackup
+    # git clone 
+    # cd Networth
+    carton
+    cat schema.sql | sqlite3 networth.db.dev
+    script/createDemoUser
+    script/updateDemoUser
+    carton exec plackup
 
-   # in your browser go to: http://localhost:5000
+    # in your browser go to: http://localhost:5000
