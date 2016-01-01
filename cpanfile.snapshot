@@ -267,12 +267,10 @@ DISTRIBUTIONS
     requirements:
       Carp::Clan 0
       Catalyst::Component::InstancePerContext 0
-      Catalyst::Devel 1.0
       Catalyst::Runtime 5.80005
       CatalystX::Component::Traits 0.14
       DBD::SQLite 0
       DBIx::Class 0.08114
-      DBIx::Class::Schema::Loader 0.04005
       ExtUtils::MakeMaker 6.59
       Hash::Merge 0
       List::MoreUtils 0
@@ -1285,16 +1283,6 @@ DISTRIBUTIONS
       SQL::Translator 0
       Test::More 0.89
       parent 0
-  DBIx-Class-InflateColumn-Currency-0.02005
-    pathname: C/CL/CLACO/DBIx-Class-InflateColumn-Currency-0.02005.tar.gz
-    provides:
-      DBIx::Class::InflateColumn::Currency 0.02005
-    requirements:
-      Class::Accessor::Grouped 0.03
-      DBD::SQLite 1.11
-      DBIx::Class 0.07005
-      Data::Currency 0.03
-      ExtUtils::MakeMaker 6.82
   DBIx-Class-IntrospectableM2M-0.001001
     pathname: G/GR/GRODITI/DBIx-Class-IntrospectableM2M-0.001001.tar.gz
     provides:
@@ -2771,113 +2759,6 @@ DISTRIBUTIONS
       File::Spec 0
       strict 0
       warnings 0
-  Fey-0.40
-    pathname: D/DR/DROLSKY/Fey-0.40.tar.gz
-    provides:
-      Fey 0.40
-      Fey::Column 0.40
-      Fey::Column::Alias 0.40
-      Fey::Exceptions 0.40
-      Fey::FK 0.40
-      Fey::FakeDBI 0.40
-      Fey::Literal 0.40
-      Fey::Literal::Function 0.40
-      Fey::Literal::Null 0.40
-      Fey::Literal::Number 0.40
-      Fey::Literal::String 0.40
-      Fey::Literal::Term 0.40
-      Fey::NamedObjectSet 0.40
-      Fey::Placeholder 0.40
-      Fey::Role::ColumnLike 0.40
-      Fey::Role::Comparable 0.40
-      Fey::Role::Groupable 0.40
-      Fey::Role::HasAliasName 0.40
-      Fey::Role::IsLiteral 0.40
-      Fey::Role::Joinable 0.40
-      Fey::Role::MakesAliasObjects 0.40
-      Fey::Role::Named 0.40
-      Fey::Role::Orderable 0.40
-      Fey::Role::SQL::Cloneable 0.40
-      Fey::Role::SQL::HasBindParams 0.40
-      Fey::Role::SQL::HasLimitClause 0.40
-      Fey::Role::SQL::HasOrderByClause 0.40
-      Fey::Role::SQL::HasWhereClause 0.40
-      Fey::Role::SQL::ReturnsData 0.40
-      Fey::Role::Selectable 0.40
-      Fey::Role::SetOperation 0.40
-      Fey::Role::TableLike 0.40
-      Fey::SQL 0.40
-      Fey::SQL::Delete 0.40
-      Fey::SQL::Except 0.40
-      Fey::SQL::Fragment::Join 0.40
-      Fey::SQL::Fragment::Where::Boolean 0.40
-      Fey::SQL::Fragment::Where::Comparison 0.40
-      Fey::SQL::Fragment::Where::SubgroupEnd 0.40
-      Fey::SQL::Fragment::Where::SubgroupStart 0.40
-      Fey::SQL::Insert 0.40
-      Fey::SQL::Intersect 0.40
-      Fey::SQL::Select 0.40
-      Fey::SQL::Union 0.40
-      Fey::SQL::Update 0.40
-      Fey::SQL::Where 0.40
-      Fey::Schema 0.40
-      Fey::Table 0.40
-      Fey::Table::Alias 0.40
-      Fey::Types 0.40
-      Fey::Types::Internal 0.40
-    requirements:
-      DBI 0
-      Exception::Class 0
-      Exporter 0
-      ExtUtils::MakeMaker 6.31
-      Fey::Test 0.05
-      File::Temp 0
-      List::AllUtils 0
-      Moose 0.90
-      MooseX::Params::Validate 0.08
-      MooseX::Role::Parameterized 0.04
-      MooseX::SemiAffordanceAccessor 0.03
-      MooseX::StrictConstructor 0.07
-      MooseX::Types 0
-      Scalar::Util 0
-      Task::Weaken 0.99
-      Test::MockObject 0
-      Test::More 0.88
-      Tie::IxHash 0
-      namespace::autoclean 0
-  Fey-Loader-0.13
-    pathname: D/DR/DROLSKY/Fey-Loader-0.13.tar.gz
-    provides:
-      Fey::Loader 0.13
-      Fey::Loader::DBI 0.13
-      Fey::Loader::Pg 0.13
-      Fey::Loader::SQLite 0.13
-      Fey::Loader::mysql 0.13
-    requirements:
-      DBI 0
-      ExtUtils::MakeMaker 6.30
-      Fey 0
-      Fey::Test 0.10
-      Moose 0
-      MooseX::Params::Validate 0.08
-      Scalar::Util 0
-      Test::More 0.88
-      namespace::autoclean 0
-  Fey-Test-0.10
-    pathname: D/DR/DROLSKY/Fey-Test-0.10.tar.gz
-    provides:
-      Fey::Test 0.10
-      Fey::Test::Loader 0.10
-      Fey::Test::Pg 0.10
-      Fey::Test::SQLite 0.10
-      Fey::Test::mysql 0.10
-    requirements:
-      DBI 0
-      ExtUtils::MakeMaker 6.30
-      File::Temp 0
-      List::MoreUtils 0
-      Test::MockObject 0
-      Test::More 0
   File-Assets-0.064
     pathname: R/RK/RKRIMEN/File-Assets-0.064.tar.gz
     provides:
@@ -4298,25 +4179,6 @@ DISTRIBUTIONS
       ExtUtils::MakeMaker 6.31
       Moose 1.16
       Test::More 0.88
-  MooseX-StrictConstructor-0.19
-    pathname: D/DR/DROLSKY/MooseX-StrictConstructor-0.19.tar.gz
-    provides:
-      MooseX::StrictConstructor 0.19
-      MooseX::StrictConstructor::Trait::Class 0.19
-      MooseX::StrictConstructor::Trait::Method::Constructor 0.19
-    requirements:
-      B 0
-      ExtUtils::MakeMaker 6.30
-      Moose 0.94
-      Moose::Exporter 0
-      Moose::Role 0
-      Moose::Util::MetaRole 0
-      Test::Fatal 0
-      Test::Moose 0
-      Test::More 0.88
-      namespace::autoclean 0
-      strict 0
-      warnings 0
   MooseX-Test-Role-0.03
     pathname: P/PB/PBOYD/MooseX-Test-Role-0.03.tar.gz
     provides:

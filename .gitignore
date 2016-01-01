@@ -7,3 +7,5 @@ networth.db.dev
 networth.db.test
 access
 errors
+networth.conf
+cpanfile.snapshot
