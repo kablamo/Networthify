@@ -10,15 +10,18 @@ on your phone).
 
 ## 2. Deploy to a preview URL
 
-- [ ] Cloudflare dashboard → Workers & Pages → Create → Pages → connect the
-      GitHub repo.  Framework preset: none.  Build command: empty.  Output
-      directory: `site`.
-- [ ] Open the `*.pages.dev` URL on your phone and desktop.  Check:
-  - [ ] `/` and `/calculator/earlyretirement` show the calculator
-  - [ ] `/calculator/earlyretirement?income=70000&initialBalance=0&expenses=25200&annualPct=5&withdrawalRate=4` shows 10.9 years
-  - [ ] `/fi`, `/earlyretirement/`, `/calculator/real-cost` redirect (301), keeping any `?income=...`
-  - [ ] `/calculator/recurring-charges` works
-  - [ ] `/transactions/view` shows the 404 page
+- [x] Cloudflare dashboard → Workers & Pages → Create application → "Continue
+      to Pages" (the Workers screen is the wrong one) → Import an existing Git
+      repository.  Production branch: `static-site`.  Framework preset: none.
+      Build command: empty.  Output directory: `site`.
+      Preview: https://networthify.pages.dev/
+- [x] Check the preview:
+  - [x] `/` and `/calculator/earlyretirement` show the calculator
+  - [x] `/calculator/earlyretirement?income=70000&initialBalance=0&expenses=25200&annualPct=5&withdrawalRate=4` shows 10.9 years
+  - [x] `/fi`, `/earlyretirement/`, `/calculator/real-cost` redirect (301), keeping any `?income=...`
+  - [x] `/calculator/recurring-charges` works
+  - [x] `/transactions/view` shows the 404 page
+  - [ ] Look at it yourself on your phone
 - [ ] Pages project → Metrics → enable Web Analytics.
 
 ## 3. Move DNS (aim for early-to-mid November; if it slips past ~Dec 1, wait until February)
