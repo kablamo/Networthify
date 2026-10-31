@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- a rising net worth line, in the calculator's green on its dark band -->
+  <rect width="32" height="32" rx="6" fill="#333"/>
+  <path d="M6 24 L13 18 L18 20 L26 9" fill="none" stroke="#adff2f" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
