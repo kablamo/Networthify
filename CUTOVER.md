@@ -21,8 +21,11 @@ on your phone).
   - [x] `/fi`, `/earlyretirement/`, `/calculator/real-cost` redirect (301), keeping any `?income=...`
   - [x] `/calculator/recurring-charges` works
   - [x] `/transactions/view` shows the 404 page
-  - [ ] Look at it yourself on your phone
-- [ ] Pages project → Metrics → enable Web Analytics.
+  - [x] Look at it yourself on your phone
+- [x] Pages project → Metrics → enable Web Analytics.
+- [x] Search Console → Settings → Ownership verification: verified by DNS
+      (Pages turns `/googlebd4e59492976fb15.html` into a redirect, so the
+      HTML file method won't work there.  Keep the TXT records.)
 
 ## 3. Move DNS (aim for early-to-mid November; if it slips past ~Dec 1, wait until February)
 
