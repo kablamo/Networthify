@@ -170,7 +170,7 @@
       var out = M.realCost(values);
       render(values, true);
       window.shareLink({
-        title: 'Understand recurring charges',
+        title: 'What do my subscriptions really cost?',
         text: 'A ' + values.period + ' charge of $' + values.price + ' really costs $' + out.costs[values.years - 1].money + ' over ' + values.years + (values.years === 1 ? ' year.' : ' years.'),
         url: window.location.origin + shareUrl(values),
       }, $('copied'));
