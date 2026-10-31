@@ -6,9 +6,6 @@ on your phone).
 
 ## 1. Before the switch
 
-- [ ] Search Console → Performance: write down last 28 days of clicks, and the
-      average position for `/calculator/earlyretirement` (all devices and
-      mobile only).  This is the baseline.
 - [ ] Find your logins: Namecheap, Cloudflare (or sign up), prgmr.com.
 
 ## 2. Deploy to a preview URL
@@ -44,9 +41,15 @@ on your phone).
 - [ ] `curl -I https://www.networthify.com/` and `http://networthify.com/` → 301 to `https://networthify.com/`.
 - [ ] Search Console → Sitemaps → submit `https://networthify.com/sitemap.xml`.
 - [ ] Search Console → URL Inspection → `/calculator/earlyretirement` → Request indexing.
-- [ ] Watch Search Console weekly for 4–6 weeks and compare with the baseline.
 - [ ] Keep the prgmr VPS running 30 days as a rollback (switch the DNS record
       back to `71.19.156.131`), then cancel it.
+- [ ] Search Console → Performance → right-click the chart on the switch day →
+      Add annotation: "Moved to Cloudflare Pages".  Search Console keeps 16
+      months of history, so there's nothing to write down beforehand.
+- [ ] Weekly for 4–6 weeks, watch the average position for
+      `/calculator/earlyretirement` (all devices and mobile only), using Compare: the weeks after the switch
+      against the weeks before.  Clicks rise every January and are down on
+      last year, so position is the fairer test.
 
 ## Later
 
