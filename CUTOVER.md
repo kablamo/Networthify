@@ -29,8 +29,18 @@ on your phone).
 
 ## 3. Move DNS (aim for early-to-mid November; if it slips past ~Dec 1, wait until February)
 
-- [ ] Cloudflare → Add a site → `networthify.com` → Free plan.  It imports the
-      current DNS records.  **Confirm these came across exactly:**
+- [ ] Cloudflare → Add a domain → `networthify.com` → Free plan.  It imports the
+      current DNS records.  Namecheap had (checked 2026-10-31):
+
+      | Record                      | Value                          | Keep? |
+      |-----------------------------|--------------------------------|-------|
+      | `@` A                       | `71.19.156.131` (the VM)       | yes for now, DNS only (grey cloud); Pages replaces it |
+      | `www` A                     | `71.19.156.131` (the VM)       | yes for now, DNS only (grey cloud); Pages replaces it |
+      | `@` MX                      | `1 smtp.google.com`            | **yes, exactly** |
+      | `@` TXT ×2                  | `google-site-verification=KB20ukDY…` and `=XNUzmkwa…` | **yes, exactly** (Search Console) |
+      | `*` URL redirect            | Namecheap's redirect server    | no: Namecheap-only, won't import |
+      | `blog` CNAME                | `kablamo.github.com`           | no: dead, delete if it imports |
+
   - [ ] `MX networthify.com → smtp.google.com` (priority 1)
   - [ ] both `TXT google-site-verification=...` records (Search Console needs them)
 - [ ] Namecheap → Domain → Nameservers → Custom DNS → the two Cloudflare
@@ -47,8 +57,14 @@ on your phone).
 - [ ] `curl -I https://www.networthify.com/` and `http://networthify.com/` → 301 to `https://networthify.com/`.
 - [ ] Search Console → Sitemaps → submit `https://networthify.com/sitemap.xml`.
 - [ ] Search Console → URL Inspection → `/calculator/earlyretirement` → Request indexing.
-- [ ] Keep the prgmr VPS running 30 days as a rollback (switch the DNS record
-      back to `71.19.156.131`), then cancel it.
+- [ ] Keep the VPS running 30 days as a rollback (switch the DNS record
+      back to `71.19.156.131`), then cancel it at tornadovps.com (formerly
+      prgmr; the service label is probably `kablamo`).  Anything that's only
+      on the VM is lost: old Dovecot mail, whatever iijo.org ran (it already
+      returns 502), and `backups/`, `csv/`, `networth.db`.
+- [ ] When you cancel, remove iijo.org's A record (`71.19.156.131`), and any
+      other domain pointing at that IP.  The address goes to another customer,
+      and their site would show up on your domain.
 - [ ] Search Console → Performance → right-click the chart on the switch day →
       Add annotation: "Moved to Cloudflare Pages".  Search Console keeps 16
       months of history, so there's nothing to write down beforehand.
@@ -59,7 +75,17 @@ on your phone).
 
 ## Later
 
-- Fix email (Google Workspace, or Cloudflare Email Routing to Gmail).
+- Fix email: add networthify.com to the iijo.org Google Workspace as a
+  user alias domain, so mail lands in the same Gmail and you can send as
+  @networthify.com.  The MX (`smtp.google.com`) is already right; mail
+  bounces because no Workspace account has the domain.
+  - admin.google.com → Account → Domains → Manage domains → Add a domain →
+    `networthify.com` → User alias domain.  Add the verification TXT record
+    it gives you in Cloudflare.
+  - SPF: TXT `@` `v=spf1 include:_spf.google.com ~all`
+  - DKIM: Admin → Apps → Google Workspace → Gmail → Authenticate email →
+    generate, add the TXT record, then Start authentication.
+  - DMARC: TXT `_dmarc` `v=DMARC1; p=none; rua=mailto:<you>@iijo.org`
 - Delete the Perl app from the repo once the new site has been stable for a while.
 - Post-launch experiments, one at a time: meta description, show the FIRE
   number, a "how the math works" section and FAQ, monthly contributions,
