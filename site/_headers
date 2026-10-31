@@ -7,3 +7,7 @@
 # CSS and JS keep Cloudflare's default (always check with the server, which is
 # a quick 304 when nothing changed).  The file names never change, so a longer
 # cache would mix a new page with an old stylesheet after a deploy.
+
+# Keep search engines off the pages.dev copy: the real site is networthify.com
+https://networthify.pages.dev/*
+  X-Robots-Tag: noindex
