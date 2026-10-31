@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Early Retirement Calculator</title>
+  <link rel="canonical" href="https://networthify.com/calculator/earlyretirement">
+  <link rel="stylesheet" href="/css/site.css">
+</head>
+<body>
+  <!-- NOTE: site/index.html must be an exact copy of this file.  The tests check it. -->
+  <header class="wrap top">
+    <a class="logo" href="/">Networth<span>ify</span></a>
+    <button type="button" class="menu-button" aria-expanded="false" aria-controls="siteNav" aria-label="Menu" hidden>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+    <nav id="siteNav">
+      <a href="/calculator/earlyretirement" aria-current="page">When can I retire?</a>
+      <a href="/calculator/recurring-charges">What do my subscriptions really cost?</a>
+      <a href="/savings-rate-by-country">How much do others save?</a>
+      <a href="/do-i-need-a-high-income-to-retire-early">Do I need a high income?</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="wrap">
+      <h1>When can I retire?</h1>
+
+      <p class="intro">
+        You are financially independent when your investment returns can cover
+        your annual expenses.  However, growing your net worth with compound
+        interest is slow.  To retire in 5 or 10 years, the most important number
+        is your savings rate.  <a href="http://www.mrmoneymustache.com/2012/01/13/the-shockingly-simple-math-behind-early-retirement/">Learn more.</a>
+        <button type="button" class="link-button" id="toggleAssumptions" aria-expanded="false" aria-controls="assumptions">Show assumptions</button>
+      </p>
+      <div class="assumptions" id="assumptions" hidden>
+        This calculator makes assumptions
+        <ul>
+          <li>Your <i>expenses</i> now equal your expenses in retirement</li>
+          <li>You will never draw down the principal.  Your net worth will never shrink.</li>
+          <li><i>After tax income</i> is what you earn after taxes</li>
+          <li><i>Annual return on investment</i> is after taxes and inflation</li>
+        </ul>
+      </div>
+
+      <noscript><p class="noscript">This calculator needs JavaScript turned on.</p></noscript>
+
+      <form id="fiForm" novalidate>
+        <div class="fields">
+          <div class="group">
+          <div class="period" role="radiogroup" aria-label="Amounts are">
+            <label><input type="radio" name="period" value="annual" checked> yearly</label>
+            <label><input type="radio" name="period" value="monthly"> monthly</label>
+          </div>
+
+          <label for="income">After tax income</label>
+          <input id="income" name="income" type="text" inputmode="decimal" value="50000">
+          <span class="unit" id="incomeUnit">/yr</span>
+          <span class="warning" id="incomeWarning"></span>
+
+          <label for="annualSavings">Savings</label>
+          <input id="annualSavings" name="annualSavings" type="text" inputmode="decimal" value="30000">
+          <span class="unit" id="annualSavingsUnit">/yr</span>
+          <span class="warning" id="annualSavingsWarning"></span>
+
+          <label for="annualExpenses">Expenses</label>
+          <input id="annualExpenses" name="annualExpenses" type="text" inputmode="decimal" value="20000">
+          <span class="unit" id="annualExpensesUnit">/yr</span>
+          <span class="warning" id="annualExpensesWarning"></span>
+          </div>
+
+          <label for="savingsRate">Savings rate</label>
+          <input id="savingsRate" name="savingsRate" type="text" inputmode="decimal" value="60">
+          <span class="unit">%</span>
+          <span class="warning" id="savingsRateWarning"></span>
+
+          <label for="initialBalance">Portfolio value</label>
+          <input id="initialBalance" name="initialBalance" type="text" inputmode="decimal" value="0">
+          <span class="unit"></span>
+          <span class="warning" id="initialBalanceWarning"></span>
+        </div>
+
+        <div class="fields" id="moreOptions" hidden>
+          <label for="annualPct">Annual return on investment</label>
+          <input id="annualPct" name="annualPct" type="text" inputmode="decimal" value="5">
+          <span class="unit">%</span>
+          <span class="warning" id="annualPctWarning"></span>
+
+          <label for="withdrawalRate">Withdrawal rate</label>
+          <input id="withdrawalRate" name="withdrawalRate" type="text" inputmode="decimal" value="4">
+          <span class="unit">%</span>
+          <span class="warning" id="withdrawalRateWarning"></span>
+        </div>
+
+        <div class="fields actions">
+          <button type="button" class="link-button toggle" id="toggleMore" aria-expanded="false" aria-controls="moreOptions">+ Show more options</button>
+          <span class="go">
+            <button id="fiButton" type="submit">Crunch the numbers</button>
+          </span>
+        </div>
+      </form>
+    </div>
+
+    <!-- the answer, in a dark band like the recurring charges results -->
+    <section class="answer">
+      <div class="wrap">
+        <dl class="big-numbers" aria-live="polite">
+          <dt>You can retire in</dt>
+          <dd class="number" id="yearsToFIText">12.4 years</dd>
+
+          <dt>with a savings rate of</dt>
+          <dd class="number" id="savingsRateText">60%</dd>
+
+          <!-- expenses / withdrawal rate -->
+          <dt class="goal">Your goal net worth is</dt>
+          <dd class="goal" id="goalText">500,000</dd>
+
+          <!-- expenses follow the yearly / monthly switch -->
+          <dt class="goal-detail">which covers expenses of</dt>
+          <dd class="goal-detail" id="goalExpensesText">20,000 a year</dd>
+
+          <dt class="goal-detail">with a withdrawal rate of</dt>
+          <dd class="goal-detail" id="goalRateText">4%</dd>
+        </dl>
+
+        <!-- says why when the answer is "never", or when the portfolio gets there without savings -->
+        <p class="explain" id="explain" hidden></p>
+
+        <p class="share">
+          <button type="button" class="share-button" id="share">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7"/><path d="M16 6l-4-4-4 4"/><path d="M12 2v13"/></svg>
+            Share your results
+          </button>
+          <span class="copied" id="copied" role="status"></span>
+        </p>
+      </div>
+    </section>
+
+    <div class="wrap">
+      <section class="chart-area" aria-labelledby="exploreTitle">
+        <h2 id="exploreTitle">Explore different savings rates</h2>
+        <p class="chart-hint"><span id="chartVerb">Click</span> the graph to try a different savings rate.</p>
+        <div id="chart" tabindex="0" role="slider" aria-label="Savings rate"
+             aria-valuemin="0" aria-valuemax="100" aria-valuenow="60" aria-valuetext="60% savings rate, 12.4 years"></div>
+        <p class="country-legend" id="countryLegend" hidden>
+          Avg household savings*: <span>UK 4%</span> · <span>US 6%</span> · <span>Germany 10%</span> ·
+          <span>France 13%</span> · <span>China 35%</span>
+        </p>
+      </section>
+
+      <details class="breakdown" id="breakdown">
+        <summary>Year-by-year breakdown</summary>
+        <div class="table-scroll">
+          <table class="years" id="fi"></table>
+        </div>
+      </details>
+
+      <p class="sources">*Household net saving as a share of disposable income, latest year (2023 to 2025). Source: OECD.  <a href="/savings-rate-by-country" id="compareLink">How does your savings rate compare?</a>
+        · <a href="/do-i-need-a-high-income-to-retire-early">Do I need a high income to retire early?</a></p>
+
+      <!-- Reserved for a future "Next steps" section (disclosed affiliate links). -->
+      <section id="nextSteps" hidden></section>
+    </div>
+  </main>
+
+  <script src="/js/share.js"></script>
+  <script src="/js/fi-math.js"></script>
+  <script src="/js/fi-calculator.js"></script>
+  <script src="/js/menu.js"></script>
+</body>
+</html>

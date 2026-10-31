@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Do I Need a High Income to Retire Early?</title>
+  <meta name="description" content="No. How long it takes to retire depends on your savings rate, not your income. See two people on very different pay retire in the same year.">
+  <link rel="canonical" href="https://networthify.com/do-i-need-a-high-income-to-retire-early">
+  <link rel="stylesheet" href="/css/site.css">
+</head>
+<body>
+  <header class="wrap top">
+    <a class="logo" href="/">Networth<span>ify</span></a>
+    <button type="button" class="menu-button" aria-expanded="false" aria-controls="siteNav" aria-label="Menu" hidden>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+    <nav id="siteNav">
+      <a href="/calculator/earlyretirement">When can I retire?</a>
+      <a href="/calculator/recurring-charges">What do my subscriptions really cost?</a>
+      <a href="/savings-rate-by-country">How much do others save?</a>
+      <a href="/do-i-need-a-high-income-to-retire-early" aria-current="page">Do I need a high income?</a>
+    </nav>
+  </header>
+
+  <main class="wrap">
+    <h1 class="left">Do I need a high income to retire early?</h1>
+    <p class="answer-lede">
+      No.  How long it takes depends on your savings rate, not your income.
+    </p>
+
+    <noscript><p class="noscript">The charts on this page need JavaScript turned on.</p></noscript>
+
+    <section class="pair-demo" aria-labelledby="pairTitle">
+    <div class="stick-mark" id="stickMark"></div>
+    <div class="card rate-bar" id="rateBar">
+      <div class="rate-pick">
+        <label for="rate">Meet Pickles and Waffles, two hard-working people who both save <output id="rateOut" for="rate">50%</output> of their pay</label>
+        <input id="rate" type="range" min="10" max="95" step="1" value="50" aria-valuetext="50% of their pay">
+        <div class="rate-ticks">
+          <button type="button" tabindex="-1" data-rate="10">10%</button>
+          <button type="button" tabindex="-1" data-rate="25">25%</button>
+          <button type="button" tabindex="-1" data-rate="50">50%</button>
+          <button type="button" tabindex="-1" data-rate="75">75%</button>
+          <button type="button" tabindex="-1" data-rate="90">90%</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- the answer, in a dark band like the calculators.  it changes as the slider moves -->
+    <div class="answer pair-answer">
+      <dl class="big-numbers">
+        <dt class="two-lines"><span>Pickles and Waffles</span> <span>both retire in</span></dt>
+        <dd class="number" id="bothYears">17 years</dd>
+
+        <dt class="goal">Pickles earns</dt>
+        <dd class="goal"><span id="aEarns">$50,000</span> <span class="per">/yr</span></dd>
+
+        <dt>Waffles earns</dt>
+        <dd><span id="bEarns">$200,000</span> <span class="per">/yr</span></dd>
+      </dl>
+    </div>
+
+    <div class="pair-cards">
+    <div class="card">
+      <h2 id="pairTitle">Different pay, same retirement date</h2>
+      <p class="warning" id="pairWarning" hidden></p>
+
+      <table class="pair" id="pairTable">
+        <thead><tr><th></th><th>Pickles</th><th>Waffles</th></tr></thead>
+        <tbody>
+          <tr class="earns">
+            <th>Earns /yr</th>
+            <td><input id="aIncome" type="text" inputmode="decimal" value="50,000" aria-label="Pickles earns a year"></td>
+            <td><input id="bIncome" type="text" inputmode="decimal" value="200,000" aria-label="Waffles earns a year"></td>
+          </tr>
+          <tr><th>Saves /yr</th><td id="aSaves"></td><td id="bSaves"></td></tr>
+          <tr><th>Spends /yr</th><td id="aSpends"></td><td id="bSpends"></td></tr>
+          <tr><th>Needs</th><td id="aGoal"></td><td id="bGoal"></td></tr>
+          <tr class="same"><th>Retires in</th><td id="aYears"></td><td id="bYears"></td></tr>
+        </tbody>
+      </table>
+      <p class="pair-why" id="pairWhy"></p>
+    </div>
+
+    <div class="card">
+      <h2 id="dollarsTitle">Different net worth, same retirement date</h2>
+      <div class="line-chart" id="dollarsChart"></div>
+      <p class="legend"><span class="key low"></span>Pickles <span class="key high"></span>Waffles</p>
+
+      <details class="about-data">
+        <summary>About these numbers</summary>
+        <p>
+          The same assumptions as the
+          <a href="/calculator/earlyretirement">early retirement calculator</a>:
+          both start from nothing, earn 5% a year after inflation, and retire
+          when 4% of their savings covers a year of spending.  That means
+          saving 25 times what you spend in a year.
+        </p>
+      </details>
+    </div>
+    </div>
+    </section>
+
+    <section class="prose">
+      <h2>Why income cancels out</h2>
+      <p>
+        Earning more lets you save more, but if you save the same share, you
+        spend more too.  A bigger lifestyle needs a bigger nest egg to pay for
+        it.  Save four times as much a year and you need four times as much in
+        the end, so you get there at the same time.
+      </p>
+      <p>
+        What does help is a higher savings rate.  It works twice: you put more
+        away each year, and you need less, because you've learned to live on less.
+      </p>
+
+      <h2>What income does change</h2>
+      <p>
+        A higher income makes a high savings rate easier.  Rent and food take
+        most of a small paycheck, so saving half of $30,000 is much harder than
+        saving half of $200,000.  And the higher earner retires with a bigger
+        cushion for surprises.  But on the same savings rate, both people reach
+        retirement at the same time.
+      </p>
+      <p>
+        <a href="/calculator/earlyretirement">Work out when you could retire</a>
+      </p>
+    </section>
+  </main>
+
+  <script src="/js/fi-math.js"></script>
+  <script src="/js/line-chart.js"></script>
+  <script src="/js/income-vs-rate.js"></script>
+  <script src="/js/menu.js"></script>
+</body>
+</html>

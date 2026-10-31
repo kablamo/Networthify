@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Understanding Recurring Charges</title>
+  <link rel="canonical" href="https://networthify.com/calculator/recurring-charges">
+  <link rel="stylesheet" href="/css/site.css">
+</head>
+<body>
+  <header class="wrap top">
+    <a class="logo" href="/">Networth<span>ify</span></a>
+    <button type="button" class="menu-button" aria-expanded="false" aria-controls="siteNav" aria-label="Menu" hidden>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+    <nav id="siteNav">
+      <a href="/calculator/earlyretirement">When can I retire?</a>
+      <a href="/calculator/recurring-charges" aria-current="page">What do my subscriptions really cost?</a>
+      <a href="/savings-rate-by-country">How much do others save?</a>
+      <a href="/do-i-need-a-high-income-to-retire-early">Do I need a high income?</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="wrap">
+      <h1>What do my subscriptions really cost?</h1>
+
+      <p class="intro">
+        Recurring charges feel small and that can be deceiving.  The total price
+        you pay includes not just the sticker price but also the <b>opportunity
+        cost</b> or the income you could have earned from investing that money.
+        You should also consider how much it will cost you to maintain this expense
+        after retirement.
+        <a href="http://www.mrmoneymustache.com/2011/04/15/getting-started-3-eliminate-short-termitis-the-bankruptcy-disease/">Learn more.</a>
+      </p>
+
+      <form id="costForm" action="/calculator/recurring-charges" novalidate>
+        <div class="fields">
+          <div class="period" role="radiogroup" aria-label="How often">
+            <label><input type="radio" name="period" value="daily"> daily</label>
+            <label><input type="radio" name="period" value="weekly"> weekly</label>
+            <label><input type="radio" name="period" value="monthly" checked> monthly</label>
+            <label><input type="radio" name="period" value="annual"> yearly</label>
+          </div>
+
+          <label for="price">Price</label>
+          <input id="price" name="price" type="text" inputmode="decimal" value="10">
+          <span class="unit" id="priceUnit">/mo</span>
+          <span class="warning" id="priceWarning"></span>
+
+          <label for="hourlyWage">Hourly wage after taxes</label>
+          <input id="hourlyWage" name="hourlyWage" type="text" inputmode="decimal" value="20">
+          <span class="unit"></span>
+          <span class="warning" id="hourlyWageWarning"></span>
+
+          <label for="years">Over how many years</label>
+          <input id="years" name="years" type="text" inputmode="numeric" value="10">
+          <span class="unit"></span>
+          <span class="warning" id="yearsWarning"></span>
+        </div>
+
+        <div class="fields" id="moreOptions" hidden>
+          <label for="roi">Annual return on investment</label>
+          <input id="roi" name="roi" type="text" inputmode="decimal" value="7">
+          <span class="unit">%</span>
+          <span class="warning" id="roiWarning"></span>
+
+          <label for="withdrawalRate">Annual withdrawal rate</label>
+          <input id="withdrawalRate" name="withdrawalRate" type="text" inputmode="decimal" value="4">
+          <span class="unit">%</span>
+          <span class="warning" id="withdrawalRateWarning"></span>
+
+          <label for="workDay">Hours in a working day</label>
+          <input id="workDay" name="workDay" type="text" inputmode="decimal" value="8">
+          <span class="unit">hrs</span>
+          <span class="warning" id="workDayWarning"></span>
+
+          <label for="daysPerYear">Working days in a year</label>
+          <input id="daysPerYear" name="daysPerYear" type="text" inputmode="decimal" value="232">
+          <span class="unit">dys</span>
+          <span class="warning" id="daysPerYearWarning"></span>
+        </div>
+
+        <div class="fields actions">
+          <button type="button" class="link-button toggle" id="toggleMore" aria-expanded="false" aria-controls="moreOptions">+ More options</button>
+          <span class="go">
+            <button type="submit">Crunch the numbers</button>
+          </span>
+        </div>
+      </form>
+    </div>
+
+    <!-- Filled in from the defaults so the page makes sense before the script runs. -->
+    <!-- the answer, in a dark band like the early retirement calculator -->
+    <section class="answer cost-answer">
+      <div class="wrap">
+        <!-- labels on the left, numbers on the right, like the early
+             retirement calculator.  the total, then its two parts -->
+        <dl class="big-numbers" id="costNumbers" aria-live="polite">
+          <dt class="two-lines"><span>Over <span id="yearsText">10 years</span>,</span> <span><span id="chargeText">$10 a month</span> really costs</span></dt>
+          <dd class="number" id="tenYearText">$1,731</dd>
+
+          <dt class="goal">subscription fees</dt>
+          <dd class="goal" id="paidText">$1,200</dd>
+
+          <dt>missed returns</dt>
+          <dd id="lostText">$531</dd>
+
+          <dt>work to earn it</dt>
+          <dd id="tenYearWork">11 days</dd>
+        </dl>
+
+        <p class="share">
+          <button type="button" class="share-button" id="share">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7"/><path d="M16 6l-4-4-4 4"/><path d="M12 2v13"/></svg>
+            Share your results
+          </button>
+          <span class="copied" id="copied" role="status"></span>
+        </p>
+      </div>
+    </section>
+
+    <div class="wrap">
+      <section class="card" aria-labelledby="gapTitle">
+        <h2 id="gapTitle">Subscription fees vs. what it really costs</h2>
+        <p class="chart-hint"><span id="gapVerb">Click</span> the graph to try a different number of years.</p>
+        <div class="line-chart" id="gapChart"></div>
+        <p class="legend"><span class="key low"></span>Subscription fees <span class="key cost"></span>What it really costs</p>
+      </section>
+
+      <div class="cost-cards">
+        <section class="card" aria-labelledby="costTitle">
+          <h2 id="costTitle">Your subscription&rsquo;s cost over time</h2>
+          <table class="rates costs" id="costTable"></table>
+          <details class="about-data">
+            <summary>About these numbers</summary>
+            <p>
+              Each total is the subscription fees, plus what that money could have
+              earned if you'd invested it at <span id="roiText">7</span>% a
+              year instead.  Work is at <span id="wageText3">$20</span> an hour,
+              <span id="workDayText">8</span> hours a day.
+            </p>
+          </details>
+        </section>
+
+        <section class="card" aria-labelledby="retireTitle">
+          <h2 id="retireTitle">Your subscription&rsquo;s effect on retirement</h2>
+          <div class="stats two">
+            <div class="stat">
+              <span class="stat-label">Extra savings needed</span>
+              <b class="stat-num" id="eggText">$3,000</b>
+            </div>
+            <div class="stat">
+              <span class="stat-label">Extra work needed</span>
+              <b class="stat-num" id="workTimeText">19 days</b>
+            </div>
+          </div>
+          <details class="about-data">
+            <summary>About these numbers</summary>
+            <p>
+              This is what it takes to keep paying <span id="chargeText2">$10 a month</span>
+              after you retire.  You can spend about <span id="withdrawalRateText">4</span>% of your
+              savings a year without running out.  So <span id="annualText">$120</span>
+              a year needs <span id="annualText2">$120</span> &divide;
+              <span id="withdrawalRateText2">4</span>% = <span id="eggText2">$3,000</span>.
+              Extra work needed is how long it takes to earn that at
+              <span id="wageText2">$20</span> an hour.
+            </p>
+          </details>
+        </section>
+      </div>
+
+      <p class="next-step"><a href="/calculator/earlyretirement">See how spending changes your retirement date &rarr;</a></p>
+    </div>
+  </main>
+
+  <script src="/js/share.js"></script>
+  <script src="/js/real-cost-math.js"></script>
+  <script src="/js/line-chart.js"></script>
+  <script src="/js/real-cost-calculator.js"></script>
+  <script src="/js/menu.js"></script>
+</body>
+</html>

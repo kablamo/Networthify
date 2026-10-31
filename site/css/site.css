@@ -1,0 +1,673 @@
+/* Networthify.  Same gray look as the old site, rebuilt mobile first. */
+
+:root {
+  --milk:   #eee;
+  --white:  #fff;
+  --black:  #333;
+  --gray:   #666;
+  --light:  #999;
+  --line:   #ccc;
+  --bar:    #ddd;
+  --pick:   rgb(173, 255, 47);
+  /* the recurring charges page's accent, the calculator's green:
+     bright on the dark band, deeper on white */
+  --cost-bright: var(--pick);
+  --cost:        #4d7a12;
+  --cost-light:  #8fc43a;
+  --cost-text:   #4d7a12;  /* small text, darker so it stays readable */
+  --font:   'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --display: Economica, var(--font);
+}
+
+/* Economica, self hosted.  License: /fonts/OFL.txt */
+@font-face {
+  font-family: Economica;
+  font-weight: 400;
+  font-display: swap;
+  src: url(/fonts/economica-400.woff2) format('woff2');
+}
+@font-face {
+  font-family: Economica;
+  font-weight: 700;
+  font-display: swap;
+  src: url(/fonts/economica-700.woff2) format('woff2');
+}
+
+* { box-sizing: border-box; }
+
+[hidden] { display: none !important; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  padding: 0 0 4em;
+  background: var(--milk);
+  color: var(--black);
+  font: 16px/1.45 var(--font);
+}
+
+a { color: var(--black); }
+
+.wrap {
+  max-width: 62em;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+/* === top bar === */
+
+.top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: .25em 1em;
+  padding-top: 1em;
+  padding-bottom: 1em;
+}
+.logo {
+  font-family: var(--display);
+  font-size: 2.2em;
+  font-weight: bold;
+  text-decoration: none;
+  color: var(--gray);
+}
+.logo span { color: var(--line); }
+.top nav { display: flex; flex-wrap: wrap; gap: 0 1.1em; font-size: .95em; }
+.top nav a { white-space: nowrap; }
+.top nav a { color: var(--light); text-decoration: none; }
+.top nav a:hover, .top nav a[aria-current] { color: var(--black); }
+
+/* on small screens the links fold into a menu button (js/menu.js) */
+.menu-button {
+  align-self: center;
+  padding: .35em;
+  border: solid 1px var(--line);
+  border-radius: 6px;
+  background: var(--white);
+  color: var(--black);
+  cursor: pointer;
+  line-height: 0;
+}
+.menu-button svg { width: 1.4em; height: 1.4em; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
+.menu-button:focus-visible { outline: 2px solid var(--black); outline-offset: 2px; }
+@media (max-width: 61.99em) {
+  .top.has-menu { align-items: center; }
+  .top.has-menu nav { display: none; }
+  .top.has-menu.open nav { display: flex; flex-direction: column; width: 100%; margin-top: .4em; font-size: 1em; }
+  .top.has-menu.open nav a { padding: .6em 0; border-top: solid 1px #ddd; color: var(--black); }
+  .top.has-menu.open nav a[aria-current] { font-weight: bold; }
+  .top.has-menu.open .menu-button { background: var(--milk); }
+}
+@media (min-width: 62em) {
+  .menu-button { display: none; }
+}
+
+/* === intro === */
+
+h1 {
+  margin: .5em 0 .4em;
+  font-size: 2.2em;
+  line-height: 1.1;
+}
+@media (min-width: 40em) {
+  h1 { text-align: center; }
+  h1.left { text-align: left; }
+}
+.intro {
+  max-width: 42em;
+  margin: 0 auto 1.5em;
+}
+
+/* === forms === */
+
+.fields {
+  display: grid;
+  grid-template-columns: 1fr minmax(7em, 10em) 2em;
+  align-items: center;
+  gap: .5em .6em;
+  max-width: 30em;
+  margin: 0 auto;
+}
+/* on big screens the inputs start at the middle of the page, lined up
+   with the numbers in the results */
+@media (min-width: 40em) {
+  .fields { grid-template-columns: calc(50% - .3em) 10em 2em; max-width: none; }
+  /* the line under the yearly / monthly group, centered like the form */
+  .fields .group { margin-left: calc(50% - 13em); }
+}
+.fields label { text-align: right; }
+.fields .unit { color: var(--gray); font-size: .85em; }
+
+/* yearly / monthly switch */
+.period {
+  grid-column: 2 / -1;
+  justify-self: start;
+  align-self: center;
+  display: inline-flex;
+  font-size: .8em;
+  border: solid 1px #aaa;
+  border-radius: 4px;
+  overflow: hidden;
+  background: var(--white);
+}
+.period label { position: relative; padding: .15em .7em; cursor: pointer; color: var(--gray); }
+.period label + label { border-left: solid 1px #aaa; }
+.period input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+.period label:has(input:checked) { background: var(--black); color: var(--white); }
+.period label:has(input:focus-visible) { outline: 2px solid var(--black); outline-offset: 2px; }
+.fields .warning {
+  grid-column: 1 / -1;
+  margin-top: -.4em;
+  color: #910c1c;
+  text-align: right;
+  font-size: .9em;
+}
+.fields .warning:empty { display: none; }
+/* the yearly / monthly switch and the fields it changes, with a line under them */
+.fields .group {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: subgrid;
+  align-items: center;
+  gap: .5em .6em;
+  margin-bottom: .3em;
+  padding-bottom: .8em;
+  border-bottom: solid 1px var(--line);
+}
+
+input, select, button { font: inherit; color: inherit; }
+
+input[type=text], select {
+  width: 100%;
+  padding: .4em .5em;
+  border: solid 1px #aaa;
+  border-radius: 4px;
+  background: var(--white);
+  font-size: 16px; /* stops iOS zooming in on focus */
+}
+input[type=text] { text-align: right; }
+/* the savings rate is the green bar on the chart, and the price makes the
+   green answer on the recurring charges page */
+input#savingsRate, input#price { background: rgba(173, 255, 47, .3); border-color: #8fc43a; }
+input[aria-invalid=true], input#savingsRate[aria-invalid=true], input#price[aria-invalid=true] { border-color: #910c1c; }
+
+.fields + .fields { margin-top: .5em; }
+
+/* "+ Show more options" lines up with the labels, the button with the inputs */
+.fields.actions { margin-top: 1em; }
+.actions .toggle { justify-self: end; text-align: right; }
+.actions .go { grid-column: 2 / -1; display: flex; align-items: center; }
+
+.link-button {
+  padding: 0;
+  border: 0;
+  background: none;
+  font-weight: normal;
+  text-decoration: underline;
+  color: var(--black);
+  cursor: pointer;
+}
+.link-button:active { background: none; }
+
+button, .btn {
+  display: inline-block;
+  padding: .5em 1.1em;
+  border: solid 1px var(--light);
+  border-radius: 4px;
+  background: linear-gradient(to top, #ccc, #fff 95%);
+  font-weight: bold;
+  cursor: pointer;
+}
+button:hover { border-color: var(--gray); }
+button:active { background: linear-gradient(to top, #aaa, #eee 5%); }
+
+:focus-visible { outline: 2px solid var(--black); outline-offset: 2px; }
+
+/* === chart === */
+
+.chart-area { margin: 2em 0 1em; }
+.chart-area h2 { margin: 0 0 .2em; font-size: 1.05em; }
+.chart-hint { margin: 0 0 .6em; font-size: .85em; color: var(--gray); }
+@media (min-width: 40em) {
+  .chart-area h2 { font-size: 1.2em; }
+}
+.assumptions {
+  max-width: 36em;
+  margin: -.5em auto 1.5em;
+  padding: 1em 2em;
+  background: var(--line);
+}
+.assumptions ul { margin: .5em 0 0; padding-left: 1.2em; }
+
+#chart {
+  position: relative;
+  width: 100%;
+  touch-action: pan-y;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+#chart svg { display: block; width: 100%; height: auto; overflow: visible; }
+#chart:focus-visible { outline-offset: 4px; }
+#chart .axis      { stroke: var(--light); fill: none; }
+#chart .tick text { fill: var(--black); font-size: 12px; }
+#chart .grid      { stroke: #e3e3e3; }
+#chart .bar       { fill: var(--bar); stroke: var(--light); stroke-width: 1; }
+#chart .bar.hover { fill: #c4c4c4; }
+#chart .bar.pick  { fill: var(--pick); }
+#chart .country   { fill: var(--gray); font-size: 10px; }
+.country-legend { margin: .4em 0 0; font-size: .8em; color: var(--gray); text-align: center; }
+.country-legend span { white-space: nowrap; }
+#chart .pill rect { fill: var(--gray); }
+#chart .pill text { fill: var(--white); font-size: 12px; font-weight: bold; }
+#chart .axis-title { fill: var(--black); font-size: 13px; }
+
+/* === big numbers === */
+
+/* label on the left, number on the right, sharing a baseline */
+.big-numbers {
+  display: grid;
+  grid-template-columns: auto auto; /* sized to the text, then centered */
+  justify-content: center;
+  align-items: baseline;
+  gap: 0 .3em;
+  margin: 1.5em 0;
+  font-family: var(--display);
+  line-height: 1.1;
+}
+@media (min-width: 40em) {
+  .big-numbers { grid-template-columns: 1fr 1fr; column-gap: .6em; }
+}
+.big-numbers dt { text-align: right; font-size: 1.35em; }
+.big-numbers dd { text-align: left; margin: 0; font-size: 1.35em; font-weight: bold; }
+.big-numbers dd.number { font-size: 2.9em; line-height: 1; }
+
+@media (min-width: 40em) {
+  .big-numbers dd.number { font-size: 3.6em; }
+}
+/* the smallest phones: shrink so the labels don't wrap */
+@media (max-width: 22em) {
+  .big-numbers { font-size: .82em; }
+}
+
+.explain {
+  max-width: 30em;
+  margin: -.5em auto 1.5em;
+  text-align: center;
+  font-size: .9em;
+  color: var(--gray);
+}
+
+/* the answer: a full width dark band */
+.answer {
+  margin: 1.5em 0 2em;
+  padding: 1.5em 0 1.7em;
+  background: var(--black);
+  color: var(--milk);
+  overflow-x: clip;  /* the "Crunch the numbers" pop grows past the edge on small phones */
+}
+.answer .big-numbers { margin: 0 0 1em; }
+/* "Crunch the numbers" makes the answer pop: it grows, glows, and settles */
+.big-numbers.flash dd.number { animation: flash .8s ease-out; transform-origin: left center; }
+@keyframes flash {
+  0%   { opacity: .2; transform: scale(.85); }
+  35%  { opacity: 1; transform: scale(1.18); text-shadow: 0 0 .35em rgba(173, 255, 47, .9); }
+  100% { transform: scale(1); text-shadow: 0 0 0 rgba(173, 255, 47, 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .big-numbers.flash dd.number { animation: none; }
+}
+/* the goal is a second sentence: a paragraph's worth of space before it */
+.big-numbers .goal { margin-top: .9em; }
+.big-numbers dd.goal { font-size: 1.6em; }
+.answer dd.number { color: var(--pick); }
+.answer .explain { margin: 0 auto 1em; color: #bbb; }
+.answer .share { margin: 0; }
+.answer .share-button { background: transparent; color: var(--milk); border-color: #888; }
+.answer .share-button:hover { color: var(--white); border-color: var(--milk); }
+.answer .share-button:active { background: #444; }
+.answer .share .copied { color: #bbb; }
+
+.share {
+  text-align: center;
+  margin: 0 0 2em;
+}
+.share-button {
+  display: inline-flex;
+  align-items: center;
+  gap: .45em;
+  padding: .45em 1em;
+  border: solid 1px var(--light);
+  border-radius: 2em;
+  background: var(--white);
+  font-weight: normal;
+  color: var(--gray);
+}
+.share-button:hover { color: var(--black); border-color: var(--gray); }
+.share-button:active { background: var(--milk); }
+.share-button svg { width: 1.1em; height: 1.1em; }
+.share .copied { margin-left: .5em; color: var(--gray); }
+
+/* === year by year table === */
+
+details.breakdown > summary {
+  cursor: pointer;
+  font-weight: bold;
+  margin-bottom: .75em;
+}
+.table-scroll { overflow-x: auto; }
+/* light rows like the savings by country table: thin lines, numbers lined up */
+table.years {
+  width: 100%;
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+}
+table.years th {
+  padding: 0 .6em .4em;
+  border-bottom: solid 1px var(--light);
+  font-size: .8em;
+  font-weight: normal;
+  color: var(--gray);
+  text-align: right;
+  vertical-align: bottom;
+}
+table.years td {
+  padding: .3em .6em;
+  border-bottom: solid 1px #e0e0e0;
+  text-align: right;
+}
+table.years tr.fi td { font-weight: bold; }
+table.years .meter { display: flex; align-items: center; gap: .5em; min-width: 9em; }
+/* the faint track is 100%: expenses fully covered */
+table.years .meter .track { flex: 1; height: 1.1em; background: rgba(0, 0, 0, .05); }
+table.years .meter .bar { display: block; height: 100%; background: var(--bar); border: solid 1px var(--light); box-sizing: border-box; }
+table.years .meter .v { width: 3.2em; text-align: right; }
+table.years tr.fi .meter .bar { background: var(--pick); border-color: #8fc43a; }
+
+/* phones only get the important columns */
+@media (max-width: 39.99em) {
+  table.years .wide { display: none; }
+}
+
+
+.sources { font-size: .8em; color: var(--gray); }
+
+/* === recurring charges results === */
+
+/* the answer uses the early retirement calculator's big numbers */
+.cost-answer dd.number { color: var(--cost-bright); }
+/* the three rows of the breakdown, all one size */
+.cost-answer dd.goal { font-size: 1.35em; }
+/* the total's label is two lines, "Over 10 years," then "$10 a month
+   really costs", with the big number sitting on the second line's baseline */
+.answer dt.two-lines > span { display: block; white-space: nowrap; }
+.answer dt.two-lines, .answer dt.two-lines + dd.number { align-self: last baseline; }
+/* four choices need more room than the input column on phones */
+@media (max-width: 30em) {
+  #costForm .period label { padding: .15em .45em; }
+}
+@media (max-width: 23em) {
+  #costForm .period { grid-column: 1 / -1; justify-self: end; }
+}
+/* the two cards below the answer: side by side on wide screens, each
+   with its numbers as big tiles */
+@media (min-width: 52em) {
+  .cost-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 1em; margin: 1.5em 0; }
+  .cost-cards .card { margin: 0; }
+}
+.cost-cards .card { display: flex; flex-direction: column; }
+.cost-cards .stats, .cost-cards table.costs { flex: 1; }
+/* the cost over time table: the bar column takes the room, the picked
+   years are green and bold */
+table.costs th:last-child, table.costs td:last-child { width: auto; }
+table.costs th:nth-child(2), table.costs td:nth-child(2) { width: 100%; }
+table.costs .v { width: 4.4em; flex: none; }
+table.costs td.work { padding-left: .6em; }
+table.costs td:first-child, table.costs td.work { text-align: right; white-space: nowrap; }
+table.costs th:first-child, table.costs th:last-child { text-align: right; }
+table.costs th:nth-child(2) { text-align: right; }
+table.costs th { white-space: nowrap; }
+/* "Work needed to earn it" goes on two lines on phones, to leave room for the bars */
+@media (max-width: 30em) {
+  table.costs th:last-child span { display: block; }
+}
+.stats { display: grid; gap: .9em 1em; align-content: start; margin: .4em 0 0; }
+@media (min-width: 30em) {
+  .stats.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+.stat { display: flex; flex-direction: column; }
+/* beside the taller table, the two numbers stack and spread down the card */
+@media (min-width: 52em) {
+  .cost-cards .stats.two { grid-template-columns: 1fr; align-content: space-evenly; }
+}
+.stat-label { font-size: .9em; color: var(--gray); }
+.stat-num { font-family: var(--display); font-size: 3.2em; line-height: 1.1; color: var(--cost); white-space: nowrap; }
+.next-step { margin: 1.5em 0 2.5em; }
+/* === savings rate by country === */
+
+/* each chart on its own card, so the page reads as three parts */
+.who, .age, .latest, .card {
+  margin: 1.5em 0;
+  padding: 1em .9em;
+  background: var(--white);
+  border: solid 1px #e2e2e2;
+  border-radius: 8px;
+}
+@media (min-width: 40em) {
+  .who, .age, .latest, .card { padding: 1.4em 1.6em; }
+}
+.your-rate-box + .who { margin-top: 2em; }
+.your-rate-box { margin: 1em 0 0; }
+.your-rate-box .hint { margin: 0; color: var(--gray); }
+.who h2, .age h2, .latest h2 { margin: 0 0 .5em; font-size: 1.05em; }
+@media (min-width: 40em) {
+  .who h2, .age h2, .latest h2 { font-size: 1.2em; }
+}
+.who p, .age p, .lede { max-width: 42em; }
+.your-rate-box .hint { max-width: 42em; }
+
+.bar-chart { margin: .5em 0; }
+
+.your-rate { display: flex; align-items: center; gap: .5em; margin: 0 0 .5em; font-size: 1.1em; }
+.your-rate label { font-weight: bold; }
+.your-rate input { width: 5em; text-align: right; }
+.add-country { display: flex; align-items: center; gap: .6em; margin: .8em 0; }
+.add-country label { white-space: nowrap; }
+.add-country select { font: inherit; padding: .2em; min-width: 0; max-width: 18em; }
+.who h2, .age h2, .latest h2, .card h2 { margin-bottom: .25em; }
+.lede { margin: 0 0 .8em; color: var(--gray); }
+/* "About this data" is the card's footer: a shaded strip to its edges */
+.about-data {
+  margin: 1.2em -.9em -1em;
+  padding: .6em .9em;
+  background: #f6f6f6;
+  border-top: solid 1px #e8e8e8;
+  border-radius: 0 0 8px 8px;
+  color: var(--gray);
+}
+@media (min-width: 40em) {
+  .about-data { margin: 1.4em -1.6em -1.4em; padding: .7em 1.6em; }
+}
+.about-data summary { cursor: pointer; }
+.about-data p { margin: .4em 0 .2em; max-width: 42em; }
+
+/* the table is drawn as a bar chart: bars from one zero line, numbers in their own column */
+table.rates { width: 100%; max-width: 40em; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+table.rates caption { padding: 0 0 .5em; text-align: left; font-weight: bold; }
+table.rates th { padding: 0 .4em .3em; border-bottom: solid 1px var(--light); font-size: .8em; font-weight: normal; color: var(--gray); text-align: left; }
+table.rates td { padding: .2em .4em; border-bottom: solid 1px #e0e0e0; }
+table.rates td:first-child { white-space: nowrap; }
+table.rates td.year { font-size: .8em; color: var(--gray); }
+table.rates th:last-child, table.rates td:last-child { width: 100%; }
+table.rates .rate { display: flex; align-items: center; gap: .5em; }
+table.rates .track { position: relative; flex: 1; height: 1.1em; }
+/* saving is light gray, spending more than you earn is striped */
+table.rates .bar { position: absolute; top: 0; bottom: 0; background: var(--bar); border: solid 1px var(--light); }
+table.rates .bar.neg {
+  background: repeating-linear-gradient(-45deg, var(--bar) 0 3px, #f4f4f4 3px 6px);
+  border-color: var(--light);
+}
+/* a bar too long to draw: open at the left end, with a break near it */
+table.rates .bar.cut { border-left: 0; }
+table.rates .bar.cut::after {
+  content: '';
+  position: absolute;
+  top: -3px;
+  bottom: -3px;
+  left: 10px;
+  width: 4px;
+  background: var(--white);
+  border-left: solid 1px var(--light);
+  border-right: solid 1px var(--light);
+  transform: skewX(-20deg);
+}
+table.rates .v { width: 3.4em; text-align: right; }
+table.rates tr.you td { font-weight: bold; }
+table.rates + .show-all, .table-scroll + .show-all { margin-top: .6em; }
+table.rates tr.gap td { padding: .1em .4em; color: var(--light); font-size: .85em; }
+table.rates tr.home td:first-child { font-weight: bold; }
+table.rates tr.you .bar { background: var(--pick); border-color: #8fc43a; }
+
+/* === misc === */
+
+.noscript {
+  padding: 1em;
+  background: var(--white);
+  text-align: center;
+}
+footer {
+  margin-top: 3em;
+  font-size: .85em;
+  color: var(--gray);
+  text-align: center;
+}
+footer a { color: var(--gray); }
+
+/* === do I need a high income to retire early? === */
+
+.answer-lede { max-width: 36em; font-size: 1.15em; }
+.card h3 { margin: 1.8em 0 .6em; font-size: 1em; }
+/* the slider sits in its own bar that sticks to the top of the screen while
+   the table and chart below it scroll past, so you can drag and watch */
+.pair-demo .card { margin: .75em 0; }
+.rate-bar { position: sticky; top: 0; z-index: 2; padding-top: .7em; padding-bottom: .2em; transition: box-shadow .2s; }
+.rate-bar.stuck { border-top-left-radius: 0; border-top-right-radius: 0; box-shadow: 0 3px 10px rgba(0, 0, 0, .12); }
+.stick-mark { height: 1px; margin-bottom: -1px; }
+/* the answer band runs edge to edge from inside the page's column: a
+   shadow paints the dark past the sides, clipped to the band's height */
+.pair-answer {
+  margin: 1.3em 0;
+  padding: 1.3em 0 .4em;
+  box-shadow: 0 0 0 100vmax var(--black);
+  clip-path: inset(0 -100vmax);
+}
+.pair-answer dd.goal { font-size: 1.35em; }
+.pair-answer .per { font-weight: normal; }
+/* table and chart side by side on wide screens: the table card is as wide
+   as its table, and the chart takes the rest */
+@media (min-width: 52em) {
+  .pair-cards { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: .75em; margin: .75em 0; }
+  .pair-cards .card { margin: 0; }
+  .pair-cards .card:first-child { width: min-content; }
+}
+/* reading text after the cards */
+.prose { margin: 2.5em 0; max-width: 36em; }
+.prose h2 { margin: 1.6em 0 .4em; font-size: 1.3em; }
+.prose h2:first-child { margin-top: 0; }
+.card > :first-child { margin-top: 0; }
+@media (min-width: 40em) {
+  .card h3 { font-size: 1.2em; }
+}
+.pair-why { margin: .8em 0 0; color: var(--gray); }
+.card h2 { margin: 0 0 .5em; font-size: 1.05em; }
+.card h2 + h2, .card p + h2 { margin-top: 1.4em; }
+@media (min-width: 40em) {
+  .card h2 { font-size: 1.2em; }
+}
+.card p { max-width: 42em; }
+
+.rate-pick { --thumb: 22px; }
+.rate-pick label { display: block; font-weight: bold; }
+.rate-pick output { white-space: nowrap; }
+.rate-pick output { font-size: 1.6em; color: #4d7a12; }
+.rate-pick input[type=range] {
+  display: block; width: 100%; height: var(--thumb); margin: .4em 0 0; padding: 0;
+  background: none; border: 0; -webkit-appearance: none; appearance: none; cursor: pointer;
+}
+/* green up to the thumb: --fill is set by the script */
+.rate-pick input[type=range] { --stop: calc(var(--thumb) / 2 + (100% - var(--thumb)) * var(--fill, .5)); }
+.rate-pick input[type=range]::-webkit-slider-runnable-track {
+  height: 6px; border-radius: 3px; background: linear-gradient(to right, #8fc43a var(--stop), var(--bar) var(--stop));
+}
+.rate-pick input[type=range]::-moz-range-track {
+  height: 6px; border-radius: 3px; background: linear-gradient(to right, #8fc43a var(--stop), var(--bar) var(--stop));
+}
+.rate-pick input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none; width: var(--thumb); height: var(--thumb); margin-top: -8px;
+  border-radius: 50%; background: var(--white); border: solid 2px #4d7a12; box-shadow: 0 1px 3px rgba(0,0,0,.25);
+}
+.rate-pick input[type=range]::-moz-range-thumb {
+  width: var(--thumb); height: var(--thumb); box-sizing: border-box;
+  border-radius: 50%; background: var(--white); border: solid 2px #4d7a12; box-shadow: 0 1px 3px rgba(0,0,0,.25);
+}
+/* focus shows as a soft halo on the handle, not a box round the whole slider */
+.rate-pick input[type=range]:focus-visible { outline: none; }
+.rate-pick input[type=range]:focus-visible::-webkit-slider-thumb { box-shadow: 0 0 0 5px rgba(143, 196, 58, .35); }
+.rate-pick input[type=range]:focus-visible::-moz-range-thumb { box-shadow: 0 0 0 5px rgba(143, 196, 58, .35); }
+.rate-ticks { position: relative; height: 1.4em; margin-top: .2em; }
+.rate-ticks button {
+  position: absolute; top: 0; transform: translateX(-50%);
+  padding: 0 .2em; border: 0; background: none; color: var(--gray); font: inherit; font-size: .8em; cursor: pointer;
+}
+.rate-ticks button:hover { color: var(--black); text-decoration: underline; }
+table.pair tr.earns td { padding-top: .5em; padding-bottom: .5em; }
+table.pair input { width: 6.5em; text-align: right; font-weight: bold; }
+table.pair th:first-child { white-space: nowrap; }
+@media (max-width: 30em) {
+  table.pair input { width: 5.6em; }
+}
+.card .warning { color: #910c1c; }
+
+table.pair { border-collapse: collapse; font-variant-numeric: tabular-nums; }
+table.pair th, table.pair td { padding: .35em .8em; border-bottom: solid 1px #e0e0e0; text-align: right; }
+table.pair td { white-space: nowrap; }
+@media (max-width: 30em) {
+  table.pair th, table.pair td { padding-left: .4em; padding-right: .4em; }
+}
+table.pair th:first-child { padding-left: 0; text-align: left; font-weight: normal; color: var(--gray); }
+table.pair thead th { font-size: .85em; font-weight: bold; color: var(--black); border-bottom-color: var(--light); }
+table.pair tr.same td { font-weight: bold; background: rgba(173, 255, 47, .3); }
+
+.line-chart svg { display: block; width: 100%; height: auto; overflow: visible; }
+.line-chart .grid { stroke: #e8e8e8; }
+.line-chart .tick { fill: var(--gray); font-size: 12px; }
+.line-chart .goal { stroke: var(--light); stroke-dasharray: 4 4; }
+.line-chart .goal-label { fill: var(--gray); font-size: 12px; }
+/* a white outline keeps labels readable where a line runs through them */
+.line-chart .goal-label, .line-chart .retire-label { paint-order: stroke; stroke: var(--white); stroke-width: 4px; stroke-linejoin: round; }
+.line-chart .retire { stroke: #8fc43a; stroke-width: 2; }
+.line-chart .retire-label { fill: #4d7a12; font-size: 12px; font-weight: bold; }
+.line-chart .line { fill: none; stroke-width: 2.5; }
+.line-chart .line.low { stroke: #9a9a9a; }
+.line-chart .line.high { stroke: var(--black); }
+.line-chart .line.cost { stroke: var(--cost); stroke-width: 3; }
+.line-chart.hoverable { cursor: crosshair; touch-action: pan-y; }
+/* the values drawn on hover never catch the mouse, so clicks land on the chart */
+.line-chart .hover { pointer-events: none; }
+.line-chart .guide { stroke: var(--gray); stroke-dasharray: 3 3; }
+.line-chart .dot { fill: var(--white); stroke-width: 2.5; }
+.line-chart .dot.cost { stroke: var(--cost); }
+.line-chart .dot.low { stroke: #9a9a9a; }
+.line-chart .hovering .end-label, .line-chart .hovering .gap-label { visibility: hidden; }
+.line-chart .pill rect { fill: var(--gray); }
+.line-chart .pill text { fill: var(--white); font-size: 12px; font-weight: bold; }
+.line-chart .gap { fill: rgba(143, 196, 58, .18); }
+.line-chart .gap-label { fill: var(--cost-text); font-size: 12px; font-style: italic; }
+.line-chart .end-label { fill: var(--black); font-size: 12px; font-weight: bold; paint-order: stroke; stroke: var(--white); stroke-width: 4px; stroke-linejoin: round; }
+.legend { margin: .4em 0 0; font-size: .85em; color: var(--gray); }
+.legend .key { display: inline-block; width: 1.6em; height: 0; margin: 0 .4em .25em 0; vertical-align: middle; border-top: solid 3px; }
+.legend .key ~ .key { margin-left: 1em; }
+.legend .key.low { border-color: #9a9a9a; }
+.legend .key.high { border-color: var(--black); }
+.legend .key.cost { border-color: var(--cost); }

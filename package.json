@@ -1,0 +1,10 @@
+{
+  "name": "networthify",
+  "private": true,
+  "description": "Static site for networthify.com.  The deployable files are in site/.",
+  "scripts": {
+    "test": "node --test site-tests/*.test.js",
+    "serve": "python3 site-tests/serve.py",
+    "data:savings": "python3 scripts/fetch-savings-data.py"
+  }
+}

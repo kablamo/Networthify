@@ -1,0 +1,19 @@
+# Cloudflare Pages redirects.  https://developers.cloudflare.com/pages/configuration/redirects/
+# Old aliases for the early retirement calculator.  Keep these forever; they
+# still get search traffic.
+/fi                                 /calculator/earlyretirement   301
+/fi/                                /calculator/earlyretirement   301
+/earlyretirement                    /calculator/earlyretirement   301
+/earlyretirement/                   /calculator/earlyretirement   301
+/retirementcalculator               /calculator/earlyretirement   301
+/retirementcalculator/              /calculator/earlyretirement   301
+/financialindependence              /calculator/earlyretirement   301
+/financialindependence/             /calculator/earlyretirement   301
+/calculator/fi                      /calculator/earlyretirement   301
+/calculator/retirementcalculator    /calculator/earlyretirement   301
+/calculator/financialindependence   /calculator/earlyretirement   301
+/calculator/earlyretirement/        /calculator/earlyretirement   301
+
+# Old alias for the recurring charges calculator
+/calculator/real-cost               /calculator/recurring-charges 301
+/calculator/recurring-charges/      /calculator/recurring-charges 301
