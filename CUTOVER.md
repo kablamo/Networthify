@@ -38,11 +38,16 @@ on your phone).
       | `www` A                     | `71.19.156.131` (the VM)       | yes for now, DNS only (grey cloud); Pages replaces it |
       | `@` MX                      | `1 smtp.google.com`            | **yes, exactly** |
       | `@` TXT ×2                  | `google-site-verification=KB20ukDY…` and `=XNUzmkwa…` | **yes, exactly** (Search Console) |
+      | `@` TXT                     | `v=spf1 include:_spf.google.com ~all` | **yes, exactly** (email, added 2026-11-01) |
+      | `google._domainkey` TXT     | `v=DKIM1; k=rsa; p=MIIBIjAN…`  | **yes, exactly** (email DKIM, added 2026-11-01) |
+      | `_dmarc` TXT                | `v=DMARC1; p=none; …`          | **yes, exactly** (email, once added) |
       | `*` URL redirect            | Namecheap's redirect server    | no: Namecheap-only, won't import |
       | `blog` CNAME                | `kablamo.github.com`           | no: dead, delete if it imports |
 
   - [ ] `MX networthify.com → smtp.google.com` (priority 1)
   - [ ] both `TXT google-site-verification=...` records (Search Console needs them)
+  - [ ] SPF, DKIM and DMARC TXT records (the DKIM value is long; compare the
+        start and end, or `dig TXT google._domainkey.networthify.com` after)
 - [ ] Namecheap → Domain → Nameservers → Custom DNS → the two Cloudflare
       nameservers.  The domain stays registered at Namecheap.
 - [ ] Once Cloudflare says the site is active: Pages project → Custom domains →
@@ -75,17 +80,10 @@ on your phone).
 
 ## Later
 
-- Fix email: add networthify.com to the iijo.org Google Workspace as a
-  user alias domain, so mail lands in the same Gmail and you can send as
-  @networthify.com.  The MX (`smtp.google.com`) is already right; mail
-  bounces because no Workspace account has the domain.
-  - admin.google.com → Account → Domains → Manage domains → Add a domain →
-    `networthify.com` → User alias domain.  Add the verification TXT record
-    it gives you in Cloudflare.
-  - SPF: TXT `@` `v=spf1 include:_spf.google.com ~all`
-  - DKIM: Admin → Apps → Google Workspace → Gmail → Authenticate email →
-    generate, add the TXT record, then Start authentication.
-  - DMARC: TXT `_dmarc` `v=DMARC1; p=none; rua=mailto:<you>@iijo.org`
+- Email: done 2026-11-01.  networthify.com is a domain on the iijo.org
+  Google Workspace, with SPF and DKIM at Namecheap (they move with the DNS,
+  see step 3).
+  - [ ] DMARC: TXT `_dmarc` `v=DMARC1; p=none; rua=mailto:<you>@iijo.org`
 - Delete the Perl app from the repo once the new site has been stable for a while.
 - Post-launch experiments, one at a time: meta description, show the FIRE
   number, a "how the math works" section and FAQ, monthly contributions,
