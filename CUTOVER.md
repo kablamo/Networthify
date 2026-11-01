@@ -55,16 +55,19 @@ on your phone).
         start and end, or `dig TXT google._domainkey.networthify.com` after)
 - [x] Namecheap → Domain → Nameservers → Custom DNS → the two Cloudflare
       nameservers.  The domain stays registered at Namecheap.
-- [ ] Once Cloudflare says the site is active: Pages project → Custom domains →
+- [x] Once Cloudflare says the site is active: Pages project → Custom domains →
       add `networthify.com` and `www.networthify.com`.
-- [ ] Cloudflare → SSL/TLS → Edge Certificates → Always Use HTTPS: on.
-- [ ] Cloudflare → Rules → Redirect Rules → "Redirect from WWW to root"
+- [x] Cloudflare → SSL/TLS → Edge Certificates → Always Use HTTPS: on.
+- [x] Cloudflare → Rules → Redirect Rules → "Redirect from WWW to root"
       template (301, keep query string).
 
 ## 4. After the switch
 
-- [ ] `curl -I https://networthify.com/calculator/earlyretirement` shows Cloudflare, not nginx.
-- [ ] `curl -I https://www.networthify.com/` and `http://networthify.com/` → 301 to `https://networthify.com/`.
+Live on Cloudflare Pages 2026-11-01: pages, headers, all old aliases (query
+string kept), 404, http→https and www→root checked.
+
+- [x] `curl -I https://networthify.com/calculator/earlyretirement` shows Cloudflare, not nginx.
+- [x] `curl -I https://www.networthify.com/` and `http://networthify.com/` → 301 to `https://networthify.com/`.
 - [ ] Search Console → Sitemaps → submit `https://networthify.com/sitemap.xml`.
 - [ ] Search Console → URL Inspection → `/calculator/earlyretirement` → Request indexing.
 - [ ] Keep the VPS running 30 days as a rollback (switch the DNS record
