@@ -29,7 +29,7 @@ on your phone).
 
 ## 3. Move DNS (aim for early-to-mid November; if it slips past ~Dec 1, wait until February)
 
-- [ ] Cloudflare → Add a domain → `networthify.com` → Free plan.  It imports the
+- [x] Cloudflare → Add a domain → `networthify.com` → Free plan.  It imports the
       current DNS records.  Namecheap had (checked 2026-10-31):
 
       | Record                      | Value                          | Keep? |
@@ -44,11 +44,16 @@ on your phone).
       | `*` URL redirect            | Namecheap's redirect server    | no: Namecheap-only, won't import |
       | `blog` CNAME                | `kablamo.github.com`           | no: dead, delete if it imports |
 
-  - [ ] `MX networthify.com → smtp.google.com` (priority 1)
-  - [ ] both `TXT google-site-verification=...` records (Search Console needs them)
-  - [ ] SPF, DKIM and DMARC TXT records (the DKIM value is long; compare the
+      Done 2026-11-01: every record checked against Cloudflare's nameserver;
+      the `*` wildcard imported as A `192.64.119.254` and was deleted.
+      Nameservers are `christina` and `isaac.ns.cloudflare.com`; the .com
+      registry switched at 18:19 the same day.
+
+  - [x] `MX networthify.com → smtp.google.com` (priority 1)
+  - [x] both `TXT google-site-verification=...` records (Search Console needs them)
+  - [x] SPF, DKIM and DMARC TXT records (the DKIM value is long; compare the
         start and end, or `dig TXT google._domainkey.networthify.com` after)
-- [ ] Namecheap → Domain → Nameservers → Custom DNS → the two Cloudflare
+- [x] Namecheap → Domain → Nameservers → Custom DNS → the two Cloudflare
       nameservers.  The domain stays registered at Namecheap.
 - [ ] Once Cloudflare says the site is active: Pages project → Custom domains →
       add `networthify.com` and `www.networthify.com`.
