@@ -83,7 +83,7 @@ on your phone).
 - Email: done 2026-11-01.  networthify.com is a domain on the iijo.org
   Google Workspace, with SPF and DKIM at Namecheap (they move with the DNS,
   see step 3).
-  - [ ] DMARC: TXT `_dmarc` `v=DMARC1; p=none; rua=mailto:<you>@iijo.org`
+  - [ ] DMARC: TXT `_dmarc` `v=DMARC1; p=none; rua=mailto:<you>@networthify.com` (same domain, or reports need an extra authorization record; can switch to Cloudflare DMARC Management after the move)
 - Delete the Perl app from the repo once the new site has been stable for a while.
 - Post-launch experiments, one at a time: meta description, show the FIRE
   number, a "how the math works" section and FAQ, monthly contributions,
