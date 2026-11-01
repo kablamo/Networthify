@@ -40,7 +40,7 @@ on your phone).
       | `@` TXT ×2                  | `google-site-verification=KB20ukDY…` and `=XNUzmkwa…` | **yes, exactly** (Search Console) |
       | `@` TXT                     | `v=spf1 include:_spf.google.com ~all` | **yes, exactly** (email, added 2026-11-01) |
       | `google._domainkey` TXT     | `v=DKIM1; k=rsa; p=MIIBIjAN…`  | **yes, exactly** (email DKIM, added 2026-11-01) |
-      | `_dmarc` TXT                | `v=DMARC1; p=none; …`          | **yes, exactly** (email, once added) |
+      | `_dmarc` TXT                | `v=DMARC1; p=none; rua=…`      | **yes, exactly** (email, added 2026-11-01) |
       | `*` URL redirect            | Namecheap's redirect server    | no: Namecheap-only, won't import |
       | `blog` CNAME                | `kablamo.github.com`           | no: dead, delete if it imports |
 
@@ -81,9 +81,13 @@ on your phone).
 ## Later
 
 - Email: done 2026-11-01.  networthify.com is a domain on the iijo.org
-  Google Workspace, with SPF and DKIM at Namecheap (they move with the DNS,
+  Google Workspace, with SPF, DKIM and DMARC at Namecheap (they move with the DNS,
   see step 3).
-  - [ ] DMARC: TXT `_dmarc` `v=DMARC1; p=none; rua=mailto:<you>@networthify.com` (same domain, or reports need an extra authorization record; can switch to Cloudflare DMARC Management after the move)
+  DMARC (`p=none`, reports to `dmarc@networthify.com`) added too, and a
+  catch-all (Gmail → Default routing) sends every @networthify.com address
+  to the same inbox.
+  - [ ] In a month, if the DMARC reports show only Google sending as the
+        domain, change it to `p=quarantine`.
 - Delete the Perl app from the repo once the new site has been stable for a while.
 - Post-launch experiments, one at a time: meta description, show the FIRE
   number, a "how the math works" section and FAQ, monthly contributions,
