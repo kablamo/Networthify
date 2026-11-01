@@ -83,7 +83,7 @@ on your phone).
 - Email: done 2026-11-01.  networthify.com is a domain on the iijo.org
   Google Workspace, with SPF, DKIM and DMARC at Namecheap (they move with the DNS,
   see step 3).
-  DMARC (`p=none`, reports to `dmarc@networthify.com`) added too, and a
+  DMARC is `p=none` with reports to `dmarc@networthify.com`, and a
   catch-all (Gmail → Default routing) sends every @networthify.com address
   to the same inbox.
   - [ ] In a month, if the DMARC reports show only Google sending as the
